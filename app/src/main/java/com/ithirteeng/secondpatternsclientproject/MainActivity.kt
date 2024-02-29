@@ -6,41 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.ithirteeng.secondpatternsclientproject.ui.theme.SecondPatternsClientProjectTheme
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.ithirteeng.secondpatternsclientproject.common.navigation.AppNavHost
+import com.ithirteeng.secondpatternsclientproject.common.uikit.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SecondPatternsClientProjectTheme {
-                // A surface container using the 'background' color from the theme
+            AppTheme {
+                rememberSystemUiController().setStatusBarColor(MaterialTheme.colorScheme.surface)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.surface
                 ) {
-                    Greeting("Android")
+                    val navHostController = rememberNavController()
+                    AppNavHost(navController = navHostController)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SecondPatternsClientProjectTheme {
-        Greeting("Android")
     }
 }
