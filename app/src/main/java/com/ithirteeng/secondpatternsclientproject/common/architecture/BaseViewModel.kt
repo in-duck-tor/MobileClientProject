@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class ViewModel<State : BaseState, Event : BaseEvent, Effect : BaseEffect> : ViewModel() {
+abstract class BaseViewModel<State : BaseState, Event : BaseEvent, Effect : BaseEffect> : ViewModel() {
 
     private val _screenState by lazy { MutableStateFlow(initState()) }
 
@@ -20,16 +20,16 @@ abstract class ViewModel<State : BaseState, Event : BaseEvent, Effect : BaseEffe
     val effectsFlow: SharedFlow<Effect>
         get() = _effectsFlow
 
-    fun updateState(update: suspend State.() -> State) {
+    protected fun updateState(update: suspend State.() -> State) {
         viewModelScope.launch {
             val newState = update.invoke(_screenState.value)
             _screenState.emit(newState)
         }
     }
 
-    abstract fun processEvent(event: Event)
+    protected abstract fun initState(): State
 
-    abstract fun initState(): State
+    abstract fun processEvent(event: Event)
 
     protected fun addEffect(effect: Effect) {
         viewModelScope.launch {

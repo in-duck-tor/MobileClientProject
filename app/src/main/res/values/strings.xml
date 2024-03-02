@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">SecondPatternsClientProject</string>
+    <string name="app_name">Bank</string>
+
+    <!-- authorization  -->
+    <string name="not_implemeted_error">not implemented</string>
+    <string name="registration">Registration</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>

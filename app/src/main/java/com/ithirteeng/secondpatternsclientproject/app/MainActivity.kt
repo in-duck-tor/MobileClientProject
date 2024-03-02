@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject
+package com.ithirteeng.secondpatternsclientproject.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
