@@ -6,4 +6,9 @@
     <string name="registration">Registration</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+
+    <!-- main client  -->
+    <string name="my_loans">Loans</string>
+    <string name="my_accounts">Accounts</string>
+    <string name="settings">Settings</string>
 </resources>

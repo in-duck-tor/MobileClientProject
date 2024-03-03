@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.app
 
 import android.app.Application
+import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainClientModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.di.splashModule
@@ -21,6 +22,7 @@ class App : Application() {
                 splashModule,
                 registrationModule,
                 loginModule,
+                mainClientModule,
             )
         }
     }

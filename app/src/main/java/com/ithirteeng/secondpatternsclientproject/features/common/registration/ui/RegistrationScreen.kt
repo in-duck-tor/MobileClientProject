@@ -21,7 +21,7 @@ import org.koin.androidx.compose.koinViewModel
 fun RegistrationScreen(
     viewModel: RegistrationViewModel = koinViewModel(),
     navigateToLoginScreen: () -> Unit,
-    navigateToMainScreen: () -> Unit,
+    navigateToMainScreen: (isClient: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -59,12 +59,12 @@ fun RegistrationScreen(
 private suspend fun observeEffects(
     viewModel: RegistrationViewModel,
     navigateToLoginScreen: () -> Unit,
-    navigateToMainScreen: () -> Unit,
+    navigateToMainScreen: (isClient: Boolean) -> Unit,
     context: Context,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is RegistrationEffect.NavigateToMainScreen -> navigateToMainScreen()
+            is RegistrationEffect.NavigateToMainScreen -> navigateToMainScreen(true)
             is RegistrationEffect.NavigateToLoginScreen -> navigateToLoginScreen()
             is RegistrationEffect.ShowError -> Toast.makeText(
                 context,

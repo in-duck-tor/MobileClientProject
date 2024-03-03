@@ -1,10 +1,9 @@
-package com.ithirteeng.secondpatternsclientproject.common.navigation
+package com.ithirteeng.secondpatternsclientproject.common.navigation.graph.common
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ithirteeng.secondpatternsclientproject.common.navigation.graph.authGraph
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.navigation.RegistrationDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.navigation.SplashDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.ui.SplashScreen
@@ -26,5 +25,6 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         authGraph(navController)
+        mainClientGraph(navController)
     }
 }

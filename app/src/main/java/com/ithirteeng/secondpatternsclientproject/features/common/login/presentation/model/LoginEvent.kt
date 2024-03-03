@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.common.login.present
 import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent
 
-interface LoginEvent : BaseEvent {
+sealed interface LoginEvent : BaseEvent {
 
     data object Init : LoginEvent
 

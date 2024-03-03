@@ -20,8 +20,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
-    navigateToMainScreen: () -> Unit,
     navigateToRegistrationScreen: () -> Unit,
+    navigateToMainScreen: (isClient: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     LaunchedEffect(null) {
@@ -57,13 +57,13 @@ fun LoginScreen(
 
 private suspend fun observeEffects(
     viewModel: LoginViewModel,
-    navigateToMainScreen: () -> Unit,
     navigateToRegistrationScreen: () -> Unit,
+    navigateToMainScreen: (isClient: Boolean) -> Unit,
     context: Context,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is LoginEffect.NavigateToMainScreen -> navigateToMainScreen()
+            is LoginEffect.NavigateToMainScreen -> navigateToMainScreen(true)
             is LoginEffect.NavigateToRegistrationScreen -> navigateToRegistrationScreen()
             is LoginEffect.ShowError -> Toast.makeText(
                 context,

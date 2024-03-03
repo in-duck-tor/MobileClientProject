@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.ithirteeng.secondpatternsclientproject.common.navigation.AppNavHost
+import com.ithirteeng.secondpatternsclientproject.common.navigation.graph.common.AppNavHost
 import com.ithirteeng.secondpatternsclientproject.common.uikit.AppTheme
 
 class MainActivity : ComponentActivity() {
