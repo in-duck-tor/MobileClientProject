@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.main.ui.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ithirteeng.secondpatternsclientproject.R
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
 

@@ -1,16 +1,13 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.main.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientState
 import com.ithirteeng.secondpatternsclientproject.features.client.main.ui.model.MainClientTab
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, MainClientEffect>() {
 
@@ -26,11 +23,7 @@ class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, Main
 
     private fun handleInit() {
         when (state.value) {
-            is MainClientState.Loading -> viewModelScope.launch {
-                delay(1000)
-                processEvent(MainClientEvent.DataLoaded)
-            }
-
+            is MainClientState.Loading -> processEvent(MainClientEvent.DataLoaded)
             else -> Unit
         }
     }
@@ -46,9 +39,9 @@ class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, Main
     }
 
     private fun handleTabClick(tab: MainClientTab) {
-        when (state.value) {
+        when (val currentState = state.value) {
             is MainClientState.Content -> updateState {
-                (this as MainClientState.Content).copy(selectedTab = tab)
+                currentState.copy(selectedTab = tab)
             }
 
             else -> Unit

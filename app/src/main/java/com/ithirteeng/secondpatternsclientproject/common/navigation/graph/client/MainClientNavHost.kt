@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.common.navigation.graph.clien
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 
 @Composable
 fun MainClientNavHost(

@@ -55,3 +55,6 @@ val themeDarkOutline = Color(0xFF938F99)
 val themeDarkInverseOnSurface = Color(0xFF1C1B1F)
 val themeDarkInverseSurface = Color(0xFFE6E1E5)
 val themeDarkInversePrimary = Color(0xFF355ca8)
+
+val activeAccountColor = Color(0xFF6AA341)
+val inactiveAccountColor = Color(0xFF5A5A5A)

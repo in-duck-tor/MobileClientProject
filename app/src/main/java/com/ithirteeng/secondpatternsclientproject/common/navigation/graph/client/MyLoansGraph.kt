@@ -18,13 +18,20 @@ fun NavGraphBuilder.myLoansGraph(
         startDestination = MyLoansMainDestination.destinationWithArgs(clientId),
         route = MyLoansDestination.route
     ) {
-        composable(
-            route = MyLoansMainDestination.route,
-            arguments = listOf(
-                navArgument(MyLoansMainDestination.CLIENT_ID) { type = NavType.StringType }
-            )
-        ) {
-            MyLoansScreen(clientId)
-        }
+        main(navController, clientId)
+    }
+}
+
+private fun NavGraphBuilder.main(
+    navController: NavHostController,
+    clientId: String,
+) {
+    composable(
+        route = MyLoansMainDestination.route,
+        arguments = listOf(
+            navArgument(MyLoansMainDestination.CLIENT_ID) { type = NavType.StringType }
+        )
+    ) {
+        MyLoansScreen(clientId)
     }
 }
