@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientState
 
@@ -21,6 +23,7 @@ fun MainClientNavBar(
     state: MainClientState.Content,
     eventListener: (MainClientEvent) -> Unit,
     modifier: Modifier = Modifier,
+    currentDestination: NavDestination?,
 ) {
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
@@ -36,7 +39,7 @@ fun MainClientNavBar(
                 onClick = {
                     eventListener(MainClientEvent.Ui.TabClick(tab))
                 },
-                isSelected = tab == state.selectedTab,
+                isSelected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
                 modifier = Modifier
                     .padding(vertical = 8.dp)
             )

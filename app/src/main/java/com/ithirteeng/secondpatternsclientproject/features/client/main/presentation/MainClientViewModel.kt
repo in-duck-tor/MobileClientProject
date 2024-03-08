@@ -6,6 +6,9 @@ import com.ithirteeng.secondpatternsclientproject.features.client.main.presentat
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.main.presentation.model.MainClientState
 import com.ithirteeng.secondpatternsclientproject.features.client.main.ui.model.MainClientTab
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -27,6 +30,7 @@ class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, Main
                 delay(1000)
                 processEvent(MainClientEvent.DataLoaded)
             }
+
             else -> Unit
         }
     }
@@ -36,6 +40,7 @@ class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, Main
             is MainClientState.Loading -> updateState {
                 MainClientState.Content(selectedTab = MainClientTab.MyAccounts)
             }
+
             else -> Unit
         }
     }
@@ -45,7 +50,21 @@ class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, Main
             is MainClientState.Content -> updateState {
                 (this as MainClientState.Content).copy(selectedTab = tab)
             }
+
             else -> Unit
+        }
+        when (tab) {
+            is MainClientTab.MyAccounts -> {
+                addEffect(MainClientEffect.NavigateToClientScreen(MyAccountsDestination.route))
+            }
+
+            is MainClientTab.MyLoans -> {
+                addEffect(MainClientEffect.NavigateToClientScreen(MyLoansDestination.route))
+            }
+
+            is MainClientTab.Settings -> {
+                addEffect(MainClientEffect.NavigateToClientScreen(SettingsDestination.route))
+            }
         }
     }
 }

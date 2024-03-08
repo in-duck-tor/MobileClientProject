@@ -2,11 +2,20 @@ package com.ithirteeng.secondpatternsclientproject.common.navigation.graph.clien
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsDestination
 
 @Composable
-fun MainClientNavHost(navController: NavHostController = rememberNavController()) {
-//    NavHost(navController = navController, startDestination = SplashDestination.route) {
-//
-//    }
+fun MainClientNavHost(
+    navController: NavHostController,
+    clientId: String,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = MyAccountsDestination.route
+    ) {
+        myAccountsGraph(navController, clientId)
+        myLoansGraph(navController, clientId)
+        settingsGraph(navController, clientId)
+    }
 }

@@ -21,7 +21,7 @@ class SplashViewModel : BaseViewModel<SplashState, SplashEvent, SplashEffect>() 
     private fun handleInit() {
         viewModelScope.launch {
             delay(1000)
-            addEffect(SplashEffect.OnUnauthorized)
+            addEffect(SplashEffect.OnAuthorized)
         }
     }
 }

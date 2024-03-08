@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ithirteeng.secondpatternsclientproject.features.client.main.navigation.MainClientDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.navigation.RegistrationDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.navigation.SplashDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.ui.SplashScreen
@@ -14,7 +15,11 @@ fun AppNavHost(navController: NavHostController) {
         composable(SplashDestination.route) {
             SplashScreen(
                 onAuthorized = {
-                    // todo navigate to main screen + popup
+                    navController.navigate(
+                        MainClientDestination.destinationWithArgs("bullshit")
+                    ) {
+                        popUpTo(SplashDestination.destination) { inclusive = true }
+                    }
                 },
                 onUnauthorized = {
                     navController.navigate(RegistrationDestination.destination) {

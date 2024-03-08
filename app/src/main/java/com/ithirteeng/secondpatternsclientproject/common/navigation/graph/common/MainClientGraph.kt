@@ -20,6 +20,8 @@ fun NavGraphBuilder.mainClientGraph(navController: NavHostController) {
             requireNotNull(navBackStackEntry.arguments?.getString(MainClientDestination.CLIENT_ID)) {
                 "Client Id is required!"
             }
-        MainClientScreen(clientId)
+        MainClientScreen(
+            clientId = clientId,
+        )
     }
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.common.uikit.noRippleClickable
+import com.ithirteeng.secondpatternsclientproject.common.uikit.ext.circleRippleClickable
 import com.ithirteeng.secondpatternsclientproject.features.client.main.ui.model.MainClientTab
 
 @Composable
@@ -26,15 +26,15 @@ fun MainClientTab(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.noRippleClickable(
+        modifier = modifier.circleRippleClickable(
             onClick = onClick
         ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val color = if (isSelected) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.onPrimaryContainer
         } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
+            MaterialTheme.colorScheme.primary
         }
         Icon(
             modifier = Modifier
