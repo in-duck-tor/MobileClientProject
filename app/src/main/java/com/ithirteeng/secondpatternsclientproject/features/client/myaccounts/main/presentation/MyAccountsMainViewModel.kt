@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.ma
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.data.accounts.AccountsStubs
+import com.ithirteeng.secondpatternsclientproject.data.accounts.service.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountInfo
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEffect
@@ -12,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MyAccountsMainViewModel(
-
+    private val service: AccountsNetworkService,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
 
     override fun initState(): MyAccountsMainState = MyAccountsMainState.Loading
@@ -94,6 +95,7 @@ class MyAccountsMainViewModel(
                     )
                 }
             }
+
             else -> Unit
         }
     }

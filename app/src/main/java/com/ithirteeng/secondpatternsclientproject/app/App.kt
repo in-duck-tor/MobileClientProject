@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.app
 
 import android.app.Application
+import com.ithirteeng.secondpatternsclientproject.common.network.di.networkModule
 import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainClientModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.di.myAccountsMainModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
@@ -20,6 +21,7 @@ class App : Application() {
             androidContext(this@App)
             androidLogger(Level.ERROR)
             modules(
+                networkModule,
                 splashModule,
                 registrationModule,
                 loginModule,
