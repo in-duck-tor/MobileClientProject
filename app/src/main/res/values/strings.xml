@@ -19,4 +19,6 @@
     <string name="account_balance">Balance: %d</string>
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
+
+    <string name="accounts_fetching_error">Error with fetching account</string>
 </resources>

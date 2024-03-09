@@ -7,7 +7,7 @@ class ObserveAccountsUseCase(
     private val localDatasource: AccountsLocalDatasource,
 ) {
 
-    suspend operator fun invoke(clientId: String) = provideResult {
-        localDatasource.observeAccounts(clientId)
+    suspend operator fun invoke(clientId: String, filter: String) = provideResult {
+        localDatasource.observeAccounts(clientId, filter = filter)
     }
 }

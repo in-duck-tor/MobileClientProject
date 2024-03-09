@@ -7,6 +7,9 @@ import org.koin.dsl.module
 val splashModule = module {
 
     viewModel {
-        SplashViewModel()
+        SplashViewModel(
+            getLocalTokenUseCase = get(),
+            saveTokenLocallyUseCase = get()
+        )
     }
 }

@@ -23,8 +23,8 @@ interface AccountsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAccount(account: AccountEntity)
 
-    @Query("SELECT * FROM accounts WHERE clientId = :clientId")
-    fun observeAccountsByClientId(clientId: String): Flow<List<AccountEntity>>
+    @Query("SELECT * FROM accounts WHERE clientId = :clientId AND state LIKE '%' || :filter || '%'")
+    fun observeAccountsByClientId(clientId: String, filter: String): Flow<List<AccountEntity>>
 
     @Query("DElETE FROM accounts WHERE clientId = :clientId")
     fun deleteAccountsByClientId(clientId: String)

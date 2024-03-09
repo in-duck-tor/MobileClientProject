@@ -16,7 +16,7 @@ fun AppNavHost(navController: NavHostController) {
             SplashScreen(
                 onAuthorized = {
                     navController.navigate(
-                        MainClientDestination.destinationWithArgs("bullshit")
+                        MainClientDestination.destinationWithArgs(it)
                     ) {
                         popUpTo(SplashDestination.destination) { inclusive = true }
                     }

@@ -20,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = koinViewModel(),
-    onAuthorized: () -> Unit,
+    onAuthorized: (token: String) -> Unit,
     onUnauthorized: () -> Unit,
 ) {
     LaunchedEffect(null) {
@@ -47,12 +47,12 @@ fun SplashScreen(
 
 private suspend fun observeEffects(
     viewModel: SplashViewModel,
-    onAuthorized: () -> Unit,
+    onAuthorized: (token: String) -> Unit,
     onUnauthorized: () -> Unit,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is SplashEffect.OnAuthorized -> onAuthorized()
+            is SplashEffect.OnAuthorized -> onAuthorized(effect.token)
             is SplashEffect.OnUnauthorized -> onUnauthorized()
         }
     }

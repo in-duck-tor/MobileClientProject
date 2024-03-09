@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountsLocalDatasource {
 
-    suspend fun observeAccounts(clientId: String): Flow<List<Account>>
+    suspend fun observeAccounts(clientId: String, filter: String): Flow<List<Account>>
 
     suspend fun fetchAccounts(accounts: List<Account>, clientId: String)
 

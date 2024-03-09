@@ -88,7 +88,7 @@ private fun MainContent(
             ) {
                 items(state.accounts) { account ->
                     AccountCard(
-                        accountInfo = account,
+                        account = account,
                         onCardClick = {
                             eventListener(MyAccountsMainEvent.Ui.AccountClick(account.number))
                         },

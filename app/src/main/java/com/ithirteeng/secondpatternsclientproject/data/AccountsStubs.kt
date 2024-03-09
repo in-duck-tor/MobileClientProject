@@ -1,29 +1,34 @@
 package com.ithirteeng.secondpatternsclientproject.data
 
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountInfo
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 
 object AccountsStubs {
 
-    fun createAccountsList(): List<AccountInfo> = listOf(
-        createShortAccount(id = 1, isActive = false),
-        createShortAccount(id = 2, isActive = true),
-        createShortAccount(id = 3, isActive = true),
-        createShortAccount(id = 4, isActive = true),
-        createShortAccount(id = 5, isActive = false),
-        createShortAccount(id = 6, isActive = true),
-        createShortAccount(id = 7, isActive = false),
-        createShortAccount(id = 8, isActive = false),
-        createShortAccount(id = 9, isActive = true),
-        createShortAccount(id = 10, isActive = true),
-    )
+    fun createAccountsList(): List<Account> {
+        val list = mutableListOf<Account>()
+        for (i in 0..15) {
+            val state = if (i % 3 == 0) {
+                AccountState.active
+            } else if (i % 3 == 1) {
+                AccountState.closed
+            } else {
+                AccountState.frozen
+            }
+            list.add(createAccount(i, state))
+        }
+        return list.toList()
+    }
 
-    private fun createShortAccount(
+    private fun createAccount(
         id: Int,
-        isActive: Boolean = true,
-    ) = AccountInfo(
-        name = "name $id",
-        number = "$id",
-        isActive = isActive,
-        balance = 23423542
+        state: AccountState,
+    ) = Account(
+        number = "id$id",
+        currencyCode = "RUS",
+        amount = 12345230.0,
+        state = state,
+        customComment = "Say something $id!"
+
     )
 }

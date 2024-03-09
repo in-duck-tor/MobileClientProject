@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.repository
 
+import com.ithirteeng.secondpatternsclientproject.data.AccountsStubs
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
@@ -16,7 +17,7 @@ class AccountsRemoteDatasourceImpl(
     }
 
     override suspend fun getAccountsList(): List<Account> {
-        TODO("Not yet implemented")
+        return AccountsStubs.createAccountsList()
     }
 
     override suspend fun makeTransaction(transaction: TransactionRequest) {

@@ -8,7 +8,9 @@ val myAccountsMainModule = module {
 
     viewModel {
         MyAccountsMainViewModel(
-            repository = get()
+            observeAccountsUseCase = get(),
+            getLocalTokenUseCase = get(),
+            fetchAccountsUseCase = get(),
         )
     }
 }

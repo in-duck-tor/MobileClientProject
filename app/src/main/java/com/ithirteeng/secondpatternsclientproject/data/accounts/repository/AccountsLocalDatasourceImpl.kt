@@ -17,8 +17,8 @@ class AccountsLocalDatasourceImpl(
     private val transactionsDao: TransactionsDao,
 ) : AccountsLocalDatasource {
 
-    override suspend fun observeAccounts(clientId: String): Flow<List<Account>> {
-        return accountsDao.observeAccountsByClientId(clientId).map { list ->
+    override suspend fun observeAccounts(clientId: String, filter: String): Flow<List<Account>> {
+        return accountsDao.observeAccountsByClientId(clientId, filter).map { list ->
             list.map { it.toDomain() }
         }
     }
@@ -40,8 +40,9 @@ class AccountsLocalDatasourceImpl(
     }
 
     override suspend fun observeTransactionsByAccountNumber(accountNumber: String): Flow<List<Transaction>> {
-        return transactionsDao.observeTransactionsByDepositAccountNumber(accountNumber).map { list ->
-            list.map { it.toDomain() }
-        }
+        return transactionsDao.observeTransactionsByDepositAccountNumber(accountNumber)
+            .map { list ->
+                list.map { it.toDomain() }
+            }
     }
 }

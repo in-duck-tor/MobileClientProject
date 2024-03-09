@@ -14,16 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.uikit.activeAccountColor
 import com.ithirteeng.secondpatternsclientproject.common.uikit.inactiveAccountColor
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountInfo
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 
 @Composable
 fun AccountCard(
-    accountInfo: AccountInfo,
+    account: Account,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,41 +49,30 @@ fun AccountCard(
                 Text(
                     modifier = Modifier
                         .padding(),
-                    text = accountInfo.name,
+                    text = account.number,
                     style = MaterialTheme.typography.titleMedium
                 )
-                val color = if (accountInfo.isActive) activeAccountColor else inactiveAccountColor
-                val text = if (accountInfo.isActive) {
-                    stringResource(id = R.string.active)
-                } else {
-                    stringResource(id = R.string.inactive)
-                }
+                val color =
+                    if (account.state == AccountState.active) activeAccountColor else inactiveAccountColor
                 Text(
-                    text = text,
+                    text = account.state.name,
                     color = color,
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
             Text(
-                text = stringResource(id = R.string.account_balance, accountInfo.balance),
+                text = stringResource(id = R.string.account_balance, account.amount.toInt()),
                 style = MaterialTheme.typography.bodyMedium
             )
+            account.customComment?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
 
         }
     }
 }
 
-@Composable
-@Preview
-private fun AccountCardPreview() {
-    AccountCard(
-        accountInfo = AccountInfo(
-            name = "Namme",
-            number = "234234234234234",
-            isActive = true,
-            balance = 12323452
-        ),
-        onCardClick = {}
-    )
-
-}
