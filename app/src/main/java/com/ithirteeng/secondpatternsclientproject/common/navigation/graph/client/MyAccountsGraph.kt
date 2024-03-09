@@ -86,7 +86,7 @@ private fun NavGraphBuilder.accountInfo(
             requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsAccountInfoDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
-        AccountInfoScreen(clientId, accountId)
+        AccountInfoScreen(clientId, accountId, navigateToTransactionScreen = {})
     }
 }
 

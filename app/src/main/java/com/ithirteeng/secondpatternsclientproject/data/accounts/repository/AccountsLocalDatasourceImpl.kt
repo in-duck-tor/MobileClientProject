@@ -31,6 +31,10 @@ class AccountsLocalDatasourceImpl(
         accountsDao.insertAccount(account.toEntity(clientId))
     }
 
+    override suspend fun getAccount(number: String): Account {
+        return accountsDao.getAccount(number).toDomain()
+    }
+
     override suspend fun insertTransactions(transactions: List<Transaction>) {
         transactionsDao.insertTransactions(transactions.map { it.toEntity() })
     }

@@ -17,7 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.uikit.activeAccountColor
-import com.ithirteeng.secondpatternsclientproject.common.uikit.inactiveAccountColor
+import com.ithirteeng.secondpatternsclientproject.common.uikit.closedAccountColor
+import com.ithirteeng.secondpatternsclientproject.common.uikit.frozenAccountColor
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 
@@ -52,8 +53,11 @@ fun AccountCard(
                     text = account.number,
                     style = MaterialTheme.typography.titleMedium
                 )
-                val color =
-                    if (account.state == AccountState.active) activeAccountColor else inactiveAccountColor
+                val color = when (account.state) {
+                    AccountState.frozen -> frozenAccountColor
+                    AccountState.closed -> closedAccountColor
+                    AccountState.active -> activeAccountColor
+                }
                 Text(
                     text = account.state.name,
                     color = color,

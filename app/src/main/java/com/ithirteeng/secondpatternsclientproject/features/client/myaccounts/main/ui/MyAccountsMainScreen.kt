@@ -127,7 +127,7 @@ suspend fun observeEffects(
 
             is MyAccountsMainEffect.ShowError -> Toast.makeText(
                 context,
-                context.getString(effect.stringResource),
+                context.getString(effect.stringResource, effect.message),
                 Toast.LENGTH_SHORT
             ).show()
         }

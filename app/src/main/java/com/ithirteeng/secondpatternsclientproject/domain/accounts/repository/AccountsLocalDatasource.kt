@@ -12,6 +12,8 @@ interface AccountsLocalDatasource {
 
     suspend fun insertAccount(account: Account, clientId: String)
 
+    suspend fun getAccount(number: String): Account
+
     //todo remake on fetch
     suspend fun insertTransactions(transactions: List<Transaction>)
 

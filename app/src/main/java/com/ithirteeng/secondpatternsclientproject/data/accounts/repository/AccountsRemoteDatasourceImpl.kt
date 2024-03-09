@@ -1,7 +1,8 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.repository
 
-import com.ithirteeng.secondpatternsclientproject.data.AccountsStubs
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
+import com.ithirteeng.secondpatternsclientproject.data.stubs.AccountsStubs
+import com.ithirteeng.secondpatternsclientproject.data.stubs.TransactionStubs
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
@@ -20,12 +21,24 @@ class AccountsRemoteDatasourceImpl(
         return AccountsStubs.createAccountsList()
     }
 
+    override suspend fun freezeAccount() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun closeAccount() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun unfreezeAccount() {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun makeTransaction(transaction: TransactionRequest) {
         TODO("Not yet implemented")
     }
 
     override suspend fun getAccountTransactions(accountNumber: String): List<Transaction> {
-        TODO("Not yet implemented")
+        return TransactionStubs.createTransactions(accountNumber)
     }
 
 }

@@ -57,4 +57,5 @@ val themeDarkInverseSurface = Color(0xFFE6E1E5)
 val themeDarkInversePrimary = Color(0xFF355ca8)
 
 val activeAccountColor = Color(0xFF6AA341)
-val inactiveAccountColor = Color(0xFF5A5A5A)
+val closedAccountColor = Color(0xFFA34141)
+val frozenAccountColor = Color(0xFF25D5B7)

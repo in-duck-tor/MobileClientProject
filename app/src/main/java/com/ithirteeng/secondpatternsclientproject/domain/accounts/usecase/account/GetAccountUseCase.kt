@@ -1,13 +1,13 @@
-package com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase
+package com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account
 
 import com.ithirteeng.secondpatternsclientproject.common.domain.provideResult
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsLocalDatasource
 
-class ObserveTransactionsUseCase(
+class GetAccountUseCase(
     private val localDatasource: AccountsLocalDatasource,
 ) {
 
     suspend operator fun invoke(accountNumber: String) = provideResult {
-        localDatasource.observeTransactionsByAccountNumber(accountNumber)
+        localDatasource.getAccount(accountNumber)
     }
 }

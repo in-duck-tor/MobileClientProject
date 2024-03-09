@@ -28,4 +28,7 @@ interface AccountsDao {
 
     @Query("DElETE FROM accounts WHERE clientId = :clientId")
     fun deleteAccountsByClientId(clientId: String)
+
+    @Query("SELECT * FROM accounts WHERE number = :number")
+    fun getAccount(number: String): AccountEntity
 }

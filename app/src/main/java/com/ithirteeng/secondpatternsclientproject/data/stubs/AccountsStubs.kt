@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.data
+package com.ithirteeng.secondpatternsclientproject.data.stubs
 
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
@@ -7,7 +7,7 @@ object AccountsStubs {
 
     fun createAccountsList(): List<Account> {
         val list = mutableListOf<Account>()
-        for (i in 0..15) {
+        for (i in 0..14) {
             val state = if (i % 3 == 0) {
                 AccountState.active
             } else if (i % 3 == 1) {

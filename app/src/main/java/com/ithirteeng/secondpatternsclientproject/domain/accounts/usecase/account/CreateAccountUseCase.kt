@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase
+package com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account
 
 import com.ithirteeng.secondpatternsclientproject.common.domain.provideResult
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount

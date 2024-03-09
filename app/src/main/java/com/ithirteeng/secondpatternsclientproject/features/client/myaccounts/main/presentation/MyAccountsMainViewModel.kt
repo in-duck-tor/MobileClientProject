@@ -5,14 +5,15 @@ import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.FetchAccountsUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.ObserveAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MyAccountsMainViewModel(
@@ -57,27 +58,36 @@ class MyAccountsMainViewModel(
 
     private suspend fun loadData() {
         fetchAccountsUseCase(token)
-        observeAccounts()
+            .onSuccess {
+                observeAccounts()
+            }
+            .onFailure {
+                addEffect(MyAccountsMainEffect.ShowError(R.string.fetching_error, it.message.toString()))
+            }
+
     }
 
     private suspend fun observeAccounts() {
-        observeAccountsUseCase.invoke(token, "")
+
+        observeAccountsUseCase.invoke(token)
             .onSuccess { flow ->
-                flow.collect { accounts ->
-                    processEvent(
-                        MyAccountsMainEvent.DataLoaded(
-                            clientId = token,
-                            accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
-                                accounts.filter { it.state == filter }
-                            } ?: accounts
+                flow.collectLatest { accounts ->
+                    if (accounts.isNotEmpty()) {
+                        processEvent(
+                            MyAccountsMainEvent.DataLoaded(
+                                clientId = token,
+                                accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
+                                    accounts.filter { it.state == filter }
+                                } ?: accounts
+                            )
                         )
-                    )
-                    this.accounts = accounts
+                        this.accounts = accounts
+                    }
                 }
 
             }
             .onFailure {
-                addEffect(MyAccountsMainEffect.ShowError(R.string.accounts_fetching_error))
+                addEffect(MyAccountsMainEffect.ShowError(R.string.fetching_error, it.message.toString()))
             }
     }
 

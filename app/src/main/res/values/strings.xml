@@ -20,5 +20,7 @@
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
 
-    <string name="accounts_fetching_error">Error with fetching account</string>
+    <string name="fetching_error">Error while fetching data: %s</string>
+
+    <string name="error_with_account_data_uploading">Error with account data updating</string>
 </resources>

@@ -11,8 +11,15 @@ interface AccountsRemoteDatasource {
 
     suspend fun getAccountsList(): List<Account>
 
+    suspend fun freezeAccount()
+
+    suspend fun closeAccount()
+
+    suspend fun unfreezeAccount()
+
 
     suspend fun makeTransaction(transaction: TransactionRequest)
 
     suspend fun getAccountTransactions(accountNumber: String): List<Transaction>
+
 }
