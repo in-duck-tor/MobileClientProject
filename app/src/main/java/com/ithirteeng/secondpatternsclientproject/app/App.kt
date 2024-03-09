@@ -11,6 +11,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainCl
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.di.accountInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.di.createAccountModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.di.myAccountsMainModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.di.transactionModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.di.splashModule
@@ -44,6 +45,7 @@ class App : Application() {
                 myAccountsMainModule,
                 accountInfoModule,
                 createAccountModule,
+                transactionModule,
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
@@ -62,7 +63,13 @@ class MyAccountsMainViewModel(
                 observeAccounts()
             }
             .onFailure {
-                addEffect(MyAccountsMainEffect.ShowError(R.string.fetching_error, it.message.toString()))
+                Log.e(TAG, it.message.toString())
+                addEffect(
+                    MyAccountsMainEffect.ShowError(
+                        R.string.fetching_error,
+                        it.message.toString()
+                    )
+                )
             }
 
     }
@@ -87,7 +94,13 @@ class MyAccountsMainViewModel(
 
             }
             .onFailure {
-                addEffect(MyAccountsMainEffect.ShowError(R.string.fetching_error, it.message.toString()))
+                Log.e(TAG, it.message.toString())
+                addEffect(
+                    MyAccountsMainEffect.ShowError(
+                        R.string.fetching_error,
+                        it.message.toString()
+                    )
+                )
             }
     }
 
@@ -136,5 +149,10 @@ class MyAccountsMainViewModel(
 
             else -> Unit
         }
+    }
+
+    private companion object {
+
+        const val TAG = "MyAccountsMainViewModel"
     }
 }

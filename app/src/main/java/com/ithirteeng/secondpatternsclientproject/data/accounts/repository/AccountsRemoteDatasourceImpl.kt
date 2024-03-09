@@ -23,19 +23,19 @@ class AccountsRemoteDatasourceImpl(
     }
 
     override suspend fun freezeAccount() {
-        TODO("Not yet implemented")
+        throw NoConnectivityException()
     }
 
     override suspend fun closeAccount() {
-        TODO("Not yet implemented")
+        throw NoConnectivityException()
     }
 
     override suspend fun unfreezeAccount() {
-        TODO("Not yet implemented")
+        throw NoConnectivityException()
     }
 
     override suspend fun makeTransaction(transaction: TransactionRequest) {
-        TODO("Not yet implemented")
+        throw NoConnectivityException()
     }
 
     override suspend fun getAccountTransactions(accountNumber: String): List<Transaction> {

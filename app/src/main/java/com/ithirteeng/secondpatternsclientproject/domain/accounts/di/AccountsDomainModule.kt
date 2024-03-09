@@ -10,6 +10,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.MakeTransactionUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.ObserveTransactionsUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -28,9 +29,11 @@ val accountsDomainModule = module {
 
     factoryOf(::FetchAccountsUseCase)
     factoryOf(::ObserveAccountsUseCase)
-    factoryOf(::ObserveTransactionsUseCase)
-    factoryOf(::FetchTransactionsUseCase)
     factoryOf(::CreateAccountUseCase)
     factoryOf(::GetAccountUseCase)
     factoryOf(::ChangeAccountStateUseCase)
+
+    factoryOf(::FetchTransactionsUseCase)
+    factoryOf(::ObserveTransactionsUseCase)
+    factoryOf(::MakeTransactionUseCase)
 }

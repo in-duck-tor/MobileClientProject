@@ -48,6 +48,7 @@ class AccountInfoViewModel(
                     Log.d("TESTS", "SHIT")
                 }
                 .onFailure {
+                    Log.e(TAG, it.message.toString())
                     addEffect(AccountInfoEffect.ShowError(R.string.fetching_error))
                 }
             getAccountUseCase(event.accountNumber)
@@ -55,6 +56,7 @@ class AccountInfoViewModel(
                     observeTransactions(account = account)
                 }
                 .onFailure {
+                    Log.e(TAG, it.message.toString())
                     addEffect(AccountInfoEffect.ShowError(R.string.fetching_error))
                 }
         }
@@ -126,6 +128,7 @@ class AccountInfoViewModel(
                         ),
                         token = token
                     ).onFailure {
+                        Log.e(TAG, it.message.toString())
                         addEffect(
                             AccountInfoEffect.ShowError(
                                 R.string.error_with_account_data_uploading
@@ -147,7 +150,11 @@ class AccountInfoViewModel(
 
             else -> Unit
         }
+    }
 
+    private companion object {
+
+        const val TAG = "AccountInfoViewModel"
     }
 
 }

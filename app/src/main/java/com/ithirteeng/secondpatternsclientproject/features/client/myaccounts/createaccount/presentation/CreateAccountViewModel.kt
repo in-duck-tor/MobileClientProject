@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
@@ -9,6 +10,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTo
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.TransactionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -59,6 +61,7 @@ class CreateAccountViewModel(
                         addEffect(CreateAccountEffect.CloseSelf)
                     }
                     .onFailure {
+                        Log.e(TAG, it.message.toString())
                         addEffect(
                             CreateAccountEffect.ShowError(
                                 R.string.error_with_creating_account,
@@ -70,6 +73,10 @@ class CreateAccountViewModel(
 
             else -> Unit
         }
+    }
 
+    private companion object {
+
+        const val TAG = "CreateAccountViewModel"
     }
 }

@@ -14,7 +14,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.mai
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.MyAccountsMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.navigation.MyAccountsTransactionDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.AccountsTransferScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.AccountsTransactionScreen
 
 fun NavGraphBuilder.myAccountsGraph(
     navController: NavHostController,
@@ -27,7 +27,7 @@ fun NavGraphBuilder.myAccountsGraph(
         main(navController, clientId)
         accountInfo(navController, clientId)
         createAccount(navController, clientId)
-        transfer(navController, clientId)
+        transaction(navController, clientId)
     }
 }
 
@@ -91,11 +91,22 @@ private fun NavGraphBuilder.accountInfo(
             requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsAccountInfoDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
-        AccountInfoScreen(clientId, accountId, navigateToTransactionScreen = {})
+        AccountInfoScreen(
+            clientId = clientId,
+            accountNumber = accountId,
+            navigateToTransactionScreen = {
+                navController.navigate(
+                    MyAccountsTransactionDestination.destinationWithArgs(
+                        clientId,
+                        accountId,
+                    )
+                )
+            }
+        )
     }
 }
 
-private fun NavGraphBuilder.transfer(
+private fun NavGraphBuilder.transaction(
     navController: NavHostController,
     clientId: String,
 ) {
@@ -110,6 +121,11 @@ private fun NavGraphBuilder.transfer(
             requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
-        AccountsTransferScreen(clientId, accountId)
+        AccountsTransactionScreen(
+            accountId = accountId,
+            navigateUp = {
+                navController.navigateUp()
+            }
+        )
     }
 }
