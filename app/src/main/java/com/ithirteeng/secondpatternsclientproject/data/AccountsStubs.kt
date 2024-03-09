@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.data.accounts
+package com.ithirteeng.secondpatternsclientproject.data
 
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountInfo
 
