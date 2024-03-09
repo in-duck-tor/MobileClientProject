@@ -13,8 +13,8 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.cre
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsMainDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.MyAccountsMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transfer.navigation.MyAccountsTransferDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transfer.ui.AccountsTransferScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.navigation.MyAccountsTransactionDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.AccountsTransferScreen
 
 fun NavGraphBuilder.myAccountsGraph(
     navController: NavHostController,
@@ -67,7 +67,12 @@ private fun NavGraphBuilder.createAccount(
             navArgument(MyAccountsCreateAccountDestination.CLIENT_ID) { type = NavType.StringType }
         )
     ) {
-        CreateAccountScreen(clientId)
+        CreateAccountScreen(
+            clientId = clientId,
+            navigateUp = {
+                navController.navigateUp()
+            }
+        )
     }
 }
 
@@ -95,14 +100,14 @@ private fun NavGraphBuilder.transfer(
     clientId: String,
 ) {
     composable(
-        route = MyAccountsTransferDestination.route,
+        route = MyAccountsTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsTransferDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsTransferDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsTransactionDestination.CLIENT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransferDestination.ACCOUNT_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
         AccountsTransferScreen(clientId, accountId)

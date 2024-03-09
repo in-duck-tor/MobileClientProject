@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transfer.ui
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text

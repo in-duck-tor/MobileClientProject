@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.repository
 
+import com.ithirteeng.secondpatternsclientproject.common.network.NoConnectivityException
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.data.stubs.AccountsStubs
 import com.ithirteeng.secondpatternsclientproject.data.stubs.TransactionStubs
@@ -14,7 +15,7 @@ class AccountsRemoteDatasourceImpl(
 ) : AccountsRemoteDatasource {
 
     override suspend fun createAccount(data: CreateAccount): Account {
-        TODO("Not yet implemented")
+        throw NoConnectivityException()
     }
 
     override suspend fun getAccountsList(): List<Account> {

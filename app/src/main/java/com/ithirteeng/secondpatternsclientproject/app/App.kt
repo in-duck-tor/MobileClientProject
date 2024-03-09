@@ -9,6 +9,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDom
 import com.ithirteeng.secondpatternsclientproject.domain.user.di.userDomainModule
 import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainClientModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.di.accountInfoModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.di.createAccountModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.di.myAccountsMainModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
@@ -42,6 +43,7 @@ class App : Application() {
                 mainClientModule,
                 myAccountsMainModule,
                 accountInfoModule,
+                createAccountModule,
             )
         }
     }
