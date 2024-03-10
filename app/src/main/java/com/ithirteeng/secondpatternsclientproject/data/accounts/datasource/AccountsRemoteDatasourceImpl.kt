@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.data.accounts.repository
+package com.ithirteeng.secondpatternsclientproject.data.accounts.datasource
 
 import com.ithirteeng.secondpatternsclientproject.common.network.NoConnectivityException
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
@@ -8,7 +8,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsRemoteDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 
 class AccountsRemoteDatasourceImpl(
     private val service: AccountsNetworkService,
@@ -23,23 +23,25 @@ class AccountsRemoteDatasourceImpl(
     }
 
     override suspend fun freezeAccount() {
-        throw NoConnectivityException()
+        //throw NoConnectivityException()
     }
 
     override suspend fun closeAccount() {
-        throw NoConnectivityException()
+        //throw NoConnectivityException()
     }
 
     override suspend fun unfreezeAccount() {
-        throw NoConnectivityException()
+        //throw NoConnectivityException()
     }
 
     override suspend fun makeTransaction(transaction: TransactionRequest) {
-        throw NoConnectivityException()
+        //throw NoConnectivityException()
     }
 
     override suspend fun getAccountTransactions(accountNumber: String): List<Transaction> {
         return TransactionStubs.createTransactions(accountNumber)
     }
+
+
 
 }

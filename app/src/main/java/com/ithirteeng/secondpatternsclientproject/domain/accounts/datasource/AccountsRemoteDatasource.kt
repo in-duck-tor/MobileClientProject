@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.domain.accounts.repository
+package com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource
 
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
@@ -21,5 +21,4 @@ interface AccountsRemoteDatasource {
     suspend fun makeTransaction(transaction: TransactionRequest)
 
     suspend fun getAccountTransactions(accountNumber: String): List<Transaction>
-
 }

@@ -25,4 +25,6 @@
     <string name="error_with_account_data_uploading">Error with account data updating</string>
 
     <string name="error_with_creating_account">Error with creating account</string>
+
+    <string name="cant_make_transaction_on_state">account must be active!</string>
 </resources>

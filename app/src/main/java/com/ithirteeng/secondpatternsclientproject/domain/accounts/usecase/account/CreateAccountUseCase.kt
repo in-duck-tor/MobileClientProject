@@ -2,8 +2,8 @@ package com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accou
 
 import com.ithirteeng.secondpatternsclientproject.common.domain.provideResult
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsLocalDatasource
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsRemoteDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 
 class CreateAccountUseCase(
     private val remoteDatasource: AccountsRemoteDatasource,

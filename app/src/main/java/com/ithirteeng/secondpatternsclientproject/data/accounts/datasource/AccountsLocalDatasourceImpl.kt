@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.data.accounts.repository
+package com.ithirteeng.secondpatternsclientproject.data.accounts.datasource
 
 import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.account.toDomain
 import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.account.toEntity
@@ -8,7 +8,7 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.Accounts
 import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.TransactionsDao
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsLocalDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

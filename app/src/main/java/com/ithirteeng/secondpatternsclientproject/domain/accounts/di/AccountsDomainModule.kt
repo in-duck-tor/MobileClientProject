@@ -1,15 +1,21 @@
 package com.ithirteeng.secondpatternsclientproject.domain.accounts.di
 
-import com.ithirteeng.secondpatternsclientproject.data.accounts.repository.AccountsLocalDatasourceImpl
-import com.ithirteeng.secondpatternsclientproject.data.accounts.repository.AccountsRemoteDatasourceImpl
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsLocalDatasource
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.repository.AccountsRemoteDatasource
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.AccountsLocalDatasourceImpl
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.AccountsRemoteDatasourceImpl
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.AccountsStubDatasourceImpl
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsStubDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.CreateAccountStubUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.MakeTransactionBetweenAccountsStubUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.ReplenishAccountStubUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.WithdrawFromAccountStubUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.MakeTransactionUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.ObserveTransactionsUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -27,6 +33,13 @@ val accountsDomainModule = module {
         )
     }
 
+    single<AccountsStubDatasource> {
+        AccountsStubDatasourceImpl(
+            accountsDao = get(),
+            transactionsDao = get()
+        )
+    }
+
     factoryOf(::FetchAccountsUseCase)
     factoryOf(::ObserveAccountsUseCase)
     factoryOf(::CreateAccountUseCase)
@@ -36,4 +49,9 @@ val accountsDomainModule = module {
     factoryOf(::FetchTransactionsUseCase)
     factoryOf(::ObserveTransactionsUseCase)
     factoryOf(::MakeTransactionUseCase)
+
+    factoryOf(::CreateAccountStubUseCase)
+    factoryOf(::MakeTransactionBetweenAccountsStubUseCase)
+    factoryOf(::ReplenishAccountStubUseCase)
+    factoryOf(::WithdrawFromAccountStubUseCase)
 }

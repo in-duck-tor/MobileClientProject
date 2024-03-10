@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.domain.accounts.repository
+package com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource
 
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
