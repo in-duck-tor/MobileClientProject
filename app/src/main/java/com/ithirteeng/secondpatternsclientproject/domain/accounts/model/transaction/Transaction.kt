@@ -6,6 +6,6 @@ data class Transaction(
     val status: TransactionStatus,
     val startedAt: String,
     val finishedAt: String?,
-    val depositOn: TransactionTarget,
-    val withdrawFrom: TransactionTarget,
+    val depositOn: TransactionTarget?,
+    val withdrawFrom: TransactionTarget?,
 )

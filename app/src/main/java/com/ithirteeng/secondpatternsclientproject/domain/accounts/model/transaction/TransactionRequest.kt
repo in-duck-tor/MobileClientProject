@@ -2,6 +2,6 @@ package com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transac
 
 data class TransactionRequest(
     val amount: Double,
-    val depositOn: Target,
-    val withdrawFrom: Target,
+    val depositOn: Target?,
+    val withdrawFrom: Target?,
 )

@@ -22,8 +22,8 @@ fun TransactionInfoComponent(
         transaction.finishedAt?.let {
             Text(text = "FINISHED AT: $it")
         }
-        Text(text = "ON: ${transaction.depositOn.accountNumber}")
-        Text(text = "FROM: ${transaction.withdrawFrom.accountNumber}")
+        Text(text = "ON: ${transaction.depositOn?.accountNumber}")
+        Text(text = "FROM: ${transaction.withdrawFrom?.accountNumber}")
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,

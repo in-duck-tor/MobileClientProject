@@ -28,15 +28,15 @@ fun NavGraphBuilder.myAccountsGraph(
         startDestination = MyAccountsMainDestination.destinationWithArgs(clientId),
         route = MyAccountsDestination.route
     ) {
-        mainStub(navController, clientId)
-        accountInfoStub(navController, clientId)
-        createAccountStub(navController, clientId)
-        transactionStub(navController, clientId)
+//        mainStub(navController, clientId)
+//        accountInfoStub(navController, clientId)
+//        createAccountStub(navController, clientId)
+//        transactionStub(navController, clientId)
 
-//        main(navController, clientId)
-//        accountInfo(navController, clientId)
-//        createAccount(navController, clientId)
-//        transaction(navController, clientId)
+        main(navController, clientId)
+        accountInfo(navController, clientId)
+        createAccount(navController, clientId)
+        transaction(navController, clientId)
 
 
     }

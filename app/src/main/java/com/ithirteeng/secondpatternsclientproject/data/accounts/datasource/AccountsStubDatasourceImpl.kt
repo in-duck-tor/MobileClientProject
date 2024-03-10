@@ -70,14 +70,14 @@ class AccountsStubDatasourceImpl(
     }
 
     override suspend fun makeTransactionStub(transaction: TransactionRequest, token: String) {
-        val depositAccount = accountsDao.getAccount(transaction.depositOn.accountNumber)
+        val depositAccount = accountsDao.getAccount(transaction.depositOn!!.accountNumber)
         accountsDao.insertAccount(
             depositAccount.copy(
                 amount = depositAccount.amount + transaction.amount
             )
         )
 
-        val withdrawAccount = accountsDao.getAccount(transaction.withdrawFrom.accountNumber)
+        val withdrawAccount = accountsDao.getAccount(transaction.withdrawFrom!!.accountNumber)
         accountsDao.insertAccount(
             withdrawAccount.copy(
                 amount = withdrawAccount.amount - transaction.amount
@@ -96,16 +96,16 @@ class AccountsStubDatasourceImpl(
             finishedAt = LocalDateTime.now().toString(),
             depositOn = TransactionTargetEntity(
                 amount = transaction.amount,
-                accountNumber = transaction.depositOn.accountNumber,
+                accountNumber = transaction.depositOn!!.accountNumber,
                 currencyCode = "RUB",
-                bankCode = "BIK",
+                bankCode = "00000000",
                 bankName = null
             ),
             withdrawFrom = TransactionTargetEntity(
                 amount = transaction.amount,
-                accountNumber = transaction.withdrawFrom.accountNumber,
+                accountNumber = transaction.withdrawFrom!!.accountNumber,
                 currencyCode = "RUB",
-                bankCode = "BIK",
+                bankCode = "00000000",
                 bankName = null
             )
         )
@@ -126,14 +126,14 @@ class AccountsStubDatasourceImpl(
                 amount = amount,
                 accountNumber = accountNumber,
                 currencyCode = "RUB",
-                bankCode = "BIK",
+                bankCode = "00000000",
                 bankName = null
             ),
             withdrawFrom = TransactionTargetEntity(
                 amount = amount,
                 accountNumber = accountNumber,
                 currencyCode = "RUB",
-                bankCode = "BIK",
+                bankCode = "00000000",
                 bankName = null
             )
         )

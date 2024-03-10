@@ -114,7 +114,7 @@ class AccountInfoStubViewModel(
             when (val currentState = state.value) {
                 is AccountInfoState.Content -> {
                     changeAccountStateUseCase(
-                        action = AccountAction.CLOSE,
+                        action = action,
                         account = currentState.account.copy(
                             state = accountState
                         ),
@@ -138,7 +138,8 @@ class AccountInfoStubViewModel(
                             Log.e(TAG, it.message.toString())
                             addEffect(
                                 AccountInfoEffect.ShowError(
-                                    R.string.error_with_account_data_uploading
+                                    R.string.error_with_account_data_uploading,
+                                    it.message.toString()
                                 )
                             )
                         }

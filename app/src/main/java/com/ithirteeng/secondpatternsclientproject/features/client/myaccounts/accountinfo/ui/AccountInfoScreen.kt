@@ -114,7 +114,7 @@ private suspend fun observeEffects(
             is AccountInfoEffect.NavigateToTransactionScreen -> navigateToTransactionScreen()
             is AccountInfoEffect.ShowError -> Toast.makeText(
                 context,
-                context.getString(effect.stringResource),
+                context.getString(effect.stringResource) + ": " + effect.message,
                 Toast.LENGTH_SHORT
             ).show()
         }

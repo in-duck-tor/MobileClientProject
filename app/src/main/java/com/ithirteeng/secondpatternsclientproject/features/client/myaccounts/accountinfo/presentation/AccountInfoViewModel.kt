@@ -1,6 +1,8 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresExtension
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
@@ -110,6 +112,7 @@ class AccountInfoViewModel(
         return actions.toList()
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     private fun handleChangeAccountStateButtonClick(
         action: AccountAction,
     ) {
@@ -122,7 +125,7 @@ class AccountInfoViewModel(
             when (val currentState = state.value) {
                 is AccountInfoState.Content -> {
                     changeAccountStateUseCase(
-                        action = AccountAction.CLOSE,
+                        action = action,
                         account = currentState.account.copy(
                             state = accountState
                         ),
@@ -146,7 +149,8 @@ class AccountInfoViewModel(
                             Log.e(TAG, it.message.toString())
                             addEffect(
                                 AccountInfoEffect.ShowError(
-                                    R.string.error_with_account_data_uploading
+                                    R.string.error_with_account_data_uploading,
+                                    it.message.toString()
                                 )
                             )
                         }

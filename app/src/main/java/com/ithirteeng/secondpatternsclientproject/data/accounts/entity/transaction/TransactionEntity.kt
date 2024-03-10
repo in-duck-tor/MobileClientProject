@@ -18,9 +18,9 @@ data class TransactionEntity(
     val startedAt: String,
     val finishedAt: String?,
     @Embedded(prefix = "deposit_on_")
-    val depositOn: TransactionTargetEntity,
+    val depositOn: TransactionTargetEntity?,
     @Embedded(prefix = "withdraw_from_")
-    val withdrawFrom: TransactionTargetEntity,
+    val withdrawFrom: TransactionTargetEntity?,
 )
 
 fun TransactionEntity.toDomain(): Transaction = Transaction(
@@ -29,8 +29,8 @@ fun TransactionEntity.toDomain(): Transaction = Transaction(
     status = status,
     startedAt = startedAt,
     finishedAt = finishedAt,
-    depositOn = depositOn.toDomain(),
-    withdrawFrom = withdrawFrom.toDomain()
+    depositOn = depositOn?.toDomain(),
+    withdrawFrom = withdrawFrom?.toDomain()
 )
 
 fun Transaction.toEntity(): TransactionEntity = TransactionEntity(
@@ -39,6 +39,6 @@ fun Transaction.toEntity(): TransactionEntity = TransactionEntity(
     status = status,
     startedAt = startedAt,
     finishedAt = finishedAt,
-    depositOn = depositOn.toEntity(),
-    withdrawFrom = withdrawFrom.toEntity()
+    depositOn = depositOn?.toEntity(),
+    withdrawFrom = withdrawFrom?.toEntity()
 )

@@ -47,7 +47,7 @@ fun TransactionsDropdownMenu(
             state.accounts.forEach { account ->
                 DropdownMenuItem(
                     text = {
-                        Text(text = "NUMBER: ${account.number} \n AMOUNT: ${account.amount}")
+                        Text(text = "NUMBER: ${account.number} \n AMOUNT: ${account.amount} \n STATE: ${account.state.name}")
 
                     },
                     onClick = {

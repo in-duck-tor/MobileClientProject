@@ -11,5 +11,6 @@ sealed interface AccountInfoEffect : BaseEffect {
 
     data class ShowError(
         @StringRes val stringResource: Int,
+        val message: String = ""
     ) : AccountInfoEffect
 }

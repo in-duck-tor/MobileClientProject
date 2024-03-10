@@ -2,5 +2,5 @@ package com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transac
 
 data class Target(
     val accountNumber: String,
-    val bankCode: String,
+    val bankCode: String = "000000000",
 )

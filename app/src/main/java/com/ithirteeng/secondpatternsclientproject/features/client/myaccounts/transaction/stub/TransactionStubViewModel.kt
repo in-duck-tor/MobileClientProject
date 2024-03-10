@@ -11,7 +11,6 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.MakeTransactionBetweenAccountsStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.ReplenishAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.WithdrawFromAccountStubUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.MakeTransactionUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
@@ -238,11 +237,9 @@ class TransactionStubViewModel(
             amount = state.amount,
             withdrawFrom = Target(
                 accountNumber = state.defaultAccount.number,
-                bankCode = "BIK"
             ),
             depositOn = Target(
                 accountNumber = state.chosenAccount.number,
-                bankCode = "BIK"
             ),
         )
     }

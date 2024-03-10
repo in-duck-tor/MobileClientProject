@@ -12,7 +12,7 @@ val accountsDataModule = module {
 
     single {
         createRetrofitService<AccountsNetworkService>(
-            retrofit = get(named(ConnectionType.UNAUTHORIZED.name))
+            retrofit = get(named(ConnectionType.AUTHORIZED.name))
         )
     }
 

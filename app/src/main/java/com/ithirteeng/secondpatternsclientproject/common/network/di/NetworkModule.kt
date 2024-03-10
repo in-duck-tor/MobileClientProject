@@ -1,6 +1,8 @@
 package com.ithirteeng.secondpatternsclientproject.common.network.di
 
 import com.ithirteeng.secondpatternsclientproject.common.network.ConnectionType
+import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.provideAuthorizedOkHttpClient
 import com.ithirteeng.secondpatternsclientproject.common.network.provideLoggingInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.provideNetworkConnectionInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.provideOkHttpClient
@@ -12,6 +14,8 @@ val networkModule = module {
 
     factory { provideLoggingInterceptor() }
     factory { provideNetworkConnectionInterceptor(context = get()) }
+
+    factory { AuthInterceptor(getLocalTokenUseCase = get()) }
 
     single(named(ConnectionType.UNAUTHORIZED.name)) {
         provideOkHttpClient(
@@ -26,4 +30,20 @@ val networkModule = module {
             url = "http://89.19.214.8:8000/api/v1/"
         )
     }
+
+    single(named(ConnectionType.AUTHORIZED.name)) {
+        provideAuthorizedOkHttpClient(
+            loggingInterceptor = get(),
+            networkConnectionInterceptor = get(),
+            authInterceptor = get()
+        )
+    }
+
+    single(named(ConnectionType.AUTHORIZED.name)) {
+        provideRetrofit(
+            okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
+            url = "http://89.19.214.8:8000/api/v1/"
+        )
+    }
+
 }

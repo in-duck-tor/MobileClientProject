@@ -1,47 +1,60 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.datasource
 
-import com.ithirteeng.secondpatternsclientproject.common.network.NoConnectivityException
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
-import com.ithirteeng.secondpatternsclientproject.data.stubs.AccountsStubs
-import com.ithirteeng.secondpatternsclientproject.data.stubs.TransactionStubs
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 
 class AccountsRemoteDatasourceImpl(
     private val service: AccountsNetworkService,
 ) : AccountsRemoteDatasource {
 
     override suspend fun createAccount(data: CreateAccount): Account {
-        throw NoConnectivityException()
+        val number = service.createAccount(data)
+        val accounts = service.getAccounts()
+        return accounts.find { it.number == number.accountNumber }!!
     }
 
     override suspend fun getAccountsList(): List<Account> {
-        return AccountsStubs.createAccountsList()
+        return service.getAccounts()
     }
 
-    override suspend fun freezeAccount() {
-        //throw NoConnectivityException()
+    override suspend fun freezeAccount(accountNumber: String) {
+        val response = service.freezeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
     }
 
-    override suspend fun closeAccount() {
-        //throw NoConnectivityException()
+    override suspend fun closeAccount(accountNumber: String) {
+        val response = service.closeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
     }
 
-    override suspend fun unfreezeAccount() {
-        //throw NoConnectivityException()
+    override suspend fun unfreezeAccount(accountNumber: String) {
+        val response = service.unfreezeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
     }
 
     override suspend fun makeTransaction(transaction: TransactionRequest) {
-        //throw NoConnectivityException()
+        service.makeAccountTransaction(transaction)
     }
 
     override suspend fun getAccountTransactions(accountNumber: String): List<Transaction> {
-        return TransactionStubs.createTransactions(accountNumber)
+        return service.getAccountTransactions(accountNumber)
     }
-
 
 
 }

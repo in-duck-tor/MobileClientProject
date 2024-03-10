@@ -35,8 +35,8 @@ class TransactionViewModel(
             is TransactionEvent.DataLoaded -> handleDataLoaded(event)
             is TransactionEvent.Ui.AmountValueChange -> handleAmountChange(event)
             is TransactionEvent.Ui.WithdrawAccountChoice -> handleWithdrawAccountChoice(event)
-            is TransactionEvent.Ui.DepositButtonClick -> handleDepositButtonClick()
-            is TransactionEvent.Ui.WithdrawButtonClick -> handleWithdrawButtonClick()
+            is TransactionEvent.Ui.DepositButtonClick -> handleDepositButtonClick(event)
+            is TransactionEvent.Ui.WithdrawButtonClick -> handleWithdrawButtonClick(event)
         }
     }
 
@@ -103,15 +103,18 @@ class TransactionViewModel(
     private fun handleAmountChange(event: TransactionEvent.Ui.AmountValueChange) {
         when (val currentState = state.value) {
             is TransactionState.Content -> {
-                if (event.amountText.text.toDouble() > currentState.chosenAccount.amount) {
-                    addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
-                } else {
-                    updateState {
-                        currentState.copy(
-                            amount = event.amountText.text.toDouble(),
-                            amountText = event.amountText
-                        )
-                    }
+
+                val amount = try {
+                    event.amountText.text.toDouble()
+                } catch (e: Exception) {
+                    0.0
+                }
+
+                updateState {
+                    currentState.copy(
+                        amount = amount,
+                        amountText = event.amountText
+                    )
                 }
             }
 
@@ -132,7 +135,7 @@ class TransactionViewModel(
         }
     }
 
-    private fun handleDepositButtonClick() {
+    private fun handleDepositButtonClick(event: TransactionEvent.Ui.DepositButtonClick) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
                 is TransactionState.Content -> {
@@ -157,25 +160,23 @@ class TransactionViewModel(
         }
     }
 
-    private fun setupDepositData(state: TransactionState.Content): TransactionRequest {
+    private fun setupDepositData(
+        state: TransactionState.Content,
+    ): TransactionRequest {
         return TransactionRequest(
             amount = state.amount,
             depositOn = Target(
                 accountNumber = state.defaultAccount.number,
-                bankCode = "BIK"
             ),
-            withdrawFrom = Target(
-                accountNumber = state.chosenAccount.number,
-                bankCode = "BIK"
-            ),
+            withdrawFrom = null,
         )
     }
 
-    private fun handleWithdrawButtonClick() {
+    private fun handleWithdrawButtonClick(event: TransactionEvent.Ui.WithdrawButtonClick) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
                 is TransactionState.Content -> {
-                    val data = setupWithdrawData(currentState)
+                    val data = setupWithdrawData(currentState, event.isSelf)
                     if (data.amount > currentState.defaultAccount.amount) {
                         addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                     } else {
@@ -201,16 +202,17 @@ class TransactionViewModel(
         }
     }
 
-    private fun setupWithdrawData(state: TransactionState.Content): TransactionRequest {
+    private fun setupWithdrawData(
+        state: TransactionState.Content,
+        isSelf: Boolean,
+    ): TransactionRequest {
         return TransactionRequest(
             amount = state.amount,
             withdrawFrom = Target(
                 accountNumber = state.defaultAccount.number,
-                bankCode = "BIK"
             ),
-            depositOn = Target(
+            depositOn = if (isSelf) null else Target(
                 accountNumber = state.chosenAccount.number,
-                bankCode = "BIK"
             ),
         )
     }

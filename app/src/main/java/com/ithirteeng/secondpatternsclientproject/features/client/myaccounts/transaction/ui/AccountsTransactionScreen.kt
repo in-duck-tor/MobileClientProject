@@ -5,10 +5,12 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -85,20 +87,26 @@ private fun Content(
             }
         }
 
-        WideButton(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            text = "DEPOSIT",
-            onClick = {
-                eventListener(TransactionEvent.Ui.DepositButtonClick)
+        Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+            Row {
+                Button(onClick = {
+                    eventListener(TransactionEvent.Ui.WithdrawButtonClick(true))
+                }) {
+                    Text(text = "Withdraw self")
+                }
+                Button(onClick = {
+                    eventListener(TransactionEvent.Ui.DepositButtonClick)
+                }) {
+                    Text(text = "deposit self")
+                }
             }
-        )
-
-        WideButton(
-            text = "WITHDRAW",
-            onClick = {
-                eventListener(TransactionEvent.Ui.WithdrawButtonClick)
-            }
-        )
+            WideButton(
+                text = "WITHDRAW",
+                onClick = {
+                    eventListener(TransactionEvent.Ui.WithdrawButtonClick(false))
+                }
+            )
+        }
     }
 }
 
