@@ -15,7 +15,9 @@ sealed interface TransactionEvent : BaseEvent {
 
     sealed interface Ui : TransactionEvent, BaseEvent.Ui {
 
-        data object MakeTransactionButtonClick : Ui
+        data object WithdrawButtonClick : Ui
+
+        data object DepositButtonClick : Ui
 
         data class WithdrawAccountChoice(val account: Account) : Ui
 

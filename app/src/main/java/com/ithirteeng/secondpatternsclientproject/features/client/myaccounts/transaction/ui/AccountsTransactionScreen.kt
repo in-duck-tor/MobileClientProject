@@ -63,7 +63,7 @@ private fun Content(
             item {
                 Column(modifier = Modifier.padding(vertical = 16.dp)) {
                     Text(text = "DEPOSIT ACCOUNT")
-                    AccountCard(account = state.depositAccount, onCardClick = {})
+                    AccountCard(account = state.defaultAccount, onCardClick = {})
                 }
             }
             item {
@@ -87,9 +87,16 @@ private fun Content(
 
         WideButton(
             modifier = Modifier.align(Alignment.BottomCenter),
-            text = "MakeTransaction",
+            text = "DEPOSIT",
             onClick = {
-                eventListener(TransactionEvent.Ui.MakeTransactionButtonClick)
+                eventListener(TransactionEvent.Ui.DepositButtonClick)
+            }
+        )
+
+        WideButton(
+            text = "WITHDRAW",
+            onClick = {
+                eventListener(TransactionEvent.Ui.WithdrawButtonClick)
             }
         )
     }

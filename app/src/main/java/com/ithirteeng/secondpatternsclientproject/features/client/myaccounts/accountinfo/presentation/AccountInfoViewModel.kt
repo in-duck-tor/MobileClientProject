@@ -127,14 +127,29 @@ class AccountInfoViewModel(
                             state = accountState
                         ),
                         token = token
-                    ).onFailure {
-                        Log.e(TAG, it.message.toString())
-                        addEffect(
-                            AccountInfoEffect.ShowError(
-                                R.string.error_with_account_data_uploading
+                    )
+                        .onSuccess {
+                            updateState {
+                                currentState.copy(
+                                    account = currentState.account.copy(
+                                        state = accountState
+                                    ),
+                                    actions = getCorrectActions(
+                                        currentState.account.copy(
+                                            state = accountState
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                        .onFailure {
+                            Log.e(TAG, it.message.toString())
+                            addEffect(
+                                AccountInfoEffect.ShowError(
+                                    R.string.error_with_account_data_uploading
+                                )
                             )
-                        )
-                    }
+                        }
                 }
 
                 else -> Unit

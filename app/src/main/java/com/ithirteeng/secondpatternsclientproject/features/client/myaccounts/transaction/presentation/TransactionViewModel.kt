@@ -35,7 +35,8 @@ class TransactionViewModel(
             is TransactionEvent.DataLoaded -> handleDataLoaded(event)
             is TransactionEvent.Ui.AmountValueChange -> handleAmountChange(event)
             is TransactionEvent.Ui.WithdrawAccountChoice -> handleWithdrawAccountChoice(event)
-            is TransactionEvent.Ui.MakeTransactionButtonClick -> handleMakeTransactionButtonClick()
+            is TransactionEvent.Ui.DepositButtonClick -> handleDepositButtonClick()
+            is TransactionEvent.Ui.WithdrawButtonClick -> handleWithdrawButtonClick()
         }
     }
 
@@ -85,15 +86,15 @@ class TransactionViewModel(
             is TransactionState.Content -> updateState {
                 currentState.copy(
                     accounts = event.accounts,
-                    depositAccount = event.depositAccount
+                    defaultAccount = event.depositAccount
                 )
             }
 
             is TransactionState.Loading -> updateState {
                 TransactionState.Content(
                     accounts = event.accounts,
-                    depositAccount = event.depositAccount,
-                    withdrawAccount = event.accounts.first()
+                    defaultAccount = event.depositAccount,
+                    chosenAccount = event.accounts.first()
                 )
             }
         }
@@ -102,7 +103,7 @@ class TransactionViewModel(
     private fun handleAmountChange(event: TransactionEvent.Ui.AmountValueChange) {
         when (val currentState = state.value) {
             is TransactionState.Content -> {
-                if (event.amountText.text.toDouble() > currentState.withdrawAccount.amount) {
+                if (event.amountText.text.toDouble() > currentState.chosenAccount.amount) {
                     addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                 } else {
                     updateState {
@@ -121,21 +122,21 @@ class TransactionViewModel(
     private fun handleWithdrawAccountChoice(event: TransactionEvent.Ui.WithdrawAccountChoice) {
         when (val currentState = state.value) {
             is TransactionState.Content -> {
-                if (currentState.amount > currentState.withdrawAccount.amount) {
+                if (currentState.amount > currentState.chosenAccount.amount) {
                     addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                 }
-                updateState { currentState.copy(withdrawAccount = event.account) }
+                updateState { currentState.copy(chosenAccount = event.account) }
             }
 
             else -> Unit
         }
     }
 
-    private fun handleMakeTransactionButtonClick() {
+    private fun handleDepositButtonClick() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
                 is TransactionState.Content -> {
-                    makeTransactionUseCase(setupData(currentState))
+                    makeTransactionUseCase(setupDepositData(currentState))
                         .onSuccess {
                             addEffect(
                                 TransactionEffect.ShowCreationToast("TRANSACTION MADE")
@@ -156,15 +157,59 @@ class TransactionViewModel(
         }
     }
 
-    private fun setupData(state: TransactionState.Content): TransactionRequest {
+    private fun setupDepositData(state: TransactionState.Content): TransactionRequest {
         return TransactionRequest(
             amount = state.amount,
             depositOn = Target(
-                accountNumber = state.depositAccount.number,
+                accountNumber = state.defaultAccount.number,
                 bankCode = "BIK"
             ),
             withdrawFrom = Target(
-                accountNumber = state.withdrawAccount.number,
+                accountNumber = state.chosenAccount.number,
+                bankCode = "BIK"
+            ),
+        )
+    }
+
+    private fun handleWithdrawButtonClick() {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val currentState = state.value) {
+                is TransactionState.Content -> {
+                    val data = setupWithdrawData(currentState)
+                    if (data.amount > currentState.defaultAccount.amount) {
+                        addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                    } else {
+                        makeTransactionUseCase(data)
+                            .onSuccess {
+                                addEffect(
+                                    TransactionEffect.ShowCreationToast("TRANSACTION MADE")
+                                )
+                                addEffect(TransactionEffect.CloseSelf)
+                            }
+                            .onFailure {
+                                Log.e(TAG, it.message.toString())
+                                addEffect(
+                                    TransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
+                                )
+                            }
+                    }
+                }
+
+                else -> Unit
+            }
+
+        }
+    }
+
+    private fun setupWithdrawData(state: TransactionState.Content): TransactionRequest {
+        return TransactionRequest(
+            amount = state.amount,
+            withdrawFrom = Target(
+                accountNumber = state.defaultAccount.number,
+                bankCode = "BIK"
+            ),
+            depositOn = Target(
+                accountNumber = state.chosenAccount.number,
                 bankCode = "BIK"
             ),
         )

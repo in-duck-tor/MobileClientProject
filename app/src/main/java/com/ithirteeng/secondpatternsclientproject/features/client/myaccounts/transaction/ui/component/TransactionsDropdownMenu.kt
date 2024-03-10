@@ -32,7 +32,7 @@ fun TransactionsDropdownMenu(
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = state.withdrawAccount.number,
+            value = state.chosenAccount.number,
             onValueChange = {},
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },

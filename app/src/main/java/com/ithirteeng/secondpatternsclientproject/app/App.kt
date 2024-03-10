@@ -4,6 +4,7 @@ import android.app.Application
 import com.ithirteeng.secondpatternsclientproject.common.network.di.networkModule
 import com.ithirteeng.secondpatternsclientproject.common.storage.di.databaseModule
 import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataModule
+import com.ithirteeng.secondpatternsclientproject.data.loans.di.loansDataModule
 import com.ithirteeng.secondpatternsclientproject.data.user.di.userDataModule
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDomainModule
 import com.ithirteeng.secondpatternsclientproject.domain.user.di.userDomainModule
@@ -37,6 +38,8 @@ class App : Application() {
 
                 accountsDataModule,
                 accountsDomainModule,
+
+                loansDataModule,
 
                 splashModule,
                 loginModule,
