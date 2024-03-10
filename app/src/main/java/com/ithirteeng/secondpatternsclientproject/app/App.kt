@@ -7,12 +7,16 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataM
 import com.ithirteeng.secondpatternsclientproject.data.loans.di.loansDataModule
 import com.ithirteeng.secondpatternsclientproject.data.user.di.userDataModule
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDomainModule
+import com.ithirteeng.secondpatternsclientproject.domain.loans.di.loansDomainModule
 import com.ithirteeng.secondpatternsclientproject.domain.user.di.userDomainModule
 import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainClientModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.di.accountInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.di.createAccountModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.di.myAccountsMainModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.di.transactionModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.createloan.di.createLoanModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.di.loanInfoModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.di.myLoansMainModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.di.splashModule
@@ -40,6 +44,7 @@ class App : Application() {
                 accountsDomainModule,
 
                 loansDataModule,
+                loansDomainModule,
 
                 splashModule,
                 loginModule,
@@ -49,6 +54,10 @@ class App : Application() {
                 accountInfoModule,
                 createAccountModule,
                 transactionModule,
+
+                myLoansMainModule,
+                createLoanModule,
+                loanInfoModule,
             )
         }
     }
