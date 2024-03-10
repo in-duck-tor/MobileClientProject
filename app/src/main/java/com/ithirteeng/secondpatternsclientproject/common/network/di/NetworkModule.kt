@@ -23,7 +23,7 @@ val networkModule = module {
     single(named(ConnectionType.UNAUTHORIZED.name)) {
         provideRetrofit(
             okHttpClient = get(named(ConnectionType.UNAUTHORIZED.name)),
-            url = "https://theaxolotlapi.netlify.app"
+            url = "http://89.19.214.8:8000/api/v1/"
         )
     }
 }
