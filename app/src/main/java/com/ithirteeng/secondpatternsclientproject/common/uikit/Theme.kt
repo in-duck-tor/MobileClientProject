@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 
 private val lightColorsScheme = lightColorScheme(
 
@@ -69,15 +70,23 @@ private val darkColorsScheme = darkColorScheme(
 )
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
-
-    val inDarkMode: Boolean = isSystemInDarkTheme()
+fun AppTheme(
+    theme: Theme,
+    content: @Composable () -> Unit,
+) {
+    val isSystemInDarkTheme = when (theme) {
+        Theme.LIGHT -> false
+        Theme.DARK -> true
+        Theme.AUTO -> isSystemInDarkTheme()
+    }
 
     val colors = if (supportsDynamic()) {
         val context = LocalContext.current
-        if (inDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        if (isSystemInDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(
+            context
+        )
     } else {
-        if (inDarkMode) darkColorsScheme else lightColorsScheme
+        if (isSystemInDarkTheme) darkColorsScheme else lightColorsScheme
     }
     //todo add typography
     MaterialTheme(

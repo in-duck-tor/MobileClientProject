@@ -1,13 +1,16 @@
 package com.ithirteeng.secondpatternsclientproject.app
 
 import android.app.Application
+import com.ithirteeng.secondpatternsclientproject.app.di.appModule
 import com.ithirteeng.secondpatternsclientproject.common.network.di.networkModule
 import com.ithirteeng.secondpatternsclientproject.common.storage.di.databaseModule
 import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.loans.di.loansDataModule
+import com.ithirteeng.secondpatternsclientproject.data.theme.di.themeDataModule
 import com.ithirteeng.secondpatternsclientproject.data.user.di.userDataModule
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDomainModule
 import com.ithirteeng.secondpatternsclientproject.domain.loans.di.loansDomainModule
+import com.ithirteeng.secondpatternsclientproject.domain.theme.di.themeDomainModule
 import com.ithirteeng.secondpatternsclientproject.domain.user.di.userDomainModule
 import com.ithirteeng.secondpatternsclientproject.features.client.main.di.mainClientModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.di.accountInfoModule
@@ -34,6 +37,8 @@ class App : Application() {
             androidContext(this@App)
             androidLogger(Level.ERROR)
             modules(
+                appModule,
+
                 networkModule,
                 databaseModule,
 
@@ -42,6 +47,9 @@ class App : Application() {
 
                 accountsDataModule,
                 accountsDomainModule,
+
+                themeDataModule,
+                themeDomainModule,
 
                 loansDataModule,
                 loansDomainModule,
