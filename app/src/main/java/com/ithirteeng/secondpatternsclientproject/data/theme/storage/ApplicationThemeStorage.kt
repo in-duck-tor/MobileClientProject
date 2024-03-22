@@ -20,8 +20,19 @@ class ApplicationThemeStorage(
         return themeString?.let { Theme.valueOf(it) } ?: Theme.AUTO
     }
 
+    fun setIsUpdated(isThemeUpdated: Boolean) {
+        sharedPreferences.edit()
+            .putBoolean(IS_UPDATED_KEY, isThemeUpdated)
+            .apply()
+    }
+
+    fun getIsUpdated(): Boolean {
+        return sharedPreferences.getBoolean(IS_UPDATED_KEY, true)
+    }
+
     private companion object {
 
+        const val IS_UPDATED_KEY = "is theme updated"
         const val THEME_KEY = "theme key"
         const val STORAGE_NAME = "theme local storage"
     }

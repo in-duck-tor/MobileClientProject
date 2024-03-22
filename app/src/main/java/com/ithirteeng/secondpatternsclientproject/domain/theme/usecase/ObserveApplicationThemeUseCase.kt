@@ -2,7 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.domain.theme.usecase
 
 import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeLocalDatasource
 
-class ObserveThemeUseCase(
+class ObserveApplicationThemeUseCase(
     private val localDatasource: ThemeLocalDatasource
 ) {
 

@@ -17,8 +17,20 @@ class ThemeLocalDatasourceImpl(
         return themeFlow
     }
 
+    override fun getCurrentTheme(): Theme {
+        return storage.getTheme()
+    }
+
     override fun setTheme(theme: Theme) {
         storage.setTheme(theme = theme)
         themeFlow.update { storage.getTheme() }
+    }
+
+    override fun isUpdated(): Boolean {
+        return storage.getIsUpdated()
+    }
+
+    override fun setIsUpdated(isUpdated: Boolean) {
+        return storage.setIsUpdated(isUpdated)
     }
 }

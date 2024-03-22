@@ -7,5 +7,11 @@ interface ThemeLocalDatasource {
 
     fun observeTheme(): Flow<Theme>
 
+    fun getCurrentTheme(): Theme
+
     fun setTheme(theme: Theme)
+
+    fun isUpdated(): Boolean
+
+    fun setIsUpdated(isUpdated: Boolean)
 }

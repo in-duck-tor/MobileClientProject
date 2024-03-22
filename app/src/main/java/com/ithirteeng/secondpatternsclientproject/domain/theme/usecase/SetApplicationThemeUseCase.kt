@@ -4,8 +4,11 @@ import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeL
 import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 
 class SetApplicationThemeUseCase(
-    private val localDatasource: ThemeLocalDatasource
+    private val localDatasource: ThemeLocalDatasource,
 ) {
 
-    operator fun invoke(theme: Theme) = localDatasource.setTheme(theme)
+    operator fun invoke(theme: Theme) {
+        localDatasource.setTheme(theme)
+        localDatasource.setIsUpdated(false)
+    }
 }
