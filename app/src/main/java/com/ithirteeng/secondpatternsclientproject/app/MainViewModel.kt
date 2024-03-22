@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.app
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ithirteeng.secondpatternsclientproject.domain.exchange.usecase.GetCurrencyRatesUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.ObserveApplicationThemeUseCase
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val observeApplicationThemeUseCase: ObserveApplicationThemeUseCase,
     private val fetchApplicationThemeUseCase: FetchApplicationThemeUseCase,
+    private val getCurrencyRatesUseCase: GetCurrencyRatesUseCase,
 ) : ViewModel() {
 
     val themeState = MutableStateFlow(Theme.AUTO)
@@ -21,6 +23,16 @@ class MainViewModel(
     init {
         fetchTheme()
         observeTheme()
+        getRates()
+    }
+
+    private fun getRates() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getCurrencyRatesUseCase()
+                .onSuccess {
+                    Log.d(TAG, it.toString())
+                }
+        }
     }
 
     private fun observeTheme() {

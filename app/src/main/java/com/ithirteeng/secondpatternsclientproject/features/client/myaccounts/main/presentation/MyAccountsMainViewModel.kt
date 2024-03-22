@@ -64,6 +64,7 @@ class MyAccountsMainViewModel(
             }
             .onFailure {
                 Log.e(TAG, it.message.toString())
+                observeAccounts()
                 addEffect(
                     MyAccountsMainEffect.ShowError(
                         R.string.fetching_error,

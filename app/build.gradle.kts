@@ -101,4 +101,10 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-database")
+
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0") {
+        exclude(module = "stax")
+        exclude(module = "stax-api")
+        exclude(module = "xpp3")
+    }
 }

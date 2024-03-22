@@ -1,6 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.di
 
-import com.ithirteeng.secondpatternsclientproject.common.network.ConnectionType
+import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.createRetrofitService
 import com.ithirteeng.secondpatternsclientproject.common.storage.BankDatabase
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService

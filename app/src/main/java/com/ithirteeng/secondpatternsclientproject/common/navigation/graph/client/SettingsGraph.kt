@@ -18,6 +18,6 @@ fun NavGraphBuilder.settingsGraph(
             navArgument(SettingsDestination.CLIENT_ID) { type = NavType.StringType }
         )
     ) {
-        SettingsScreen(clientId)
+        SettingsScreen()
     }
 }

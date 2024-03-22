@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 fun provideLoggingInterceptor(): HttpLoggingInterceptor {
     val loggingInterceptor = HttpLoggingInterceptor()
@@ -25,6 +26,13 @@ fun provideRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit =
         .baseUrl(url)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+fun provideXmlRetrofit(okHttpClient: OkHttpClient, url: String): Retrofit =
+    Retrofit.Builder()
+        .baseUrl(url)
+        .client(okHttpClient)
+        .addConverterFactory(SimpleXmlConverterFactory.create())
         .build()
 
 fun provideOkHttpClient(

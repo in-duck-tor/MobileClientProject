@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.common.network
+package com.ithirteeng.secondpatternsclientproject.common.network.model
 
 import java.io.IOException
 

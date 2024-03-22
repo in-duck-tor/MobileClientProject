@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.common.network.interceptor
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.ithirteeng.secondpatternsclientproject.common.network.NoConnectivityException
+import com.ithirteeng.secondpatternsclientproject.common.network.model.NoConnectivityException
 import java.io.IOException
 import okhttp3.Interceptor
 import okhttp3.Response
