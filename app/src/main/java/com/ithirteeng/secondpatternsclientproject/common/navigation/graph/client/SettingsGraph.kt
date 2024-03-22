@@ -10,7 +10,6 @@ import com.ithirteeng.secondpatternsclientproject.features.client.settings.ui.Se
 
 fun NavGraphBuilder.settingsGraph(
     navController: NavHostController,
-    clientId: String,
 ) {
     composable(
         route = SettingsDestination.route,

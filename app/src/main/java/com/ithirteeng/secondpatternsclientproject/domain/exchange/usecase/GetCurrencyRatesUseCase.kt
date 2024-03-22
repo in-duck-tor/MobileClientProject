@@ -1,17 +1,13 @@
 package com.ithirteeng.secondpatternsclientproject.domain.exchange.usecase
 
 import com.ithirteeng.secondpatternsclientproject.common.domain.provideResult
-import com.ithirteeng.secondpatternsclientproject.domain.exchange.datasource.ExchangeRemoteDatasource
-import com.ithirteeng.secondpatternsclientproject.domain.exchange.model.toCurrency
+import com.ithirteeng.secondpatternsclientproject.domain.exchange.datasource.ExchangeLocalDatasource
 
 class GetCurrencyRatesUseCase(
-    private val remoteDatasource: ExchangeRemoteDatasource
+    private val localDatasource: ExchangeLocalDatasource,
 ) {
 
     suspend operator fun invoke() = provideResult {
-        val currencyRate = remoteDatasource.getCurrencyRates()
-        currencyRate.valuteStrings.map {
-            it.toCurrency()
-        }
+        localDatasource.getRates()
     }
 }

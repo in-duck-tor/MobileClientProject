@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.data.theme.datasource
 
+import android.util.Log
 import com.google.firebase.FirebaseException
 import com.google.firebase.database.DatabaseReference
 import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeRemoteDatasource
@@ -15,6 +16,7 @@ class ThemeRemoteDatasourceImpl(
             val theme = firebaseDatabase.child(APP_THEME).child(USERS).child(login).get().await()
             theme.value?.let { Theme.valueOf(it.toString()) }
         } catch (e: FirebaseException) {
+            Log.e("FIREBASE", e.message.toString())
             null
         }
     }

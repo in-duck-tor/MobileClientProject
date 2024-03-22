@@ -20,7 +20,7 @@ data class AccountEntity(
 
 fun AccountEntity.toDomain(): Account = Account(
     number = number,
-    currencyCode = currencyCode,
+    currencyCode = currencyCode ?: "RUB",
     amount = amount,
     state = state,
     customComment = customComment

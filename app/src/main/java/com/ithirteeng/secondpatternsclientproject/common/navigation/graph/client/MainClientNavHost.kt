@@ -16,6 +16,6 @@ fun MainClientNavHost(
     ) {
         myAccountsGraph(navController, clientId)
         myLoansGraph(navController, clientId)
-        settingsGraph(navController, clientId)
+        settingsGraph(navController)
     }
 }

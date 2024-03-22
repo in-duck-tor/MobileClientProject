@@ -6,6 +6,8 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.account.A
 import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.transaction.TransactionEntity
 import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.AccountsDao
 import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.TransactionsDao
+import com.ithirteeng.secondpatternsclientproject.data.exchange.entity.CurrencyEntity
+import com.ithirteeng.secondpatternsclientproject.data.exchange.storage.CurrencyDao
 import com.ithirteeng.secondpatternsclientproject.data.loans.entity.LoanEntity
 import com.ithirteeng.secondpatternsclientproject.data.loans.storage.LoanDao
 
@@ -13,7 +15,8 @@ import com.ithirteeng.secondpatternsclientproject.data.loans.storage.LoanDao
     entities = [
         AccountEntity::class,
         TransactionEntity::class,
-        LoanEntity::class
+        LoanEntity::class,
+        CurrencyEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -25,4 +28,6 @@ abstract class BankDatabase : RoomDatabase() {
     abstract fun transactionsDao(): TransactionsDao
 
     abstract fun loanDao(): LoanDao
+
+    abstract fun currencyDao(): CurrencyDao
 }

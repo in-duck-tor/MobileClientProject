@@ -12,13 +12,11 @@ class ConvertCurrencyByCharCode {
     ): Result<Double> {
         val fromRate = currencyRates.findLast { it.charCode == codeFrom }?.value
         val toRate = currencyRates.findLast { it.charCode == codeTo }?.value
+
         return if (fromRate != null && toRate != null) {
-            Result.success(
-                value * fromRate / toRate
-            )
+            Result.success(value * fromRate / toRate)
         } else {
             Result.failure(NullPointerException("Currency does\'t exist"))
         }
-
     }
 }
