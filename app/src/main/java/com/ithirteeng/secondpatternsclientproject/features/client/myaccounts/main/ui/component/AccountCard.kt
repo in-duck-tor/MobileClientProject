@@ -74,8 +74,10 @@ fun AccountCard(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-
-
+            Text(
+                text = "Code: ${account.currencyCode}",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
