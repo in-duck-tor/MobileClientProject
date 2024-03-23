@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation
+package com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 

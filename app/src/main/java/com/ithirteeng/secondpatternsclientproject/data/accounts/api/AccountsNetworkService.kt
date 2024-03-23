@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.data.accounts.api
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.model.AccountNumber
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.NewTransactionRequest
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.CurrencyCode
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
 import retrofit2.Response
@@ -35,5 +35,8 @@ interface AccountsNetworkService {
 
     @POST("account/{accountNumber}/close")
     suspend fun closeAccount(@Path("accountNumber") number: String): Response<Unit>
+
+    @GET("bank/currency")
+    suspend fun getCurrencyCodes(): List<CurrencyCode>
 
 }

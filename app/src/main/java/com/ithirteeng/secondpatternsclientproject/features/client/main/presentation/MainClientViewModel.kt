@@ -7,7 +7,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.main.presentat
 import com.ithirteeng.secondpatternsclientproject.features.client.main.ui.model.MainClientTab
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation.SettingsDestination
 
 class MainClientViewModel : BaseViewModel<MainClientState, MainClientEvent, MainClientEffect>() {
 

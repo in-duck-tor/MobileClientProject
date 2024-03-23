@@ -35,7 +35,7 @@ fun NavGraphBuilder.myAccountsGraph(
 
         main(navController, clientId)
         accountInfo(navController, clientId)
-        createAccount(navController, clientId)
+        createAccount(navController)
         transaction(navController, clientId)
 
 
@@ -70,7 +70,6 @@ private fun NavGraphBuilder.main(
 
 private fun NavGraphBuilder.createAccount(
     navController: NavHostController,
-    clientId: String,
 ) {
     composable(
         route = MyAccountsCreateAccountDestination.route,
@@ -79,7 +78,6 @@ private fun NavGraphBuilder.createAccount(
         )
     ) {
         CreateAccountScreen(
-            clientId = clientId,
             navigateUp = {
                 navController.navigateUp()
             }

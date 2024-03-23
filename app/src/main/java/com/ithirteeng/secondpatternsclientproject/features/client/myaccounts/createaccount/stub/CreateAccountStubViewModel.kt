@@ -25,6 +25,7 @@ class CreateAccountStubViewModel(
             is CreateAccountEvent.Init -> handleInit()
             is CreateAccountEvent.Ui.CommentTextChanged -> handleCommentTextChange(event)
             is CreateAccountEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
+            else -> {}
         }
     }
 
@@ -51,7 +52,7 @@ class CreateAccountStubViewModel(
         when (val currentState = state.value) {
             is CreateAccountState.Content -> viewModelScope.launch(Dispatchers.IO) {
                 val data = CreateAccount(
-                    currencyCode = currentState.currencyCode,
+                    currencyCode = currentState.chosenCurrencyCode,
                     customComment = currentState.customComment.text
                 )
                 createAccountStubUseCase(data, token)

@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.cr
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -19,11 +20,11 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.cre
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.ui.component.CurrencyCodesDropdownMenu
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateAccountScreen(
-    clientId: String,
     navigateUp: () -> Unit,
     viewModel: CreateAccountViewModel = koinViewModel(),
 ) {
@@ -52,15 +53,23 @@ private fun Content(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        TextField(
-            value = state.customComment,
-            onValueChange = {
-                eventListener(CreateAccountEvent.Ui.CommentTextChanged(it))
-            },
-            label = {
-                Text(text = "custom comment")
-            }
-        )
+        Row {
+            TextField(
+                value = state.customComment,
+                onValueChange = {
+                    eventListener(CreateAccountEvent.Ui.CommentTextChanged(it))
+                },
+                label = {
+                    Text(text = "custom comment")
+                },
+                modifier = Modifier.weight(0.6f)
+            )
+            CurrencyCodesDropdownMenu(
+                eventListener = eventListener,
+                state = state,
+                modifier = Modifier.weight(0.4f)
+            )
+        }
 
         WideButton(
             text = "Create Account",
@@ -87,7 +96,7 @@ private suspend fun observeEffectsFlow(
 
             is CreateAccountEffect.ShowError -> Toast.makeText(
                 context,
-                context.getString(effect.stringResource, effect.message),
+                effect.message,
                 Toast.LENGTH_SHORT
             ).show()
         }

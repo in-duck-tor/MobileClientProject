@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation.SettingsDestination
 
 sealed interface MainClientTab {
 

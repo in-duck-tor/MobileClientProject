@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.settings.ui
+package com.ithirteeng.secondpatternsclientproject.features.common.settings.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

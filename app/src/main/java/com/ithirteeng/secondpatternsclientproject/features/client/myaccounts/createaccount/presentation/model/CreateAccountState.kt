@@ -9,7 +9,7 @@ sealed interface CreateAccountState : BaseState {
 
     data class Content(
         val customComment: TextFieldValue = TextFieldValue(""),
-        val currencyCode: String = "RUB",
+        val currencyCodes: List<String> = listOf(),
+        val chosenCurrencyCode: String = "RUB",
     ) : CreateAccountState
-
 }

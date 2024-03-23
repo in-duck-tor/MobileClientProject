@@ -17,6 +17,8 @@ sealed interface CreateAccountEvent : BaseEvent {
         data object CreateAccountButtonClick : Ui
 
         data class CommentTextChanged(val text: TextFieldValue) : Ui
+
+        data class ChooseCurrencyCode(val code: String) : Ui
     }
 
 }

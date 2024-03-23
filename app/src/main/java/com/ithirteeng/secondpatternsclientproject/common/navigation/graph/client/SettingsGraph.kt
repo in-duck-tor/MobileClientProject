@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.ithirteeng.secondpatternsclientproject.features.client.settings.navigation.SettingsDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.settings.ui.SettingsScreen
+import com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation.SettingsDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.settings.ui.SettingsScreen
 
 fun NavGraphBuilder.settingsGraph(
     navController: NavHostController,
