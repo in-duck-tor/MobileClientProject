@@ -5,11 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.ithirteeng.secondpatternsclientproject.features.common.login.navigation.LoginDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation.SettingsDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.settings.ui.SettingsScreen
 
 fun NavGraphBuilder.settingsGraph(
     navController: NavHostController,
+    bigNavController: NavHostController,
 ) {
     composable(
         route = SettingsDestination.route,
@@ -17,6 +19,14 @@ fun NavGraphBuilder.settingsGraph(
             navArgument(SettingsDestination.CLIENT_ID) { type = NavType.StringType }
         )
     ) {
-        SettingsScreen()
+        SettingsScreen(
+            navigateToLoginScreen = {
+                bigNavController.navigate(LoginDestination.destination) {
+                    popUpTo(bigNavController.graph.id) {
+                        inclusive = true
+                    }
+                }
+            }
+        )
     }
 }

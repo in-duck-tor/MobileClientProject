@@ -28,6 +28,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MainClientScreen(
     clientId: String,
     viewModel: MainClientViewModel = koinViewModel(),
+    bigNavHostController: NavHostController
 ) {
     val context = LocalContext.current
     val navHostController = rememberNavController()
@@ -45,7 +46,8 @@ fun MainClientScreen(
             state = state,
             eventListener = viewModel::processEvent,
             navHostController = navHostController,
-            clientId = clientId
+            clientId = clientId,
+            bigNavHostController = bigNavHostController
         )
 
         is MainClientState.Loading -> CircularProgressIndicator()
@@ -57,6 +59,7 @@ private fun MainContent(
     state: MainClientState.Content,
     eventListener: (MainClientEvent) -> Unit,
     navHostController: NavHostController,
+    bigNavHostController: NavHostController,
     clientId: String,
 ) {
 
@@ -70,7 +73,8 @@ private fun MainContent(
         Box(modifier = Modifier.weight(1f)) {
             MainClientNavHost(
                 navController = navHostController,
-                clientId = clientId
+                clientId = clientId,
+                bigNavController = bigNavHostController,
             )
         }
         MainClientNavBar(

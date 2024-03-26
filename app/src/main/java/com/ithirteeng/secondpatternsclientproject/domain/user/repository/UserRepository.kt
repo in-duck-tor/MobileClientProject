@@ -6,9 +6,11 @@ interface UserRepository {
 
     fun saveToken(token: Token)
 
-    fun getToken(): Token
+    fun getToken(): Token?
 
     fun saveLogin(login: String)
 
     fun getLogin(): String
+
+    fun wipeData()
 }

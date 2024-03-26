@@ -12,7 +12,7 @@ class UserRepositoryImpl(
         tokenStorage.saveToken(token)
     }
 
-    override fun getToken(): Token {
+    override fun getToken(): Token? {
         return tokenStorage.getToken()
     }
 
@@ -22,5 +22,9 @@ class UserRepositoryImpl(
 
     override fun getLogin(): String {
         return tokenStorage.getLogin()
+    }
+
+    override fun wipeData() {
+        tokenStorage.clearStorage()
     }
 }

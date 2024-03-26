@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.common.navigation.graph.client
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
@@ -8,6 +9,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.nav
 @Composable
 fun MainClientNavHost(
     navController: NavHostController,
+    bigNavController: NavHostController,
     clientId: String,
 ) {
     NavHost(
@@ -16,6 +18,6 @@ fun MainClientNavHost(
     ) {
         myAccountsGraph(navController, clientId)
         myLoansGraph(navController, clientId)
-        settingsGraph(navController)
+        settingsGraph(navController, bigNavController)
     }
 }

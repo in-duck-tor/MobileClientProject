@@ -22,6 +22,7 @@ fun NavGraphBuilder.mainClientGraph(navController: NavHostController) {
             }
         MainClientScreen(
             clientId = clientId,
+            bigNavHostController = navController
         )
     }
 }

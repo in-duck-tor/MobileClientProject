@@ -7,8 +7,8 @@ class SetApplicationThemeUseCase(
     private val localDatasource: ThemeLocalDatasource,
 ) {
 
-    operator fun invoke(theme: Theme) {
+    operator fun invoke(theme: Theme, isUpdated: Boolean = false) {
         localDatasource.setTheme(theme)
-        localDatasource.setIsUpdated(false)
+        localDatasource.setIsUpdated(isUpdated)
     }
 }

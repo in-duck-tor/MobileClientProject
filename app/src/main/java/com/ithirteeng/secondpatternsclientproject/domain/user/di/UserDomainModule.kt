@@ -4,6 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTo
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLoginUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.WipeUserDataUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -13,4 +14,5 @@ val userDomainModule = module {
     factoryOf(::SaveTokenLocallyUseCase)
     factoryOf(::SaveUserLoginUseCase)
     factoryOf(::GetUserLoginUseCase)
+    factoryOf(::WipeUserDataUseCase)
 }
