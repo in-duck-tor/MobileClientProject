@@ -1,24 +1,22 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myloans.createloan.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.domain.loans.datasource.LoansStubDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.Loan
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import java.time.LocalDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class CreateLoanViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val loansStubDatasource: LoansStubDatasource,
 ) : ViewModel() {
 
-    private val token = getLocalTokenUseCase()
+    private val login = getUserLoginUseCase()
 
     val isMade = MutableStateFlow(false)
 
@@ -27,7 +25,7 @@ class CreateLoanViewModel(
             loansStubDatasource.insertLoan(
                 Loan(
                     id = Random.nextInt().toString(),
-                    clientId = token,
+                    clientId = login,
                     amount = amount,
                     createdAt = LocalDateTime.now().toString(),
                     dueTo = LocalDateTime.now().toString()

@@ -1,8 +1,14 @@
 package com.ithirteeng.secondpatternsclientproject.domain.user.repository
 
+import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
+
 interface UserRepository {
 
-    fun saveToken(token: String)
+    fun saveToken(token: Token)
 
-    fun getToken(): String
+    fun getToken(): Token
+
+    fun saveLogin(login: String)
+
+    fun getLogin(): String
 }

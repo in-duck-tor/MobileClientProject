@@ -11,17 +11,16 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.MakeTransactionBetweenAccountsStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.ReplenishAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.WithdrawFromAccountStubUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TransactionStubViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
-
     private val makeTransactionBetweenAccountsStubUseCase: MakeTransactionBetweenAccountsStubUseCase,
     private val replenishAccountStubUseCase: ReplenishAccountStubUseCase,
     private val withdrawFromAccountStubUseCase: WithdrawFromAccountStubUseCase,
@@ -29,7 +28,7 @@ class TransactionStubViewModel(
 
     override fun initState(): TransactionState = TransactionState.Loading
 
-    private val token = getLocalTokenUseCase()
+    private val login = getUserLoginUseCase()
 
     private lateinit var baseAccounts: List<Account>
 
@@ -63,7 +62,7 @@ class TransactionStubViewModel(
     }
 
     private suspend fun observeAccounts(depositAccount: Account) {
-        observeAccountsUseCase(token)
+        observeAccountsUseCase(login)
             .onSuccess { flow ->
                 flow.collect { accountsList ->
                     val correctList = accountsList.filter { it.number != depositAccount.number }
@@ -144,7 +143,7 @@ class TransactionStubViewModel(
                     replenishAccountStubUseCase(
                         amount = currentState.amount,
                         accountNumber = currentState.defaultAccount.number,
-                        token = token
+                        token = login
                     )
                         .onSuccess {
                             addEffect(
@@ -177,7 +176,7 @@ class TransactionStubViewModel(
                         withdrawFromAccountStubUseCase(
                             amount = currentState.amount,
                             accountNumber = currentState.defaultAccount.number,
-                            token = token
+                            token = login
                         )
                             .onSuccess {
                                 addEffect(
@@ -209,7 +208,7 @@ class TransactionStubViewModel(
                     } else {
                         makeTransactionBetweenAccountsStubUseCase(
                             setupWithdrawData(currentState),
-                            token
+                            login
                         )
                             .onSuccess {
                                 addEffect(

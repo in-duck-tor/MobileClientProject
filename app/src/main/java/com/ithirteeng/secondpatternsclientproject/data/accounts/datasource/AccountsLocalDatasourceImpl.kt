@@ -17,18 +17,18 @@ class AccountsLocalDatasourceImpl(
     private val transactionsDao: TransactionsDao,
 ) : AccountsLocalDatasource {
 
-    override suspend fun observeAccounts(clientId: String, filter: String): Flow<List<Account>> {
-        return accountsDao.observeAccountsByClientId(clientId, filter).map { list ->
+    override suspend fun observeAccounts(login: String, filter: String): Flow<List<Account>> {
+        return accountsDao.observeAccountsByClientId(login, filter).map { list ->
             list.map { it.toDomain() }
         }
     }
 
-    override suspend fun fetchAccounts(accounts: List<Account>, clientId: String) {
-        accountsDao.fetchAccounts(accounts.map { it.toEntity(clientId) }, clientId)
+    override suspend fun fetchAccounts(accounts: List<Account>, login: String) {
+        accountsDao.fetchAccounts(accounts.map { it.toEntity(login) }, login)
     }
 
-    override suspend fun insertAccount(account: Account, clientId: String) {
-        accountsDao.insertAccount(account.toEntity(clientId))
+    override suspend fun insertAccount(account: Account, login: String) {
+        accountsDao.insertAccount(account.toEntity(login))
     }
 
     override suspend fun getAccount(number: String): Account {

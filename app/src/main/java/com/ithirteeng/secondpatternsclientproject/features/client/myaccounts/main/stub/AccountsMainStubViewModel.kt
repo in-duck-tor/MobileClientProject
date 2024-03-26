@@ -7,7 +7,7 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewMo
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEvent
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AccountsMainStubViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
 
@@ -25,7 +25,7 @@ class AccountsMainStubViewModel(
 
     private lateinit var accounts: List<Account>
 
-    private val token = getLocalTokenUseCase()
+    private val login = getUserLoginUseCase()
 
     override fun processEvent(event: MyAccountsMainEvent) {
         when (event) {
@@ -60,13 +60,13 @@ class AccountsMainStubViewModel(
 
     private suspend fun observeAccounts() {
 
-        observeAccountsUseCase.invoke(token)
+        observeAccountsUseCase.invoke(login)
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
                     if (accounts.isNotEmpty()) {
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
-                                clientId = token,
+                                clientId = login,
                                 accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
                                     accounts
                                         .filter { it.state == filter }

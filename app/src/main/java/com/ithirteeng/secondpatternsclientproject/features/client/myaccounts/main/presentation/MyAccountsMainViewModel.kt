@@ -8,7 +8,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEvent
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MyAccountsMainViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val fetchAccountsUseCase: FetchAccountsUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
@@ -27,7 +27,7 @@ class MyAccountsMainViewModel(
 
     private lateinit var accounts: List<Account>
 
-    private val token = getLocalTokenUseCase()
+    private val login = getUserLoginUseCase()
 
     override fun processEvent(event: MyAccountsMainEvent) {
         when (event) {
@@ -58,7 +58,7 @@ class MyAccountsMainViewModel(
     }
 
     private suspend fun loadData() {
-        fetchAccountsUseCase(token)
+        fetchAccountsUseCase(login)
             .onSuccess {
                 observeAccounts()
             }
@@ -77,13 +77,13 @@ class MyAccountsMainViewModel(
 
     private suspend fun observeAccounts() {
 
-        observeAccountsUseCase.invoke(token)
+        observeAccountsUseCase.invoke(login)
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
                     if (accounts.isNotEmpty()) {
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
-                                clientId = token,
+                                clientId = login,
                                 accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
                                     accounts.filter { it.state == filter }
                                 } ?: accounts

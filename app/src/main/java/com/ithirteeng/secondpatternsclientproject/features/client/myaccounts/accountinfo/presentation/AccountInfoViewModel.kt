@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
@@ -12,7 +13,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.ObserveTransactionsUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountAction
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEvent
@@ -21,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AccountInfoViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val fetchTransactionsUseCase: FetchTransactionsUseCase,
@@ -30,8 +31,9 @@ class AccountInfoViewModel(
 
     override fun initState(): AccountInfoState = AccountInfoState.Loading
 
-    private val token = getLocalTokenUseCase()
+    private val token = getUserLoginUseCase()
 
+    @SuppressLint("NewApi")
     override fun processEvent(event: AccountInfoEvent) {
         when (event) {
             is AccountInfoEvent.Init -> handleInit(event)

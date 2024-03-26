@@ -9,7 +9,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transact
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.MakeTransactionUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(
-    getLocalTokenUseCase: GetLocalTokenUseCase,
+    getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
     private val makeTransactionUseCase: MakeTransactionUseCase,
@@ -25,7 +25,7 @@ class TransactionViewModel(
 
     override fun initState(): TransactionState = TransactionState.Loading
 
-    private val token = getLocalTokenUseCase()
+    private val login = getUserLoginUseCase()
 
     private lateinit var baseAccounts: List<Account>
 
@@ -58,7 +58,7 @@ class TransactionViewModel(
     }
 
     private suspend fun observeAccounts(depositAccount: Account) {
-        observeAccountsUseCase(token)
+        observeAccountsUseCase(login)
             .onSuccess { flow ->
                 flow.collect { accountsList ->
                     val correctList = accountsList.filter { it.number != depositAccount.number }

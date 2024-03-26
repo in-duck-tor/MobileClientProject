@@ -10,8 +10,8 @@ class CreateAccountUseCase(
     private val localDatasource: AccountsLocalDatasource,
 ) {
 
-    suspend operator fun invoke(data: CreateAccount, token: String) = provideResult {
+    suspend operator fun invoke(data: CreateAccount, login: String) = provideResult {
         val account = remoteDatasource.createAccount(data)
-        localDatasource.insertAccount(account, token)
+        localDatasource.insertAccount(account, login)
     }
 }

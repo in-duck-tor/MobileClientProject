@@ -4,7 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEffect
 
 sealed interface SplashEffect : BaseEffect {
 
-    data class OnAuthorized(val token: String) : SplashEffect
+    data class NavigateToMainScreen(val token: String) : SplashEffect
 
-    data object OnUnauthorized : SplashEffect
+    data object NavigateToAuthorizationScreen : SplashEffect
 }

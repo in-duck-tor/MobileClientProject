@@ -25,8 +25,4 @@ class MainViewModel(
             }
         }
     }
-
-    companion object {
-        const val LOGIN = "user_login_test"
-    }
 }

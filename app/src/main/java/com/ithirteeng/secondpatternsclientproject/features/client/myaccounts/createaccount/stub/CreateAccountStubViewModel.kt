@@ -6,7 +6,7 @@ import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.CreateAccountStubUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountState
@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateAccountStubViewModel(
-    private val getLocalTokenUseCase: GetLocalTokenUseCase,
+    private val getUserLoginUseCase: GetUserLoginUseCase,
     private val createAccountStubUseCase: CreateAccountStubUseCase,
 ) : BaseViewModel<CreateAccountState, CreateAccountEvent, CreateAccountEffect>() {
 
@@ -48,7 +48,7 @@ class CreateAccountStubViewModel(
         }
 
     private fun handleCreateAccountButtonClick() {
-        val token = getLocalTokenUseCase()
+        val token = getUserLoginUseCase()
         when (val currentState = state.value) {
             is CreateAccountState.Content -> viewModelScope.launch(Dispatchers.IO) {
                 val data = CreateAccount(

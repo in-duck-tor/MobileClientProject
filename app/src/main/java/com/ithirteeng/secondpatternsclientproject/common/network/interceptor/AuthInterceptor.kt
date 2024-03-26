@@ -16,7 +16,7 @@ class AuthInterceptor(
             getLocalTokenUseCase().let {
                 builder.addHeader(
                     AUTHORIZATION_HEADER,
-                    "$BEARER $it"
+                    "$BEARER ${it.accessToken}"
                 )
             }
         }

@@ -14,14 +14,14 @@ fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = SplashDestination.route) {
         composable(SplashDestination.route) {
             SplashScreen(
-                onAuthorized = {
+                navigateToMainScreen = {
                     navController.navigate(
                         MainClientDestination.destinationWithArgs(it)
                     ) {
                         popUpTo(SplashDestination.destination) { inclusive = true }
                     }
                 },
-                onUnauthorized = {
+                navigateToAuthorizationScreen = {
                     navController.navigate(RegistrationDestination.destination) {
                         popUpTo(SplashDestination.destination) { inclusive = true }
                     }
