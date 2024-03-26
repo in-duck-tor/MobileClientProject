@@ -84,7 +84,7 @@ class LoginViewModel(
         }
     }
 
-    private companion object {
+    companion object {
 
         const val LOGIN = "user_login_test"
         const val TOKEN =
