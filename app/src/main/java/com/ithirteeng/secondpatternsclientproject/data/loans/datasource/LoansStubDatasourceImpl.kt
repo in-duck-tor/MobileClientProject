@@ -4,7 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.data.loans.entity.toDomain
 import com.ithirteeng.secondpatternsclientproject.data.loans.entity.toEntity
 import com.ithirteeng.secondpatternsclientproject.data.loans.storage.LoanDao
 import com.ithirteeng.secondpatternsclientproject.domain.loans.datasource.LoansStubDatasource
-import com.ithirteeng.secondpatternsclientproject.domain.loans.model.Loan
+import com.ithirteeng.secondpatternsclientproject.domain.loans.model.base.Loan
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

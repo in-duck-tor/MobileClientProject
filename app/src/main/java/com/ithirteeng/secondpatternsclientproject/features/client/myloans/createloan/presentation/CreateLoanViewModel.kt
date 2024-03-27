@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.creat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.domain.loans.datasource.LoansStubDatasource
-import com.ithirteeng.secondpatternsclientproject.domain.loans.model.Loan
+import com.ithirteeng.secondpatternsclientproject.domain.loans.model.base.Loan
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import java.time.LocalDateTime
 import kotlinx.coroutines.Dispatchers
