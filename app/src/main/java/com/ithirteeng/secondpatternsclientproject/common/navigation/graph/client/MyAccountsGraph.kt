@@ -16,9 +16,9 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.mai
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.stub.AccountsMainStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.MyAccountsMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.navigation.MyAccountsTransactionDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub.AccountsTransactionStubScreen
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.AccountsTransactionScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.navigation.MyAccountsSelfTransactionDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub.AccountsTransactionStubScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.AccountsSelfTransactionScreen
 
 fun NavGraphBuilder.myAccountsGraph(
     navController: NavHostController,
@@ -105,7 +105,7 @@ private fun NavGraphBuilder.accountInfo(
             accountNumber = accountId,
             navigateToTransactionScreen = {
                 navController.navigate(
-                    MyAccountsTransactionDestination.destinationWithArgs(
+                    MyAccountsSelfTransactionDestination.destinationWithArgs(
                         clientId,
                         accountId,
                     )
@@ -120,17 +120,17 @@ private fun NavGraphBuilder.transaction(
     clientId: String,
 ) {
     composable(
-        route = MyAccountsTransactionDestination.route,
+        route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsSelfTransactionDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
-        AccountsTransactionScreen(
+        AccountsSelfTransactionScreen(
             accountId = accountId,
             navigateUp = {
                 navController.navigateUp()
@@ -204,7 +204,7 @@ private fun NavGraphBuilder.accountInfoStub(
             accountNumber = accountId,
             navigateToTransactionScreen = {
                 navController.navigate(
-                    MyAccountsTransactionDestination.destinationWithArgs(
+                    MyAccountsSelfTransactionDestination.destinationWithArgs(
                         clientId,
                         accountId,
                     )
@@ -219,14 +219,14 @@ private fun NavGraphBuilder.transactionStub(
     clientId: String,
 ) {
     composable(
-        route = MyAccountsTransactionDestination.route,
+        route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsSelfTransactionDestination.ACCOUNT_ID)) {
                 "Client Id is required!"
             }
         AccountsTransactionStubScreen(

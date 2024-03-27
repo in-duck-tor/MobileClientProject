@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent

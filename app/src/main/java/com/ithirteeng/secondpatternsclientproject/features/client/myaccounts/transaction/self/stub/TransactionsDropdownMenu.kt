@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
@@ -15,14 +15,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEvent
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionsDropdownStubMenu(
     eventListener: (StubTransactionEvent) -> Unit,
-    state: TransactionState.Content,
+    state: SelfTransactionState.Content,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var scrollState = rememberScrollState()

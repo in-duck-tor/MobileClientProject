@@ -69,7 +69,7 @@ private fun MainContent(
         item {
             WideButton(
                 text = "Make transaction",
-                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionButtonClick) },
+                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionSelfButtonClick) },
                 modifier = Modifier.padding(16.dp)
             )
         }

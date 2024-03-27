@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.component
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
@@ -15,17 +15,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEvent
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEvent
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionsDropdownMenu(
-    eventListener: (TransactionEvent) -> Unit,
-    state: TransactionState.Content,
+fun SelfTransactionsDropdownMenu(
+    eventListener: (SelfTransactionEvent) -> Unit,
+    state: SelfTransactionState.Content,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
     ExposedDropdownMenuBox(
         expanded = false,
@@ -51,7 +51,7 @@ fun TransactionsDropdownMenu(
 
                     },
                     onClick = {
-                        eventListener(TransactionEvent.Ui.WithdrawAccountChoice(account))
+                        eventListener(SelfTransactionEvent.Ui.WithdrawAccountChoice(account))
                         expanded = false
                     }
                 )

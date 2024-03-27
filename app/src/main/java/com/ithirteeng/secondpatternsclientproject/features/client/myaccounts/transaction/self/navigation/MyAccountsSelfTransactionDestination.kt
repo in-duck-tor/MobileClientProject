@@ -1,8 +1,8 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.navigation
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.navigation
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 
-object MyAccountsTransactionDestination: Destination() {
+object MyAccountsSelfTransactionDestination: Destination() {
 
     const val CLIENT_ID = "clientId"
     const val ACCOUNT_ID = "accountId"

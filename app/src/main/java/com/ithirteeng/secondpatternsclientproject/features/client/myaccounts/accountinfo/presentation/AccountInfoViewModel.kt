@@ -38,7 +38,8 @@ class AccountInfoViewModel(
         when (event) {
             is AccountInfoEvent.Init -> handleInit(event)
             is AccountInfoEvent.DataLoaded -> handleDataLoaded(event)
-            is AccountInfoEvent.Ui.MakeTransactionButtonClick -> handleMakeTransactionButtonClick()
+            is AccountInfoEvent.Ui.MakeTransactionSelfButtonClick -> handleMakeTransactionButtonClick()
+            is AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick -> TODO()
             is AccountInfoEvent.Ui.ChangeAccountState -> handleChangeAccountStateButtonClick(
                 action = event.action
             )

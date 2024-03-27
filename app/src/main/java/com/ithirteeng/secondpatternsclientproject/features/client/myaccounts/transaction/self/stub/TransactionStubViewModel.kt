@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -12,8 +12,8 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.M
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.ReplenishAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.WithdrawFromAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEffect
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,9 +24,9 @@ class TransactionStubViewModel(
     private val makeTransactionBetweenAccountsStubUseCase: MakeTransactionBetweenAccountsStubUseCase,
     private val replenishAccountStubUseCase: ReplenishAccountStubUseCase,
     private val withdrawFromAccountStubUseCase: WithdrawFromAccountStubUseCase,
-) : BaseViewModel<TransactionState, StubTransactionEvent, TransactionEffect>() {
+) : BaseViewModel<SelfTransactionState, StubTransactionEvent, SelfTransactionEffect>() {
 
-    override fun initState(): TransactionState = TransactionState.Loading
+    override fun initState(): SelfTransactionState = SelfTransactionState.Loading
 
     private val login = getUserLoginUseCase()
 
@@ -53,7 +53,7 @@ class TransactionStubViewModel(
                 .onFailure {
                     Log.e(TAG, it.message.toString())
                     addEffect(
-                        TransactionEffect.ShowError(
+                        SelfTransactionEffect.ShowError(
                             "Error while getting account data: ${it.message}"
                         )
                     )
@@ -78,7 +78,7 @@ class TransactionStubViewModel(
             .onFailure {
                 Log.e(TAG, it.message.toString())
                 addEffect(
-                    TransactionEffect.ShowError(
+                    SelfTransactionEffect.ShowError(
                         "Error while observing accounts: ${it.message}"
                     )
                 )
@@ -87,18 +87,19 @@ class TransactionStubViewModel(
 
     private fun handleDataLoaded(event: StubTransactionEvent.DataLoaded) {
         when (val currentState = state.value) {
-            is TransactionState.Content -> updateState {
+            is SelfTransactionState.Content -> updateState {
                 currentState.copy(
                     accounts = event.accounts,
                     defaultAccount = event.depositAccount
                 )
             }
 
-            is TransactionState.Loading -> updateState {
-                TransactionState.Content(
+            is SelfTransactionState.Loading -> updateState {
+                SelfTransactionState.Content(
                     accounts = event.accounts,
                     defaultAccount = event.depositAccount,
-                    chosenAccount = event.accounts.first()
+                    chosenAccount = event.accounts.first(),
+                    currencyRates = listOf()
                 )
             }
         }
@@ -106,9 +107,9 @@ class TransactionStubViewModel(
 
     private fun handleAmountChange(event: StubTransactionEvent.Ui.AmountValueChange) {
         when (val currentState = state.value) {
-            is TransactionState.Content -> {
+            is SelfTransactionState.Content -> {
                 if (event.amountText.text.toDouble() > currentState.chosenAccount.amount) {
-                    addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                    addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                 } else {
                     updateState {
                         currentState.copy(
@@ -125,9 +126,9 @@ class TransactionStubViewModel(
 
     private fun handleWithdrawAccountChoice(event: StubTransactionEvent.Ui.WithdrawAccountChoice) {
         when (val currentState = state.value) {
-            is TransactionState.Content -> {
+            is SelfTransactionState.Content -> {
                 if (currentState.amount > currentState.chosenAccount.amount) {
-                    addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                    addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                 }
                 updateState { currentState.copy(chosenAccount = event.account) }
             }
@@ -139,7 +140,7 @@ class TransactionStubViewModel(
     private fun handleDepositButtonClick() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
-                is TransactionState.Content -> {
+                is SelfTransactionState.Content -> {
                     replenishAccountStubUseCase(
                         amount = currentState.amount,
                         accountNumber = currentState.defaultAccount.number,
@@ -147,14 +148,14 @@ class TransactionStubViewModel(
                     )
                         .onSuccess {
                             addEffect(
-                                TransactionEffect.ShowCreationToast("TRANSACTION MADE")
+                                SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE")
                             )
-                            addEffect(TransactionEffect.CloseSelf)
+                            addEffect(SelfTransactionEffect.CloseSelf)
                         }
                         .onFailure {
                             Log.e(TAG, it.message.toString())
                             addEffect(
-                                TransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
+                                SelfTransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
                             )
                         }
 
@@ -169,9 +170,9 @@ class TransactionStubViewModel(
     private fun handleWithdrawButtonClick() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
-                is TransactionState.Content -> {
+                is SelfTransactionState.Content -> {
                     if (currentState.amount > currentState.defaultAccount.amount) {
-                        addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                        addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                     } else {
                         withdrawFromAccountStubUseCase(
                             amount = currentState.amount,
@@ -180,14 +181,14 @@ class TransactionStubViewModel(
                         )
                             .onSuccess {
                                 addEffect(
-                                    TransactionEffect.ShowCreationToast("TRANSACTION MADE")
+                                    SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE")
                                 )
-                                addEffect(TransactionEffect.CloseSelf)
+                                addEffect(SelfTransactionEffect.CloseSelf)
                             }
                             .onFailure {
                                 Log.e(TAG, it.message.toString())
                                 addEffect(
-                                    TransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
+                                    SelfTransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
                                 )
                             }
                     }
@@ -202,9 +203,9 @@ class TransactionStubViewModel(
     private fun handleTransferButtonClick() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
-                is TransactionState.Content -> {
+                is SelfTransactionState.Content -> {
                     if (currentState.amount > currentState.defaultAccount.amount) {
-                        addEffect(TransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                        addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
                     } else {
                         makeTransactionBetweenAccountsStubUseCase(
                             setupWithdrawData(currentState),
@@ -212,14 +213,14 @@ class TransactionStubViewModel(
                         )
                             .onSuccess {
                                 addEffect(
-                                    TransactionEffect.ShowCreationToast("TRANSACTION MADE")
+                                    SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE")
                                 )
-                                addEffect(TransactionEffect.CloseSelf)
+                                addEffect(SelfTransactionEffect.CloseSelf)
                             }
                             .onFailure {
                                 Log.e(TAG, it.message.toString())
                                 addEffect(
-                                    TransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
+                                    SelfTransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
                                 )
                             }
                     }
@@ -231,7 +232,7 @@ class TransactionStubViewModel(
         }
     }
 
-    private fun setupWithdrawData(state: TransactionState.Content): TransactionRequest {
+    private fun setupWithdrawData(state: SelfTransactionState.Content): TransactionRequest {
         return TransactionRequest(
             amount = state.amount,
             withdrawFrom = Target(

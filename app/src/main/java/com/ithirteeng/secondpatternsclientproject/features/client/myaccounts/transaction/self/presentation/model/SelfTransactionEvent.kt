@@ -1,19 +1,21 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
+import com.ithirteeng.secondpatternsclientproject.domain.exchange.model.Currency
 
-sealed interface TransactionEvent : BaseEvent {
+sealed interface SelfTransactionEvent : BaseEvent {
 
-    data class Init(val accountNumber: String) : TransactionEvent
+    data class Init(val accountNumber: String) : SelfTransactionEvent
 
     data class DataLoaded(
         val depositAccount: Account,
         val accounts: List<Account>,
-    ) : TransactionEvent
+        val rates: List<Currency>
+    ) : SelfTransactionEvent
 
-    sealed interface Ui : TransactionEvent, BaseEvent.Ui {
+    sealed interface Ui : SelfTransactionEvent, BaseEvent.Ui {
 
         data class WithdrawButtonClick(val isSelf: Boolean) : Ui
 
@@ -24,5 +26,7 @@ sealed interface TransactionEvent : BaseEvent {
         data class AmountValueChange(
             val amountText: TextFieldValue,
         ) : Ui
+
+        data object CloseMoneyInfoDialog : Ui
     }
 }

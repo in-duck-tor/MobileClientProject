@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub
 
 import android.content.Context
 import android.widget.Toast
@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.WideButton
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.component.AccountCard
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEffect
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -40,8 +40,8 @@ fun AccountsTransactionStubScreen(
     }
 
     when (val state = viewModel.state.collectAsState().value) {
-        is TransactionState.Loading -> LoadingComponent()
-        is TransactionState.Content -> Content(
+        is SelfTransactionState.Loading -> LoadingComponent()
+        is SelfTransactionState.Content -> Content(
             state = state,
             eventListener = viewModel::processEvent
         )
@@ -50,7 +50,7 @@ fun AccountsTransactionStubScreen(
 
 @Composable
 private fun Content(
-    state: TransactionState.Content,
+    state: SelfTransactionState.Content,
     eventListener: (StubTransactionEvent) -> Unit,
 ) {
     Box {
@@ -117,14 +117,14 @@ private suspend fun observeEffectsFlow(
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is TransactionEffect.CloseSelf -> navigateUp()
-            is TransactionEffect.ShowCreationToast -> Toast.makeText(
+            is SelfTransactionEffect.CloseSelf -> navigateUp()
+            is SelfTransactionEffect.ShowCreationToast -> Toast.makeText(
                 context,
                 effect.message,
                 Toast.LENGTH_SHORT
             ).show()
 
-            is TransactionEffect.ShowError -> Toast.makeText(
+            is SelfTransactionEffect.ShowError -> Toast.makeText(
                 context,
                 effect.message,
                 Toast.LENGTH_SHORT

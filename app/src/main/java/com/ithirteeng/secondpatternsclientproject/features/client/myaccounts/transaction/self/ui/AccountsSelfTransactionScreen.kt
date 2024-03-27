@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui
+package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui
 
 import android.content.Context
 import android.widget.Toast
@@ -24,28 +24,29 @@ import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.WideButton
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.component.AccountCard
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.TransactionViewModel
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEffect
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionEvent
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.presentation.model.TransactionState
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.component.TransactionsDropdownMenu
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.SelfTransactionViewModel
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEffect
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEvent
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.component.SelfTransactionsDropdownMenu
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.FinishTransactionDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AccountsTransactionScreen(
+fun AccountsSelfTransactionScreen(
     accountId: String,
     navigateUp: () -> Unit,
-    viewModel: TransactionViewModel = koinViewModel(),
+    viewModel: SelfTransactionViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     LaunchedEffect(null) {
-        viewModel.processEvent(TransactionEvent.Init(accountId))
+        viewModel.processEvent(SelfTransactionEvent.Init(accountId))
         observeEffectsFlow(viewModel, context, navigateUp)
     }
 
     when (val state = viewModel.state.collectAsState().value) {
-        is TransactionState.Loading -> LoadingComponent()
-        is TransactionState.Content -> Content(
+        is SelfTransactionState.Loading -> LoadingComponent()
+        is SelfTransactionState.Content -> Content(
             state = state,
             eventListener = viewModel::processEvent
         )
@@ -54,10 +55,17 @@ fun AccountsTransactionScreen(
 
 @Composable
 private fun Content(
-    state: TransactionState.Content,
-    eventListener: (TransactionEvent) -> Unit,
+    state: SelfTransactionState.Content,
+    eventListener: (SelfTransactionEvent) -> Unit,
 ) {
     Box {
+        if (state.isTransactionInfoDialogOpen) {
+            FinishTransactionDialog(
+                amount = state.amountForTransaction ?: -1.0,
+                currencyCode = state.chosenAccount.currencyCode,
+                onButtonClick = { eventListener(SelfTransactionEvent.Ui.CloseMoneyInfoDialog) }
+            )
+        }
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp)
@@ -73,14 +81,14 @@ private fun Content(
                     modifier = Modifier.padding(vertical = 16.dp),
                     value = state.amountText,
                     onValueChange = {
-                        eventListener(TransactionEvent.Ui.AmountValueChange(it))
+                        eventListener(SelfTransactionEvent.Ui.AmountValueChange(it))
                     },
                     label = { Text(text = "amount") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             }
             item {
-                TransactionsDropdownMenu(
+                SelfTransactionsDropdownMenu(
                     state = state,
                     eventListener = eventListener,
                 )
@@ -90,12 +98,12 @@ private fun Content(
         Column(modifier = Modifier.align(Alignment.BottomCenter)) {
             Row {
                 Button(onClick = {
-                    eventListener(TransactionEvent.Ui.WithdrawButtonClick(true))
+                    eventListener(SelfTransactionEvent.Ui.WithdrawButtonClick(true))
                 }) {
                     Text(text = "Withdraw self")
                 }
                 Button(onClick = {
-                    eventListener(TransactionEvent.Ui.DepositButtonClick)
+                    eventListener(SelfTransactionEvent.Ui.DepositButtonClick)
                 }) {
                     Text(text = "deposit self")
                 }
@@ -103,7 +111,7 @@ private fun Content(
             WideButton(
                 text = "WITHDRAW",
                 onClick = {
-                    eventListener(TransactionEvent.Ui.WithdrawButtonClick(false))
+                    eventListener(SelfTransactionEvent.Ui.WithdrawButtonClick(false))
                 }
             )
         }
@@ -112,20 +120,20 @@ private fun Content(
 
 
 private suspend fun observeEffectsFlow(
-    viewModel: TransactionViewModel,
+    viewModel: SelfTransactionViewModel,
     context: Context,
     navigateUp: () -> Unit,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is TransactionEffect.CloseSelf -> navigateUp()
-            is TransactionEffect.ShowCreationToast -> Toast.makeText(
+            is SelfTransactionEffect.CloseSelf -> navigateUp()
+            is SelfTransactionEffect.ShowCreationToast -> Toast.makeText(
                 context,
                 effect.message,
                 Toast.LENGTH_SHORT
             ).show()
 
-            is TransactionEffect.ShowError -> Toast.makeText(
+            is SelfTransactionEffect.ShowError -> Toast.makeText(
                 context,
                 effect.message,
                 Toast.LENGTH_SHORT

@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.WideButton
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.AccountInfoViewModel
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEvent
@@ -67,12 +68,19 @@ private fun MainContent(
         item {
             ActionButtonsRow(state = state, eventListener = eventListener)
         }
-        item {
-            WideButton(
-                text = "Make transaction",
-                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionButtonClick) },
-                modifier = Modifier.padding(16.dp)
-            )
+        if (state.account.state == AccountState.active) {
+            item {
+                WideButton(
+                    text = "Make transaction (SELF)",
+                    onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionSelfButtonClick) },
+                    modifier = Modifier.padding(16.dp)
+                )
+                WideButton(
+                    text = "Make transaction (GLOBAL)",
+                    onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick) },
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
         items(state.transactions) { transaction ->
             TransactionInfoComponent(
