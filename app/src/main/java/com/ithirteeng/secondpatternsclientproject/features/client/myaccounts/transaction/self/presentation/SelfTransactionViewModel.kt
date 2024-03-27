@@ -145,9 +145,6 @@ class SelfTransactionViewModel(
     private fun handleWithdrawAccountChoice(event: SelfTransactionEvent.Ui.WithdrawAccountChoice) {
         when (val currentState = state.value) {
             is SelfTransactionState.Content -> {
-                if (currentState.amount > currentState.chosenAccount.amount) {
-                    addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
-                }
                 updateState { currentState.copy(chosenAccount = event.account) }
             }
 
@@ -155,14 +152,52 @@ class SelfTransactionViewModel(
         }
     }
 
+    private fun handleMoneyInfoDialogClose() {
+        when (val currentState = state.value) {
+            is SelfTransactionState.Loading -> Unit
+            is SelfTransactionState.Content -> {
+                when (currentState.finishAction) {
+                    SelfTransactionAction.DEPOSIT_SELF -> {
+                        deposit()
+                    }
+
+                    SelfTransactionAction.WITHDRAW_SELF -> {
+                        withdraw(true)
+                    }
+
+                    SelfTransactionAction.WITHDRAW -> {
+                        withdraw(false)
+                    }
+
+                    null -> Unit
+                }
+            }
+        }
+    }
+
     private fun handleDepositButtonClick() {
+        when (val currentState = state.value) {
+            is SelfTransactionState.Content -> {
+                openMoneyInfoDialog(currentState, SelfTransactionAction.DEPOSIT_SELF)
+            }
+
+            is SelfTransactionState.Loading -> Unit
+        }
+    }
+
+    private fun deposit() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val currentState = state.value) {
                 is SelfTransactionState.Content -> {
                     makeTransactionUseCase(setupDepositData(currentState))
                         .onSuccess {
+                            updateState {
+                                currentState.copy(
+                                    isTransactionInfoDialogOpen = false
+                                )
+                            }
                             addEffect(SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE"))
-                            getConvertedMoney(currentState, SelfTransactionAction.DEPOSIT_SELF)
+                            addEffect(SelfTransactionEffect.CloseSelf)
                         }
                         .onFailure {
                             Log.e(TAG, it.message.toString())
@@ -178,7 +213,64 @@ class SelfTransactionViewModel(
         }
     }
 
-    private fun getConvertedMoney(
+    private fun setupDepositData(
+        state: SelfTransactionState.Content,
+    ): TransactionRequest {
+        return TransactionRequest(
+            amount = state.amount,
+            depositOn = Target(
+                accountNumber = state.defaultAccount.number,
+            ),
+            withdrawFrom = null,
+        )
+    }
+
+    private fun handleWithdrawButtonClick(event: SelfTransactionEvent.Ui.WithdrawButtonClick) {
+        when (val currentState = state.value) {
+            is SelfTransactionState.Content -> {
+                val action =
+                    if (event.isSelf) SelfTransactionAction.WITHDRAW_SELF else SelfTransactionAction.WITHDRAW
+                openMoneyInfoDialog(currentState, action)
+            }
+
+            is SelfTransactionState.Loading -> Unit
+        }
+    }
+
+    private fun withdraw(isSelf: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val currentState = state.value) {
+                is SelfTransactionState.Content -> {
+                    val data = setupWithdrawData(currentState, isSelf)
+                    if (data.amount > currentState.defaultAccount.amount) {
+                        addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
+                    } else {
+                        makeTransactionUseCase(data)
+                            .onSuccess {
+                                addEffect(SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE"))
+                                addEffect(SelfTransactionEffect.CloseSelf)
+                            }
+                            .onFailure {
+                                Log.e(TAG, it.message.toString())
+                                addEffect(
+                                    SelfTransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
+                                )
+                            }
+                    }
+                    updateState {
+                        currentState.copy(
+                            isTransactionInfoDialogOpen = false
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
+
+        }
+    }
+
+    private fun openMoneyInfoDialog(
         state: SelfTransactionState.Content,
         finishAction: SelfTransactionAction,
     ) {
@@ -202,65 +294,6 @@ class SelfTransactionViewModel(
                 addEffect(SelfTransactionEffect.ShowError("Failed to convert money"))
             }
 
-    }
-
-    private fun handleMoneyInfoDialogClose() {
-        when (val currentState = state.value) {
-            is SelfTransactionState.Loading -> Unit
-            is SelfTransactionState.Content -> {
-                updateState {
-                    currentState.copy(
-                        isTransactionInfoDialogOpen = false
-                    )
-                }
-            }
-        }
-    }
-
-    private fun setupDepositData(
-        state: SelfTransactionState.Content,
-    ): TransactionRequest {
-        return TransactionRequest(
-            amount = state.amount,
-            depositOn = Target(
-                accountNumber = state.defaultAccount.number,
-            ),
-            withdrawFrom = null,
-        )
-    }
-
-    private fun handleWithdrawButtonClick(event: SelfTransactionEvent.Ui.WithdrawButtonClick) {
-        viewModelScope.launch(Dispatchers.IO) {
-            when (val currentState = state.value) {
-                is SelfTransactionState.Content -> {
-                    val data = setupWithdrawData(currentState, event.isSelf)
-                    if (data.amount > currentState.defaultAccount.amount) {
-                        addEffect(SelfTransactionEffect.ShowError("AMOUNT MUST BE SMALLER"))
-                    } else {
-                        makeTransactionUseCase(data)
-                            .onSuccess {
-                                addEffect(
-                                    SelfTransactionEffect.ShowCreationToast("TRANSACTION MADE")
-                                )
-                                val action = if (event.isSelf)
-                                    SelfTransactionAction.WITHDRAW_SELF
-                                else
-                                    SelfTransactionAction.WITHDRAW
-                                getConvertedMoney(currentState, action)
-                            }
-                            .onFailure {
-                                Log.e(TAG, it.message.toString())
-                                addEffect(
-                                    SelfTransactionEffect.ShowError("ERROR DURING MAKING TRANSACTION: ${it.message}")
-                                )
-                            }
-                    }
-                }
-
-                else -> Unit
-            }
-
-        }
     }
 
     private fun setupWithdrawData(

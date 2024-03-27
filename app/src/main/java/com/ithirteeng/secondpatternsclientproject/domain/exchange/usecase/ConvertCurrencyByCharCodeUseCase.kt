@@ -10,13 +10,18 @@ class ConvertCurrencyByCharCodeUseCase {
         codeTo: String,
         value: Double,
     ): Result<Double> {
-        val fromRate = currencyRates.findLast { it.charCode == codeFrom }?.value
-        val toRate = currencyRates.findLast { it.charCode == codeTo }?.value
+        var fromRate = currencyRates.findLast { it.charCode == codeFrom }?.value
+        var toRate = currencyRates.findLast { it.charCode == codeTo }?.value
+
+        if (codeTo == "RUB") {
+            toRate = 1.0
+        }
+        if (codeFrom == "RUB") {
+            fromRate = 1.0
+        }
 
         return if (fromRate != null && toRate != null) {
             Result.success(value * fromRate / toRate)
-        } else if ((codeTo == codeFrom && codeFrom == "RUB")) {
-            Result.success(value)
         } else {
             Result.failure(NullPointerException("Currency $codeTo does\'t exist"))
         }

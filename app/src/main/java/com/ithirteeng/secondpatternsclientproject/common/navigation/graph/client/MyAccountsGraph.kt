@@ -122,18 +122,28 @@ private fun NavGraphBuilder.transaction(
     composable(
         route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) {
+                type = NavType.StringType
+            },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsSelfTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsSelfTransactionDestination.ACCOUNT_ID
+                )
+            ) {
                 "Client Id is required!"
             }
         AccountsSelfTransactionScreen(
             accountId = accountId,
             navigateUp = {
-                navController.navigateUp()
+                navController.navigate(MyAccountsMainDestination.destinationWithArgs(clientId)) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
             }
         )
     }
@@ -221,12 +231,20 @@ private fun NavGraphBuilder.transactionStub(
     composable(
         route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) {
+                type = NavType.StringType
+            },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsSelfTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsSelfTransactionDestination.ACCOUNT_ID
+                )
+            ) {
                 "Client Id is required!"
             }
         AccountsTransactionStubScreen(
