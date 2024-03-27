@@ -11,6 +11,8 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountHiddenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountVisibleUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.CreateAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.MakeTransactionBetweenAccountsStubUseCase
@@ -24,7 +26,10 @@ import org.koin.dsl.module
 
 val accountsDomainModule = module {
     single<AccountsRemoteDatasource> {
-        AccountsRemoteDatasourceImpl(service = get())
+        AccountsRemoteDatasourceImpl(
+            service = get(),
+            firebaseDatabase = get()
+        )
     }
 
     single<AccountsLocalDatasource> {
@@ -57,4 +62,7 @@ val accountsDomainModule = module {
     factoryOf(::WithdrawFromAccountStubUseCase)
 
     factoryOf(::GetCurrencyCodesUseCase)
+
+    factoryOf(::MakeAccountVisibleUseCase)
+    factoryOf(::MakeAccountHiddenUseCase)
 }

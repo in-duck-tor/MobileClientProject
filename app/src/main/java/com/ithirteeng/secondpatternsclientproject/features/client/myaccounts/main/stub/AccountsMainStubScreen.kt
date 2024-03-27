@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.WideButton
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.MyAccountsMainViewModel
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.MyAccountsMainState
@@ -92,6 +91,7 @@ private fun MainContent(
                         onCardClick = {
                             eventListener(MyAccountsMainEvent.Ui.AccountClick(account.number))
                         },
+                        onVisibilityChangeButtonClick = {},
                         modifier = Modifier
                             .padding(vertical = 8.dp)
                     )

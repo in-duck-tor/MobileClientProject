@@ -61,7 +61,7 @@ private fun MainContent(
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
-            AccountCard(account = state.account, onCardClick = {})
+            AccountCard(account = state.account, onCardClick = {}, onVisibilityChangeButtonClick = {})
         }
         item {
             ActionButtonsRow(state = state, eventListener = eventListener)

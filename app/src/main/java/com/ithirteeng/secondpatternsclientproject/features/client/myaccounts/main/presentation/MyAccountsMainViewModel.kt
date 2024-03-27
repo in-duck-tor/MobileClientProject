@@ -7,6 +7,8 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewMo
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountHiddenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountVisibleUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
@@ -21,6 +23,8 @@ class MyAccountsMainViewModel(
     getUserLoginUseCase: GetUserLoginUseCase,
     private val fetchAccountsUseCase: FetchAccountsUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
+    private val makeAccountHiddenUseCase: MakeAccountHiddenUseCase,
+    private val makeAccountVisibleUseCase: MakeAccountVisibleUseCase,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
 
     override fun initState(): MyAccountsMainState = MyAccountsMainState.Loading
@@ -36,6 +40,11 @@ class MyAccountsMainViewModel(
             is MyAccountsMainEvent.Ui.AccountClick -> handleAccountClick(event)
             is MyAccountsMainEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
             is MyAccountsMainEvent.Ui.AccountsFilterChange -> handleAccountFilterChange(event)
+            is MyAccountsMainEvent.Ui.HiddenAccountVisibilityChange -> handleHiddenAccountsVisibilityChange(
+                event
+            )
+
+            is MyAccountsMainEvent.Ui.ChangeAccountVisibility -> handleAccountVisibilityChange(event)
         }
     }
 
@@ -72,11 +81,38 @@ class MyAccountsMainViewModel(
                     )
                 )
             }
+    }
 
+    private fun handleAccountVisibilityChange(event: MyAccountsMainEvent.Ui.ChangeAccountVisibility) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (event.account.isHidden) {
+                makeAccountVisibleUseCase(login, event.account.copy(isHidden = false))
+            } else {
+                makeAccountHiddenUseCase(login, event.account.copy(isHidden = true))
+            }
+        }
+    }
+
+    private fun handleHiddenAccountsVisibilityChange(
+        event: MyAccountsMainEvent.Ui.HiddenAccountVisibilityChange,
+    ) {
+        when (val currentState = state.value) {
+            is MyAccountsMainState.Content -> updateState {
+                currentState.copy(
+                    showHidden = event.isVisible,
+                    accounts = if (event.isVisible) {
+                        accounts
+                    } else {
+                        accounts.filter { !it.isHidden }
+                    }.sortedBy { it.number }
+                )
+            }
+
+            is MyAccountsMainState.Loading -> Unit
+        }
     }
 
     private suspend fun observeAccounts() {
-
         observeAccountsUseCase.invoke(login)
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
@@ -84,9 +120,25 @@ class MyAccountsMainViewModel(
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
                                 clientId = login,
-                                accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
-                                    accounts.filter { it.state == filter }
-                                } ?: accounts
+                                accounts = when (val currentState = state.value) {
+                                    is MyAccountsMainState.Content -> {
+                                        if (currentState.showHidden) {
+                                            if (currentState.filterState == null) {
+                                                accounts
+                                            } else {
+                                                accounts.filter { it.state == currentState.filterState }
+                                            }
+                                        } else {
+                                            if (currentState.filterState == null) {
+                                                accounts.filter { !it.isHidden }
+                                            } else {
+                                                accounts.filter { it.state == currentState.filterState && !it.isHidden }
+                                            }
+                                        }.sortedBy { it.number }
+                                    }
+
+                                    is MyAccountsMainState.Loading -> accounts
+                                }
                             )
                         )
                         this.accounts = accounts

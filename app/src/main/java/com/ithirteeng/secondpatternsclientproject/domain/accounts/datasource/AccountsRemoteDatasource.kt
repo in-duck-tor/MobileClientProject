@@ -24,4 +24,11 @@ interface AccountsRemoteDatasource {
     suspend fun getAccountTransactions(accountNumber: String): List<Transaction>
 
     suspend fun getCurrencyCodes(): List<CurrencyCode>
+
+
+    suspend fun addHiddenAccount(login: String, accountNumber: String)
+
+    suspend fun getHiddenAccountNumbers(login: String): List<String>?
+
+    suspend fun makeAccountVisible(login: String, accountNumber: String)
 }

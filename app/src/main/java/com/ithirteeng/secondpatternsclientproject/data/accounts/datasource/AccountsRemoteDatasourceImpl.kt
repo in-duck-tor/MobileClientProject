@@ -1,5 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.data.accounts.datasource
 
+import android.util.Log
+import com.google.firebase.database.DatabaseReference
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
@@ -7,9 +9,11 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.CurrencyCode
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
+import kotlinx.coroutines.tasks.await
 
 class AccountsRemoteDatasourceImpl(
     private val service: AccountsNetworkService,
+    private val firebaseDatabase: DatabaseReference,
 ) : AccountsRemoteDatasource {
 
     override suspend fun createAccount(data: CreateAccount): Account {
@@ -57,7 +61,37 @@ class AccountsRemoteDatasourceImpl(
         return service.getAccountTransactions(accountNumber)
     }
 
+
     override suspend fun getCurrencyCodes(): List<CurrencyCode> {
         return service.getCurrencyCodes()
+    }
+
+
+    override suspend fun addHiddenAccount(login: String, accountNumber: String) {
+        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).child(accountNumber).setValue(true)
+    }
+
+    override suspend fun getHiddenAccountNumbers(login: String): List<String>? {
+        val accounts = firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).get().await()
+        return try {
+            (accounts.value as HashMap<String, Boolean>).toHiddenAccountsList()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            null
+        }
+    }
+
+    private fun HashMap<String, Boolean>.toHiddenAccountsList(): List<String> {
+        return this.keys.toList()
+    }
+
+    override suspend fun makeAccountVisible(login: String, accountNumber: String) {
+        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).child(accountNumber).removeValue()
+    }
+
+    private companion object {
+
+        private const val TAG = "AccountsRemoteDatasource"
+        private const val HIDDEN_ACCOUNTS = "hidden_accounts"
     }
 }

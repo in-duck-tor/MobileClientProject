@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,8 +77,15 @@ private fun MainContent(
                     text = stringResource(id = R.string.accounts),
                     style = MaterialTheme.typography.headlineLarge
                 )
+                Checkbox(
+                    checked = state.showHidden,
+                    onCheckedChange = {
+                        eventListener(MyAccountsMainEvent.Ui.HiddenAccountVisibilityChange(it))
+                    }
+                )
                 AccountsMenu(eventListener = eventListener)
             }
+
 
             LazyColumn(
                 modifier = Modifier
@@ -91,6 +99,9 @@ private fun MainContent(
                         account = account,
                         onCardClick = {
                             eventListener(MyAccountsMainEvent.Ui.AccountClick(account.number))
+                        },
+                        onVisibilityChangeButtonClick = {
+                            eventListener(MyAccountsMainEvent.Ui.ChangeAccountVisibility(account))
                         },
                         modifier = Modifier
                             .padding(vertical = 8.dp)
