@@ -3,7 +3,6 @@ package com.ithirteeng.secondpatternsclientproject.features.common.registration.
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
-import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.SetApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
@@ -99,7 +98,8 @@ class RegistrationViewModel(
                                 Token(LoginViewModel.TOKEN, LoginViewModel.TOKEN)
                             )
                             saveUserLoginUseCase(LoginViewModel.LOGIN)
-                            setApplicationThemeUseCase(Theme.AUTO)
+                            //setApplicationThemeUseCase(Theme.AUTO)
+                            fetchApplicationThemeUseCase(LoginViewModel.LOGIN)
                             //TODO: with new login fetchApplicationThemeUseCase()
                             addEffect(RegistrationEffect.NavigateToMainScreen)
                         }

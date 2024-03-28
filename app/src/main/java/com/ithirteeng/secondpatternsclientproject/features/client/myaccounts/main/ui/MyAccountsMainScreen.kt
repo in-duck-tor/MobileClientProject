@@ -43,6 +43,7 @@ fun MyAccountsMainScreen(
 
     LaunchedEffect(null) {
         viewModel.processEvent(MyAccountsMainEvent.Init(clientId))
+
         observeEffects(
             viewModel = viewModel,
             navigateToAccountInfoScreen = navigateToAccountInfoScreen,

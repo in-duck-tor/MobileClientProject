@@ -35,7 +35,7 @@ class MyAccountsMainViewModel(
 
     override fun processEvent(event: MyAccountsMainEvent) {
         when (event) {
-            is MyAccountsMainEvent.Init -> handleInit()
+            is MyAccountsMainEvent.Init -> { handleInit() }
             is MyAccountsMainEvent.DataLoaded -> handleDataLoaded(event)
             is MyAccountsMainEvent.Ui.AccountClick -> handleAccountClick(event)
             is MyAccountsMainEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
@@ -50,7 +50,17 @@ class MyAccountsMainViewModel(
 
     private fun handleInit() {
         viewModelScope.launch(Dispatchers.IO) {
-            loadData()
+            fetchAccountsUseCase(login)
+                .onFailure {
+                    Log.e(TAG, it.message.toString())
+                    addEffect(
+                        MyAccountsMainEffect.ShowError(
+                            R.string.fetching_error,
+                            it.message.toString()
+                        )
+                    )
+                }
+            observeAccounts()
         }
     }
 
@@ -64,23 +74,6 @@ class MyAccountsMainViewModel(
                 currentState.copy(accounts = event.accounts)
             }
         }
-    }
-
-    private suspend fun loadData() {
-        fetchAccountsUseCase(login)
-            .onSuccess {
-                observeAccounts()
-            }
-            .onFailure {
-                Log.e(TAG, it.message.toString())
-                observeAccounts()
-                addEffect(
-                    MyAccountsMainEffect.ShowError(
-                        R.string.fetching_error,
-                        it.message.toString()
-                    )
-                )
-            }
     }
 
     private fun handleAccountVisibilityChange(event: MyAccountsMainEvent.Ui.ChangeAccountVisibility) {
@@ -114,17 +107,14 @@ class MyAccountsMainViewModel(
         observeAccountsUseCase.invoke(login)
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
+                    this.accounts = accounts
                     if (accounts.isNotEmpty()) {
-                        this.accounts = accounts
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
                                 clientId = login,
                                 accounts = when (val currentState = state.value) {
-                                    is MyAccountsMainState.Content -> {
-                                        getSortedAccounts(currentState)
-                                    }
-
-                                    is MyAccountsMainState.Loading -> accounts
+                                    is MyAccountsMainState.Content -> { getSortedAccounts(currentState) }
+                                    is MyAccountsMainState.Loading -> accounts.filter { !it.isHidden }
                                 }
                             )
                         )

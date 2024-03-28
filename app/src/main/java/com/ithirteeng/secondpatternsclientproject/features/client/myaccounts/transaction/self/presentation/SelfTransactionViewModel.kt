@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Target
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
@@ -79,7 +80,9 @@ class SelfTransactionViewModel(
         observeAccountsUseCase(login)
             .onSuccess { flow ->
                 flow.collect { accountsList ->
-                    val correctList = accountsList.filter { it.number != depositAccount.number }
+                    val correctList = accountsList
+                        .filter { it.number != depositAccount.number }
+                        .filter { it.state == AccountState.active }
                     baseAccounts = correctList
                     processEvent(
                         SelfTransactionEvent.DataLoaded(
