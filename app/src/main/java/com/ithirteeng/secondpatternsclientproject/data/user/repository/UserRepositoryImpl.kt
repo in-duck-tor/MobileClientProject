@@ -27,4 +27,12 @@ class UserRepositoryImpl(
     override fun wipeData() {
         tokenStorage.clearStorage()
     }
+
+    override fun getUserId(): String {
+        return tokenStorage.getUserId()
+    }
+
+    override fun saveUserId(userId: String) {
+        tokenStorage.saveUserId(userId)
+    }
 }

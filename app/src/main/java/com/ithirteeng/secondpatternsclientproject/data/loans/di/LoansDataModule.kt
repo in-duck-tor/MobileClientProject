@@ -17,7 +17,7 @@ val loansDataModule = module {
 
     single {
         createRetrofitService<LoansNetworkService>(
-            retrofit = get(named(ConnectionType.UNAUTHORIZED))
+            retrofit = get(named(ConnectionType.AUTHORIZED.name))
         )
     }
 

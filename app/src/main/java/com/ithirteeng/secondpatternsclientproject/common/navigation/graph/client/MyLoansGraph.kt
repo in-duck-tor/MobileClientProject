@@ -38,11 +38,11 @@ private fun NavGraphBuilder.main(
         )
     ) {
         MyLoansMainScreen(
-            navigateToCreateLoanScreen = {
-                navController.navigate(CreateLoanDestination.destination)
-            },
             navigateToLoanInfoScreen = {
                 navController.navigate(LoanInfoDestination.destinationWithArgs(it))
+            },
+            navigateToProgramInfoScreen = {
+
             }
         )
     }

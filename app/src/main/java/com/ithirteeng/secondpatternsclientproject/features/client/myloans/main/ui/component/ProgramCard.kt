@@ -7,14 +7,14 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan.LoanInfoShort
+import com.ithirteeng.secondpatternsclientproject.domain.loans.model.program.LoanProgramResponse
 
 @Composable
-fun LoanCard(
+fun ProgramCard(
     onCardClick: () -> Unit,
-    loan: LoanInfoShort,
+    program: LoanProgramResponse,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -28,29 +28,21 @@ fun LoanCard(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                text = "BorrowedAmount: ${loan.borrowedAmount}",
+                text = "InterestRate: ${program.interestRate}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "InterestRate: ${loan.interestRate}",
+                text = "Payment type: ${program.paymentType}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "Planned Payment Number: ${loan.plannedPaymentsNumber}",
+                text = "Schedule payment type: ${program.paymentScheduleType}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "Остаток: ${loan.loanBody}",
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-            Text(
-                text = "Задолженность по кредиту: ${loan.loanDebt}",
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-            Text(
-                text = "Штраф по задолженности: ${loan.penalty}",
+                text = "Период: ${program.periodInterval}",
                 modifier = Modifier.padding(vertical = 4.dp),
-                color = Color.Red
+                textDecoration = TextDecoration.Underline
             )
         }
     }

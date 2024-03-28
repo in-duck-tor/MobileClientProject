@@ -13,4 +13,8 @@ interface UserRepository {
     fun getLogin(): String
 
     fun wipeData()
+
+    fun getUserId(): String
+
+    fun saveUserId(userId: String)
 }
