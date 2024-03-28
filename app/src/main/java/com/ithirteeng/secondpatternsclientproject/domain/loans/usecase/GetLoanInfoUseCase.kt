@@ -6,6 +6,6 @@ class GetLoanInfoUseCase(
     private val remoteDatasource: LoansRemoteDatasource,
 ) {
 
-    suspend operator fun invoke(loanId: String) =
-        remoteDatasource.getLoanInfo(loanId)
+    suspend operator fun invoke(loanId: Int) =
+        remoteDatasource.getLoanInfo(loanId.toString())
 }
