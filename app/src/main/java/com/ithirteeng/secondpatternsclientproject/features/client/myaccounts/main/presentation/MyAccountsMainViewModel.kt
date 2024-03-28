@@ -98,13 +98,11 @@ class MyAccountsMainViewModel(
     ) {
         when (val currentState = state.value) {
             is MyAccountsMainState.Content -> updateState {
-                currentState.copy(
+                val newState = currentState.copy(
                     showHidden = event.isVisible,
-                    accounts = if (event.isVisible) {
-                        accounts
-                    } else {
-                        accounts.filter { !it.isHidden }
-                    }.sortedBy { it.number }
+                )
+                newState.copy(
+                    accounts = getSortedAccounts(newState)
                 )
             }
 
@@ -117,31 +115,19 @@ class MyAccountsMainViewModel(
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
                     if (accounts.isNotEmpty()) {
+                        this.accounts = accounts
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
                                 clientId = login,
                                 accounts = when (val currentState = state.value) {
                                     is MyAccountsMainState.Content -> {
-                                        if (currentState.showHidden) {
-                                            if (currentState.filterState == null) {
-                                                accounts
-                                            } else {
-                                                accounts.filter { it.state == currentState.filterState }
-                                            }
-                                        } else {
-                                            if (currentState.filterState == null) {
-                                                accounts.filter { !it.isHidden }
-                                            } else {
-                                                accounts.filter { it.state == currentState.filterState && !it.isHidden }
-                                            }
-                                        }.sortedBy { it.number }
+                                        getSortedAccounts(currentState)
                                     }
 
                                     is MyAccountsMainState.Loading -> accounts
                                 }
                             )
                         )
-                        this.accounts = accounts
                     }
                 }
 
@@ -155,6 +141,22 @@ class MyAccountsMainViewModel(
                     )
                 )
             }
+    }
+
+    private fun getSortedAccounts(currentState: MyAccountsMainState.Content): List<Account> {
+        return if (currentState.showHidden) {
+            if (currentState.filterState == null) {
+                accounts
+            } else {
+                accounts.filter { it.state == currentState.filterState }
+            }
+        } else {
+            if (currentState.filterState == null) {
+                accounts.filter { !it.isHidden }
+            } else {
+                accounts.filter { it.state == currentState.filterState && !it.isHidden }
+            }
+        }.sortedBy { it.number }
     }
 
     private fun handleCreateAccountButtonClick() {
@@ -187,15 +189,15 @@ class MyAccountsMainViewModel(
             AccountsFilter.CLOSED -> AccountState.closed
             AccountsFilter.FROZEN -> AccountState.frozen
         }
-        when (state.value) {
+        when (val currentState = state.value) {
             is MyAccountsMainState.Content -> {
                 updateState {
-                    (state.value as MyAccountsMainState.Content).copy(
+                    val newState = currentState.copy(
                         filter = event.filter,
                         filterState = accountState,
-                        accounts = accountState?.let {
-                            accounts.filter { it.state == accountState }
-                        } ?: accounts
+                    )
+                    newState.copy(
+                        accounts = getSortedAccounts(newState)
                     )
                 }
             }
