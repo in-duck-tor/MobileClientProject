@@ -24,7 +24,7 @@ fun NavGraphBuilder.myLoansGraph(
     ) {
         main(navController)
         createLoan(navController)
-        loanInfo(navController)
+        loanInfo()
     }
 }
 
@@ -60,22 +60,17 @@ private fun NavGraphBuilder.createLoan(
     }
 }
 
-private fun NavGraphBuilder.loanInfo(
-    navController: NavHostController,
-) {
+private fun NavGraphBuilder.loanInfo() {
     composable(
         route = LoanInfoDestination.route,
         arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.StringType })
     ) { navBackStackEntry ->
         val loanId =
-            requireNotNull(navBackStackEntry.arguments?.getString(LoanInfoDestination.LOAN_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getInt(LoanInfoDestination.LOAN_ID)) {
                 "Loan Id is required!"
             }
         LoanInfoScreen(
             loanId = loanId,
-            navigateUp = {
-                navController.navigateUp()
-            }
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.component
+package com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.ui.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
@@ -15,14 +15,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEvent
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionState
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.presentation.model.LoanInfoEvent
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.presentation.model.LoanInfoState
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelfTransactionsDropdownMenu(
-    eventListener: (SelfTransactionEvent) -> Unit,
-    state: SelfTransactionState.Content,
+fun LoanInfoDropdownMenu(
+    eventListener: (LoanInfoEvent) -> Unit,
+    state: LoanInfoState.Content,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
@@ -53,9 +54,10 @@ fun SelfTransactionsDropdownMenu(
                                     "STATE: ${account.state.name} \n " +
                                     "CODE: ${account.currencyCode}"
                         )
+
                     },
                     onClick = {
-                        eventListener(SelfTransactionEvent.Ui.WithdrawAccountChoice(account))
+                        eventListener(LoanInfoEvent.Ui.ChoosePaymentAccount(account))
                         expanded = false
                     }
                 )
