@@ -5,9 +5,11 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEffect
 
 sealed interface AccountInfoEffect : BaseEffect {
 
-    data class NavigateToTransactionScreen(
+    data class NavigateToSelfTransactionScreen(
         val accountNumber: String,
     ) : AccountInfoEffect
+
+    data object NavigateToGlobalTransactionScreen : AccountInfoEffect
 
     data class ShowError(
         @StringRes val stringResource: Int,

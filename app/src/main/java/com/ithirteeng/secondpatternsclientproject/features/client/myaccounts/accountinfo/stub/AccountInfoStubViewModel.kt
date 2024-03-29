@@ -161,7 +161,7 @@ class AccountInfoStubViewModel(
                     )
                 } else {
                     addEffect(
-                        AccountInfoEffect.NavigateToTransactionScreen(currentState.account.number)
+                        AccountInfoEffect.NavigateToSelfTransactionScreen(currentState.account.number)
                     )
                 }
             }

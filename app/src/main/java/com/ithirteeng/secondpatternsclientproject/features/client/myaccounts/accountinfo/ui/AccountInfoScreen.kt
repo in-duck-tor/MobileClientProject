@@ -30,9 +30,9 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AccountInfoScreen(
-    clientId: String,
     accountNumber: String,
-    navigateToTransactionScreen: (accountNumber: String) -> Unit,
+    navigateToSelfTransactionScreen: (accountNumber: String) -> Unit,
+    navigateToGlobalTransactionScreen: (accountNumber: String) -> Unit,
     viewModel: AccountInfoViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
@@ -42,8 +42,11 @@ fun AccountInfoScreen(
             viewModel = viewModel,
             context = context,
             navigateToTransactionScreen = {
-                navigateToTransactionScreen(accountNumber)
-            }
+                navigateToSelfTransactionScreen(accountNumber)
+            },
+            navigateToGlobalTransactionScreen = {
+                navigateToGlobalTransactionScreen(accountNumber)
+            },
         )
     }
 
@@ -115,16 +118,19 @@ private fun ActionButtonsRow(
 private suspend fun observeEffects(
     viewModel: AccountInfoViewModel,
     navigateToTransactionScreen: () -> Unit,
+    navigateToGlobalTransactionScreen: () -> Unit,
     context: Context,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is AccountInfoEffect.NavigateToTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToSelfTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToGlobalTransactionScreen -> navigateToGlobalTransactionScreen()
             is AccountInfoEffect.ShowError -> Toast.makeText(
                 context,
                 context.getString(effect.stringResource) + ": " + effect.message,
                 Toast.LENGTH_SHORT
             ).show()
+
         }
 
     }

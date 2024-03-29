@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation
 
 import android.util.Log
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
@@ -136,8 +137,8 @@ class SelfTransactionViewModel(
 
                 updateState {
                     currentState.copy(
-                        amount = amount,
-                        amountText = event.amountText
+                        amount = if (amount <= 0.0) currentState.amount else amount,
+                        amountText = if (amount <= 0.0) currentState.amountText else event.amountText
                     )
                 }
             }

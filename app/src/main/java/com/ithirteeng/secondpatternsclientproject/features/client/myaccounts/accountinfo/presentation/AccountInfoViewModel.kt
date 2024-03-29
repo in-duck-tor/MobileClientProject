@@ -39,11 +39,15 @@ class AccountInfoViewModel(
             is AccountInfoEvent.Init -> handleInit(event)
             is AccountInfoEvent.DataLoaded -> handleDataLoaded(event)
             is AccountInfoEvent.Ui.MakeTransactionSelfButtonClick -> handleMakeTransactionButtonClick()
-            is AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick -> TODO()
+            is AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick -> handleMakeGlobalTransactionButtonClick()
             is AccountInfoEvent.Ui.ChangeAccountState -> handleChangeAccountStateButtonClick(
                 action = event.action
             )
         }
+    }
+
+    private fun handleMakeGlobalTransactionButtonClick() {
+        addEffect(AccountInfoEffect.NavigateToGlobalTransactionScreen)
     }
 
     private fun handleInit(event: AccountInfoEvent.Init) {
@@ -167,7 +171,7 @@ class AccountInfoViewModel(
     private fun handleMakeTransactionButtonClick() {
         when (val currentState = state.value) {
             is AccountInfoState.Content -> addEffect(
-                AccountInfoEffect.NavigateToTransactionScreen(currentState.account.number)
+                AccountInfoEffect.NavigateToSelfTransactionScreen(currentState.account.number)
             )
 
             else -> Unit

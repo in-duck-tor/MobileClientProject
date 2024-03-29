@@ -19,7 +19,7 @@ interface LoansNetworkService {
     @GET("loan/{loanId}")
     suspend fun getLoanInfo(@Path("loanId") loanId: String): LoanInfoResponse
 
-    @GET("loan/client'{clientId}")
+    @GET("loan/client/{clientId}")
     suspend fun getUserLoans(@Path("clientId") clientId: String): List<LoanInfoShort>
 
     @GET("application")

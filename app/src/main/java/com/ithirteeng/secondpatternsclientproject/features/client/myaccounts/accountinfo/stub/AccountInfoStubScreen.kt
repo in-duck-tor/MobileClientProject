@@ -113,12 +113,14 @@ private suspend fun observeEffects(
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is AccountInfoEffect.NavigateToTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToSelfTransactionScreen -> navigateToTransactionScreen()
             is AccountInfoEffect.ShowError -> Toast.makeText(
                 context,
                 context.getString(effect.stringResource) + ": " + effect.message,
                 Toast.LENGTH_SHORT
             ).show()
+
+            AccountInfoEffect.NavigateToGlobalTransactionScreen -> Unit
         }
 
     }

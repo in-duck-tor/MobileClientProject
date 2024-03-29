@@ -105,15 +105,11 @@ class CreateLoanViewModel(
                 } catch (e: Exception) {
                     0.0
                 }
-                if (amount <= 0) {
-                    addEffect(CreateLoanEffect.ShowError("AMOUNT must be positive"))
-                } else {
-                    updateState {
-                        currentState.copy(
-                            amount = amount,
-                            amountText = event.value
-                        )
-                    }
+                updateState {
+                    currentState.copy(
+                        amount = if (amount <= 0.0) currentState.amount else amount,
+                        amountText = if (amount <= 0.0) currentState.amountText else event.value
+                    )
                 }
             }
 

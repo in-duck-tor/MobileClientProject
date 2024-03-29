@@ -16,6 +16,8 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.mai
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.stub.AccountsMainStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.MyAccountsMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.navigation.MyAccountsGlobalTransactionDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.ui.AccountsGlobalTransactionScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.navigation.MyAccountsSelfTransactionDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub.AccountsTransactionStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.AccountsSelfTransactionScreen
@@ -36,9 +38,8 @@ fun NavGraphBuilder.myAccountsGraph(
         main(navController, clientId)
         accountInfo(navController, clientId)
         createAccount(navController)
-        transaction(navController, clientId)
-
-
+        selfTransaction(navController, clientId)
+        globalTransaction(navController)
     }
 }
 
@@ -101,13 +102,19 @@ private fun NavGraphBuilder.accountInfo(
                 "Client Id is required!"
             }
         AccountInfoScreen(
-            clientId = clientId,
             accountNumber = accountId,
-            navigateToTransactionScreen = {
+            navigateToSelfTransactionScreen = {
                 navController.navigate(
                     MyAccountsSelfTransactionDestination.destinationWithArgs(
                         clientId,
                         accountId,
+                    )
+                )
+            },
+            navigateToGlobalTransactionScreen = {
+                navController.navigate(
+                    MyAccountsGlobalTransactionDestination.destinationWithArgs(
+                        it
                     )
                 )
             }
@@ -115,7 +122,7 @@ private fun NavGraphBuilder.accountInfo(
     }
 }
 
-private fun NavGraphBuilder.transaction(
+private fun NavGraphBuilder.selfTransaction(
     navController: NavHostController,
     clientId: String,
 ) {
@@ -142,6 +149,36 @@ private fun NavGraphBuilder.transaction(
             accountId = accountId,
             navigateUp = {
                 navController.navigate(MyAccountsMainDestination.destinationWithArgs(clientId)) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+            }
+        )
+    }
+}
+
+private fun NavGraphBuilder.globalTransaction(
+    navController: NavHostController,
+) {
+    composable(
+        route = MyAccountsGlobalTransactionDestination.route,
+        arguments = listOf(
+            navArgument(MyAccountsGlobalTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
+        )
+    ) { navBackStackEntry ->
+        val accountId =
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsGlobalTransactionDestination.ACCOUNT_ID
+                )
+            ) {
+                "Client Id is required!"
+            }
+        AccountsGlobalTransactionScreen(
+            accountId = accountId,
+            closeSelf = {
+                navController.navigate(MyAccountsMainDestination.destinationWithArgs(accountId)) {
                     popUpTo(navController.graph.id) { inclusive = true }
                 }
             }

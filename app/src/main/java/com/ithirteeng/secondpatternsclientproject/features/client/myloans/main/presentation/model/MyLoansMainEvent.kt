@@ -15,8 +15,8 @@ sealed interface MyLoansMainEvent : BaseEvent {
 
     sealed interface Ui : MyLoansMainEvent, BaseEvent.Ui {
 
-        data class LoanProgramClick(val programId: Int) : Ui
+        data class LoanProgramClick(val programId: Long) : Ui
 
-        data class LoanClick(val loanId: Int) : Ui
+        data class LoanClick(val loanId: Long) : Ui
     }
 }
