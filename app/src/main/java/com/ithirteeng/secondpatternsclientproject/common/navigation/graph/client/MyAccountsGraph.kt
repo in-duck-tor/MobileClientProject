@@ -111,7 +111,7 @@ private fun NavGraphBuilder.accountInfo(
                     )
                 )
             },
-            navigateToGlobalTransactionScreen = {
+            navigateToSelfGlobalScreen = {
                 navController.navigate(
                     MyAccountsGlobalTransactionDestination.destinationWithArgs(
                         it

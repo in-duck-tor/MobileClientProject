@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 fun AccountInfoScreen(
     accountNumber: String,
     navigateToSelfTransactionScreen: (accountNumber: String) -> Unit,
-    navigateToGlobalTransactionScreen: (accountNumber: String) -> Unit,
+    navigateToSelfGlobalScreen: (accountNumber: String) -> Unit,
     viewModel: AccountInfoViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
@@ -45,7 +45,7 @@ fun AccountInfoScreen(
                 navigateToSelfTransactionScreen(accountNumber)
             },
             navigateToGlobalTransactionScreen = {
-                navigateToGlobalTransactionScreen(accountNumber)
+                navigateToSelfGlobalScreen(accountNumber)
             },
         )
     }

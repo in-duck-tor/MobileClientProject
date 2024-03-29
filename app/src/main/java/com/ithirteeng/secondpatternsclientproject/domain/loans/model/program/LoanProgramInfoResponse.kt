@@ -4,7 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.loans.model.payment.Pay
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.payment.PaymentType
 
 data class LoanProgramInfoResponse(
-    val interestRate: Double,
+    val interestRate: String,
     val paymentType: PaymentType,
     val paymentScheduleType: PaymentScheduleType,
     val periodInterval: Int,

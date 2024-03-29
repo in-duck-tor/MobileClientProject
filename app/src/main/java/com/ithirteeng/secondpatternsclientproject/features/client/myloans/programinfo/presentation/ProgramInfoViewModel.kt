@@ -32,7 +32,7 @@ class ProgramInfoViewModel(
 
     private fun handleInit(event: ProgramInfoEvent.Init) {
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
-            val programs = getLoanProgramsUseCase.invoke()
+            val programs = getLoanProgramsUseCase()
             programs.findLast { it.id == event.programId }?.let { program ->
                 processEvent(ProgramInfoEvent.DataLoaded(program = program))
             }

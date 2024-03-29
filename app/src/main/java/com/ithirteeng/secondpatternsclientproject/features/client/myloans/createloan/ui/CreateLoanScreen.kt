@@ -80,7 +80,7 @@ private fun Content(
 
         WideButton(
             text = "SubmitLoan",
-            onClick = { CreateLoanEvent.Ui.CreateLoanButtonClick }
+            onClick = { eventListener(CreateLoanEvent.Ui.CreateLoanButtonClick) }
         )
     }
 }

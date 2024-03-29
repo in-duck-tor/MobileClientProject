@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.ui.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -18,7 +19,7 @@ fun ProgramCard(
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         onClick = onCardClick,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp

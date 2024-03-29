@@ -45,7 +45,7 @@ private fun NavGraphBuilder.main(
                 navController.navigate(LoanInfoDestination.destinationWithArgs(it))
             },
             navigateToProgramInfoScreen = {
-
+                navController.navigate(ProgramInfoDestination.destinationWithArgs(it))
             }
         )
     }
@@ -56,12 +56,12 @@ private fun NavGraphBuilder.createLoan(
 ) {
     composable(
         route = CreateLoanDestination.route,
-        arguments = listOf(navArgument(CreateLoanDestination.PROGRAM_ID) { NavType.LongType })
+        arguments = listOf(navArgument(CreateLoanDestination.PROGRAM_ID) { NavType.StringType })
     ) { navBackStackEntry ->
         val programId =
-            requireNotNull(navBackStackEntry.arguments?.getLong(CreateLoanDestination.PROGRAM_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(CreateLoanDestination.PROGRAM_ID)) {
                 "Program Id is required!"
-            }
+            }.toLong()
         CreateLoanScreen(
             programId = programId,
             navigateUp = {
@@ -74,12 +74,12 @@ private fun NavGraphBuilder.createLoan(
 private fun NavGraphBuilder.loanInfo() {
     composable(
         route = LoanInfoDestination.route,
-        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.LongType })
+        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.StringType })
     ) { navBackStackEntry ->
         val loanId =
-            requireNotNull(navBackStackEntry.arguments?.getLong(LoanInfoDestination.LOAN_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(LoanInfoDestination.LOAN_ID)) {
                 "Loan Id is required!"
-            }
+            }.toLong()
         LoanInfoScreen(
             loanId = loanId,
         )
@@ -89,12 +89,12 @@ private fun NavGraphBuilder.loanInfo() {
 private fun NavGraphBuilder.programInfo(navController: NavHostController) {
     composable(
         route = ProgramInfoDestination.route,
-        arguments = listOf(navArgument(ProgramInfoDestination.PROGRAM_ID) { NavType.LongType })
+        arguments = listOf(navArgument(ProgramInfoDestination.PROGRAM_ID) { NavType.StringType })
     ) { navBackStackEntry ->
         val programId =
-            requireNotNull(navBackStackEntry.arguments?.getLong(ProgramInfoDestination.PROGRAM_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getString(ProgramInfoDestination.PROGRAM_ID)) {
                 "Program Id is required!"
-            }
+            }.toLong()
         ProgramInfoScreen(
             programId = programId,
             navigateToCreateLoanScreen = {
