@@ -2,4 +2,4 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.na
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 
-object MyAccountsDestination: Destination()
+object MyAccountsDestination : Destination()

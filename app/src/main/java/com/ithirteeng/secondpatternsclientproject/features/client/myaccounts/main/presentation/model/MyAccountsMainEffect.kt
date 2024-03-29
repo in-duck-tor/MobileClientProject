@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.ma
 import androidx.annotation.StringRes
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEffect
 
-sealed interface MyAccountsMainEffect: BaseEffect {
+sealed interface MyAccountsMainEffect : BaseEffect {
 
     data class NavigateToAccountInfoScreen(
         val clientId: String,

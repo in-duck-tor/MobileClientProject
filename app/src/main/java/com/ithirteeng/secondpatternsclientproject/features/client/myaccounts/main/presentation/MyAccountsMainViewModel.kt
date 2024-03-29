@@ -35,7 +35,10 @@ class MyAccountsMainViewModel(
 
     override fun processEvent(event: MyAccountsMainEvent) {
         when (event) {
-            is MyAccountsMainEvent.Init -> { handleInit() }
+            is MyAccountsMainEvent.Init -> {
+                handleInit()
+            }
+
             is MyAccountsMainEvent.DataLoaded -> handleDataLoaded(event)
             is MyAccountsMainEvent.Ui.AccountClick -> handleAccountClick(event)
             is MyAccountsMainEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
@@ -113,7 +116,10 @@ class MyAccountsMainViewModel(
                             MyAccountsMainEvent.DataLoaded(
                                 clientId = login,
                                 accounts = when (val currentState = state.value) {
-                                    is MyAccountsMainState.Content -> { getSortedAccounts(currentState) }
+                                    is MyAccountsMainState.Content -> {
+                                        getSortedAccounts(currentState)
+                                    }
+
                                     is MyAccountsMainState.Loading -> accounts.filter { !it.isHidden }
                                 }
                             )

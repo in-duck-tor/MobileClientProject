@@ -4,7 +4,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.exchange.model.Currency
-import com.ithirteeng.secondpatternsclientproject.domain.exchange.model.CurrencyRate
 
 sealed interface SelfTransactionState : BaseState {
 

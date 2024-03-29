@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.domain.loans.datasource.LoansStubDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.base.Loan
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
-import java.time.LocalDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import kotlin.random.Random
 
 class CreateLoanViewModel(

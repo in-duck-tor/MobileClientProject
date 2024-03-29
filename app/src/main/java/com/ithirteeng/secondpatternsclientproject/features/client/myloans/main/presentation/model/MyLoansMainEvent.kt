@@ -4,7 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan.LoanInfoShort
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.program.LoanProgramResponse
 
-sealed interface MyLoansMainEvent: BaseEvent {
+sealed interface MyLoansMainEvent : BaseEvent {
 
     data object Init : MyLoansMainEvent
 

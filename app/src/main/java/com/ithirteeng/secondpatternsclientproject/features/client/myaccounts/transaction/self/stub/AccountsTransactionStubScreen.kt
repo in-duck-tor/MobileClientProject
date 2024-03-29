@@ -83,7 +83,9 @@ private fun Content(
             }
         }
 
-        Column(modifier = Modifier.align(Alignment.BottomCenter).wrapContentHeight()) {
+        Column(modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .wrapContentHeight()) {
             WideButton(
                 text = "DEPOSIT SINGLE",
                 onClick = {

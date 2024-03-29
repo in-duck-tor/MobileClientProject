@@ -2,4 +2,4 @@ package com.ithirteeng.secondpatternsclientproject.features.common.splash.naviga
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 
-object SplashDestination: Destination()
+object SplashDestination : Destination()

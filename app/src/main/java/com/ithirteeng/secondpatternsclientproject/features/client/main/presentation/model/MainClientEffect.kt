@@ -11,5 +11,5 @@ sealed interface MainClientEffect : BaseEffect {
 
     data class NavigateToClientScreen(
         val route: String,
-    ): MainClientEffect
+    ) : MainClientEffect
 }

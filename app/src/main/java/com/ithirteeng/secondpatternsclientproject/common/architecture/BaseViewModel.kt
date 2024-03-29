@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<State : BaseState, Event : BaseEvent, Effect : BaseEffect> : ViewModel() {
+abstract class BaseViewModel<State : BaseState, Event : BaseEvent, Effect : BaseEffect> :
+    ViewModel() {
 
     protected val _screenState by lazy { MutableStateFlow(initState()) }
 

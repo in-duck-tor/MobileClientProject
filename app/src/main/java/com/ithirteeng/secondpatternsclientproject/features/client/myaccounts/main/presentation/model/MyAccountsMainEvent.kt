@@ -19,6 +19,6 @@ sealed interface MyAccountsMainEvent : BaseEvent {
 
         data class HiddenAccountVisibilityChange(val isVisible: Boolean) : Ui
 
-        data class ChangeAccountVisibility(val account: Account): Ui
+        data class ChangeAccountVisibility(val account: Account) : Ui
     }
 }

@@ -4,7 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 
-sealed interface StubTransactionEvent: BaseEvent {
+sealed interface StubTransactionEvent : BaseEvent {
 
     data class Init(val accountNumber: String) : StubTransactionEvent
 

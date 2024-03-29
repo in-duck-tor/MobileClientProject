@@ -2,5 +2,4 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.creat
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 
-object CreateLoanDestination : Destination() {
-}
+object CreateLoanDestination : Destination()

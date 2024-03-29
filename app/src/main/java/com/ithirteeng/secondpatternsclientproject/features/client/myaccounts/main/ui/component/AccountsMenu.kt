@@ -21,7 +21,12 @@ fun AccountsMenu(
     eventListener: (MyAccountsMainEvent) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val filters = listOf(AccountsFilter.ALL, AccountsFilter.ACTIVE, AccountsFilter.CLOSED, AccountsFilter.FROZEN)
+    val filters = listOf(
+        AccountsFilter.ALL,
+        AccountsFilter.ACTIVE,
+        AccountsFilter.CLOSED,
+        AccountsFilter.FROZEN
+    )
     var selectedText by remember { mutableStateOf(filters[0]) }
 
     ExposedDropdownMenuBox(

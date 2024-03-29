@@ -2,7 +2,6 @@ package com.ithirteeng.secondpatternsclientproject.features.common.settings.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ithirteeng.secondpatternsclientproject.app.MainViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.SetApplicationThemeUseCase

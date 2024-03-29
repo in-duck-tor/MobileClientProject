@@ -1,7 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.common.network.di
 
-import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.provideAuthorizedOkHttpClient
 import com.ithirteeng.secondpatternsclientproject.common.network.provideLoggingInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.provideNetworkConnectionInterceptor
