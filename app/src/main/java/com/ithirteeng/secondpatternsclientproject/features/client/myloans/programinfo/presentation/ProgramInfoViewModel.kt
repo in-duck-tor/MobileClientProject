@@ -42,7 +42,7 @@ class ProgramInfoViewModel(
 
     private fun handleDataLoaded(event: ProgramInfoEvent.DataLoaded) {
         when (val currentState = state.value) {
-            is ProgramInfoState.Loading -> ProgramInfoState.Content(event.program)
+            is ProgramInfoState.Loading -> updateState { ProgramInfoState.Content(event.program) }
             is ProgramInfoState.Content -> updateState { currentState.copy(program = event.program) }
         }
     }

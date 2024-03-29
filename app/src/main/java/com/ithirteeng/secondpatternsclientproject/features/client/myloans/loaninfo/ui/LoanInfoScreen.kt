@@ -30,7 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoanInfoScreen(
-    loanId: Int,
+    loanId: Long,
     viewModel: LoanInfoViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current

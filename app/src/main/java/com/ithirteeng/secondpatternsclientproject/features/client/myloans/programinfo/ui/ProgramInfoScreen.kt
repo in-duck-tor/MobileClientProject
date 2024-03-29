@@ -25,8 +25,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProgramInfoScreen(
-    programId: Int,
-    navigateToCreateLoanScreen: (programId: Int) -> Unit,
+    programId: Long,
+    navigateToCreateLoanScreen: (programId: Long) -> Unit,
     viewModel: ProgramInfoViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
@@ -85,7 +85,7 @@ private fun Content(
 private suspend fun observeEffects(
     context: Context,
     viewModel: ProgramInfoViewModel,
-    navigateToCreateLoanScreen: (Int) -> Unit,
+    navigateToCreateLoanScreen: (Long) -> Unit,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {

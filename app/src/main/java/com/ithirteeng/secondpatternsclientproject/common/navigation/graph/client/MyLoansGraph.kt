@@ -56,10 +56,10 @@ private fun NavGraphBuilder.createLoan(
 ) {
     composable(
         route = CreateLoanDestination.route,
-        arguments = listOf(navArgument(CreateLoanDestination.PROGRAM_ID) { NavType.IntType })
+        arguments = listOf(navArgument(CreateLoanDestination.PROGRAM_ID) { NavType.LongType })
     ) { navBackStackEntry ->
         val programId =
-            requireNotNull(navBackStackEntry.arguments?.getInt(CreateLoanDestination.PROGRAM_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getLong(CreateLoanDestination.PROGRAM_ID)) {
                 "Program Id is required!"
             }
         CreateLoanScreen(
@@ -74,10 +74,10 @@ private fun NavGraphBuilder.createLoan(
 private fun NavGraphBuilder.loanInfo() {
     composable(
         route = LoanInfoDestination.route,
-        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.IntType })
+        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.LongType })
     ) { navBackStackEntry ->
         val loanId =
-            requireNotNull(navBackStackEntry.arguments?.getInt(LoanInfoDestination.LOAN_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getLong(LoanInfoDestination.LOAN_ID)) {
                 "Loan Id is required!"
             }
         LoanInfoScreen(
@@ -89,10 +89,10 @@ private fun NavGraphBuilder.loanInfo() {
 private fun NavGraphBuilder.programInfo(navController: NavHostController) {
     composable(
         route = ProgramInfoDestination.route,
-        arguments = listOf(navArgument(ProgramInfoDestination.PROGRAM_ID) { NavType.IntType })
+        arguments = listOf(navArgument(ProgramInfoDestination.PROGRAM_ID) { NavType.LongType })
     ) { navBackStackEntry ->
         val programId =
-            requireNotNull(navBackStackEntry.arguments?.getInt(ProgramInfoDestination.PROGRAM_ID)) {
+            requireNotNull(navBackStackEntry.arguments?.getLong(ProgramInfoDestination.PROGRAM_ID)) {
                 "Program Id is required!"
             }
         ProgramInfoScreen(

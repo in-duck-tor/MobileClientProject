@@ -28,7 +28,7 @@ val networkModule = module {
     single(named(ConnectionType.UNAUTHORIZED.name)) {
         provideRetrofit(
             okHttpClient = get(named(ConnectionType.UNAUTHORIZED.name)),
-            url = "http://89.19.214.8:8000/api/v1/"
+            url = "http://89.19.214.8/api/v1/"
         )
     }
 
@@ -43,7 +43,7 @@ val networkModule = module {
     single(named(ConnectionType.AUTHORIZED.name)) {
         provideRetrofit(
             okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
-            url = "http://89.19.214.8:8000/api/v1/"
+            url = "http://89.19.214.8/api/v1/"
         )
     }
 

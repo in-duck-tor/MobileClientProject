@@ -40,6 +40,7 @@ class SelfTransactionViewModel(
         when (event) {
             is SelfTransactionEvent.Init -> handleInit(event)
             is SelfTransactionEvent.DataLoaded -> handleDataLoaded(event)
+
             is SelfTransactionEvent.Ui.AmountValueChange -> handleAmountChange(event)
             is SelfTransactionEvent.Ui.WithdrawAccountChoice -> handleWithdrawAccountChoice(event)
             is SelfTransactionEvent.Ui.DepositButtonClick -> handleDepositButtonClick()

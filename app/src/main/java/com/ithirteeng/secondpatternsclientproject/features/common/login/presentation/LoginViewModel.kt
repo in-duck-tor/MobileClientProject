@@ -88,6 +88,6 @@ class LoginViewModel(
 
         const val LOGIN = "user_login_test"
         const val TOKEN =
-            "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxIiwibG9naW4iOiJ0ZXN0X2JhbmtfY2xpZW50IiwiYWNjb3VudF90eXBlIjoiY2xpZW50IiwiY2xpZW50X2lkIjoiZnJvbnQiLCJuYmYiOjE3MDk5ODMwNjQsImV4cCI6MTcxNzc1OTA2NCwiaWF0IjoxNzA5OTgzMDY0LCJpc3MiOiJpbi1kdWNrLXRvciIsImF1ZCI6ImluLWR1Y2stdG9yIn0."
+            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibG9naW4iOiJ0ZXN0X2JhbmtfY2xpZW50IiwiYWNjb3VudF90eXBlIjoiY2xpZW50IiwiY2xpZW50X2lkIjoiZnJvbnQiLCJuYmYiOjE3MTE0OTAyMDAsImV4cCI6MTk0MzAyNjIwMCwiaWF0IjoxNzExNDkwMjAwLCJpc3MiOiJpbi1kdWNrLXRvciIsImF1ZCI6ImluLWR1Y2stdG9yIn0.ujOLBS2_thwy1pgqG0h0Q2esz0foTh6PAE8cHGwki9WQElQYvP1YMY_NSkURY89lDFNwTq8uVhSYYWsqezhQig"
     }
 }

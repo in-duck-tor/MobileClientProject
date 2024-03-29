@@ -7,7 +7,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan.LoanIn
 
 sealed interface LoanInfoEvent : BaseEvent {
 
-    data class Init(val loanId: Int) : LoanInfoEvent
+    data class Init(val loanId: Long) : LoanInfoEvent
 
     data class DataLoaded(
         val loanInfo: LoanInfoResponse,

@@ -3,7 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.payment.PaymentType
 
 data class LoanInfoResponse(
-    val id: Int,
+    val id: Long,
     val borrowedAmount: Double,
     val interestRate: String?,
     val clientAccountNumber: String?,

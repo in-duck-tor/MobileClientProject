@@ -1,7 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan
 
 data class LoanInfoShort(
-    val id: Int,
+    val id: Long,
     val borrowedAmount: Double,
     val interestRate: String?,
     val plannedPaymentsNumber: Int,

@@ -6,5 +6,5 @@ sealed interface ProgramInfoEffect : BaseEffect {
 
     data class ShowError(val message: String) : ProgramInfoEffect
 
-    data class NavigateToCreateLoanScreen(val programId: Int) : ProgramInfoEffect
+    data class NavigateToCreateLoanScreen(val programId: Long) : ProgramInfoEffect
 }
