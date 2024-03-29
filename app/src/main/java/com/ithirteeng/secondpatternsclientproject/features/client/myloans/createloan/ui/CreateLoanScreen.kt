@@ -17,6 +17,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateLoanScreen(
+    programId: Int,
     viewModel: CreateLoanViewModel = koinViewModel(),
     navigateUp: () -> Unit,
 ) {

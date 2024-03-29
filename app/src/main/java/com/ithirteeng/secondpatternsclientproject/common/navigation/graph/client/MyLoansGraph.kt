@@ -13,6 +13,8 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loanin
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.navigation.MyLoansMainDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.ui.MyLoansMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.navigation.MyLoansDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.programinfo.navigation.ProgramInfoDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.programinfo.ui.ProgramInfoScreen
 
 fun NavGraphBuilder.myLoansGraph(
     navController: NavHostController,
@@ -24,6 +26,7 @@ fun NavGraphBuilder.myLoansGraph(
     ) {
         main(navController)
         createLoan(navController)
+        programInfo(navController)
         loanInfo()
     }
 }
@@ -51,8 +54,16 @@ private fun NavGraphBuilder.main(
 private fun NavGraphBuilder.createLoan(
     navController: NavHostController,
 ) {
-    composable(CreateLoanDestination.route) {
+    composable(
+        route = CreateLoanDestination.route,
+        arguments = listOf(navArgument(CreateLoanDestination.PROGRAM_ID) { NavType.IntType })
+    ) { navBackStackEntry ->
+        val programId =
+            requireNotNull(navBackStackEntry.arguments?.getInt(CreateLoanDestination.PROGRAM_ID)) {
+                "Program Id is required!"
+            }
         CreateLoanScreen(
+            programId = programId,
             navigateUp = {
                 navController.navigateUp()
             }
@@ -63,7 +74,7 @@ private fun NavGraphBuilder.createLoan(
 private fun NavGraphBuilder.loanInfo() {
     composable(
         route = LoanInfoDestination.route,
-        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.StringType })
+        arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.IntType })
     ) { navBackStackEntry ->
         val loanId =
             requireNotNull(navBackStackEntry.arguments?.getInt(LoanInfoDestination.LOAN_ID)) {
@@ -71,6 +82,24 @@ private fun NavGraphBuilder.loanInfo() {
             }
         LoanInfoScreen(
             loanId = loanId,
+        )
+    }
+}
+
+private fun NavGraphBuilder.programInfo(navController: NavHostController) {
+    composable(
+        route = ProgramInfoDestination.route,
+        arguments = listOf(navArgument(ProgramInfoDestination.PROGRAM_ID) { NavType.IntType })
+    ) { navBackStackEntry ->
+        val programId =
+            requireNotNull(navBackStackEntry.arguments?.getInt(ProgramInfoDestination.PROGRAM_ID)) {
+                "Program Id is required!"
+            }
+        ProgramInfoScreen(
+            programId = programId,
+            navigateToCreateLoanScreen = {
+                navController.navigate(CreateLoanDestination.destinationWithArgs(it))
+            }
         )
     }
 }

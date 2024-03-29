@@ -22,6 +22,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tra
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.createloan.di.createLoanModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.di.loanInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.di.myLoansMainModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.programinfo.di.programInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
 import com.ithirteeng.secondpatternsclientproject.features.common.settings.di.settingsModule
@@ -72,6 +73,7 @@ class App : Application() {
                 myLoansMainModule,
                 createLoanModule,
                 loanInfoModule,
+                programInfoModule,
 
                 settingsModule,
             )
