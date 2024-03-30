@@ -6,6 +6,7 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.Accou
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsStubDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetBanksInfoUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetCurrencyCodesUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
@@ -65,4 +66,6 @@ val accountsDomainModule = module {
 
     factoryOf(::MakeAccountVisibleUseCase)
     factoryOf(::MakeAccountHiddenUseCase)
+
+    factoryOf(::GetBanksInfoUseCase)
 }

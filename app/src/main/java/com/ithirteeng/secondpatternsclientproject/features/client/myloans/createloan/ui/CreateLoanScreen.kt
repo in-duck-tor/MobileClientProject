@@ -88,7 +88,7 @@ private fun Content(
 private suspend fun observeEffects(
     context: Context,
     viewModel: CreateLoanViewModel,
-    closeSelf: () -> Unit
+    closeSelf: () -> Unit,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {

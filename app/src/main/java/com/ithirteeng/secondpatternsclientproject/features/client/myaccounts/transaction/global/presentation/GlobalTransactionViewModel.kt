@@ -2,9 +2,11 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tr
 
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Target
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetBanksInfoUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.MakeTransactionUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionState
@@ -12,12 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GlobalTransactionViewModel(
-    getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
     private val makeTransactionUseCase: MakeTransactionUseCase,
+    private val getBanksInfoUseCase: GetBanksInfoUseCase,
 ) : BaseViewModel<GlobalTransactionState, GlobalTransactionEvent, GlobalTransactionEffect>() {
-
-    private val login = getUserLoginUseCase()
 
     override fun initState(): GlobalTransactionState = GlobalTransactionState.Loading
 
@@ -27,7 +27,8 @@ class GlobalTransactionViewModel(
 
             is GlobalTransactionEvent.Ui.AccountNumberChange -> handleAccountNumberChange(event)
             is GlobalTransactionEvent.Ui.AmountValueChange -> handleAmountChange(event)
-            is GlobalTransactionEvent.Ui.MakeTransactionButtonClick -> TODO()
+            is GlobalTransactionEvent.Ui.MakeTransactionButtonClick -> handleMakeTransactionButtonClick()
+            is GlobalTransactionEvent.Ui.BankChoice -> handleBankChoice(event)
         }
     }
 
@@ -35,18 +36,36 @@ class GlobalTransactionViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getAccountUseCase(event.accountId)
                 .onSuccess { account ->
-                    when (val currentState = state.value) {
-                        is GlobalTransactionState.Loading -> updateState {
-                            GlobalTransactionState.Content(account = account)
-                        }
+                    getBanksInfoUseCase()
+                        .onSuccess { banks ->
+                            when (val currentState = state.value) {
+                                is GlobalTransactionState.Loading -> updateState {
+                                    GlobalTransactionState.Content(
+                                        account = account,
+                                        banks = banks,
+                                        chosenBank = banks.first()
+                                    )
+                                }
 
-                        is GlobalTransactionState.Content -> updateState {
-                            currentState.copy(account = account)
+                                is GlobalTransactionState.Content -> updateState {
+                                    currentState.copy(account = account, banks = banks)
+                                }
+                            }
                         }
-                    }
+                        .onFailure {
+                            addEffect(
+                                GlobalTransactionEffect.ShowError(
+                                    it.message ?: "banks error"
+                                )
+                            )
+                        }
                 }
                 .onFailure {
-                    addEffect(GlobalTransactionEffect.ShowError(it.message ?: "BULLSHIT"))
+                    addEffect(
+                        GlobalTransactionEffect.ShowError(
+                            it.message ?: "account trouble use case"
+                        )
+                    )
                 }
         }
     }
@@ -73,6 +92,16 @@ class GlobalTransactionViewModel(
         }
     }
 
+    private fun handleBankChoice(event: GlobalTransactionEvent.Ui.BankChoice) {
+        when (val currentState = state.value) {
+            is GlobalTransactionState.Content -> updateState {
+                currentState.copy(chosenBank = event.bank)
+            }
+
+            is GlobalTransactionState.Loading -> Unit
+        }
+    }
+
     private fun handleAccountNumberChange(event: GlobalTransactionEvent.Ui.AccountNumberChange) {
         when (val currentState = state.value) {
             is GlobalTransactionState.Loading -> Unit
@@ -89,9 +118,41 @@ class GlobalTransactionViewModel(
     private fun handleMakeTransactionButtonClick() {
         when (val currentState = state.value) {
             is GlobalTransactionState.Loading -> Unit
-            is GlobalTransactionState.Content -> Unit
+            is GlobalTransactionState.Content -> {
+                if (currentState.amount > currentState.account.amount) {
+                    addEffect(GlobalTransactionEffect.ShowError("AMOUNT must be smaller"))
+                } else if (currentState.accountNumber.text.isEmpty()) {
+                    addEffect(GlobalTransactionEffect.ShowError("account number mustn\'t be empty"))
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        makeTransactionUseCase(
+                            transactionRequest = TransactionRequest(
+                                amount = currentState.amount,
+                                depositOn = Target(
+                                    accountNumber = currentState.accountNumber.text,
+                                    bankCode = currentState.chosenBank.bankCode.toString()
+                                ),
+                                withdrawFrom = Target(
+                                    accountNumber = currentState.account.number,
+                                )
+                            )
+                        )
+                            .onSuccess {
+                                addEffect(
+                                    GlobalTransactionEffect.ShowError("Transaction Made")
+                                )
+                                addEffect(GlobalTransactionEffect.CloseSelf)
+                            }
+                            .onFailure {
+                                addEffect(
+                                    GlobalTransactionEffect.ShowError(
+                                        it.message ?: "Error during transaction"
+                                    )
+                                )
+                            }
+                    }
+                }
+            }
         }
     }
-
-
 }

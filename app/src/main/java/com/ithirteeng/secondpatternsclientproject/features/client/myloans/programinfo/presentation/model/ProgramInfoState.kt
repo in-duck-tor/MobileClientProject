@@ -3,11 +3,11 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.progr
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseState
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.program.LoanProgramResponse
 
-sealed interface ProgramInfoState: BaseState {
+sealed interface ProgramInfoState : BaseState {
 
-    data object Loading: ProgramInfoState
+    data object Loading : ProgramInfoState
 
     data class Content(
-        val program: LoanProgramResponse
+        val program: LoanProgramResponse,
     ) : ProgramInfoState
 }

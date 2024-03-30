@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.ui.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan.LoanInfoShort
+import java.math.BigDecimal
 
 @Composable
 fun LoanCard(
@@ -18,7 +20,7 @@ fun LoanCard(
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         onClick = onCardClick,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
@@ -28,7 +30,7 @@ fun LoanCard(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                text = "BorrowedAmount: ${loan.borrowedAmount}",
+                text = "BorrowedAmount: ${BigDecimal(loan.borrowedAmount).toPlainString()}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
@@ -40,11 +42,11 @@ fun LoanCard(
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "Остаток: ${loan.loanBody}",
+                text = "Остаток: ${BigDecimal(loan.loanBody).toPlainString()}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "Задолженность по кредиту: ${loan.loanDebt}",
+                text = "Задолженность по кредиту: ${BigDecimal(loan.loanDebt).toPlainString()}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(

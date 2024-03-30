@@ -1,7 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation
 
 import android.util.Log
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account

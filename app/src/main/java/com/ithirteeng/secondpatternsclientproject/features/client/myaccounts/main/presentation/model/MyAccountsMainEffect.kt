@@ -16,6 +16,6 @@ sealed interface MyAccountsMainEffect : BaseEffect {
 
     data class ShowError(
         @StringRes val stringResource: Int,
-        val message: String
+        val message: String,
     ) : MyAccountsMainEffect
 }

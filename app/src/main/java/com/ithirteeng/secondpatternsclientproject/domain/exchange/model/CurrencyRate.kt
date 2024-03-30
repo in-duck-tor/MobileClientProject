@@ -11,5 +11,5 @@ data class CurrencyRate(
     @field:Attribute(name = "name")
     var name: String = "",
     @field:ElementList(inline = true, required = false)
-    var valuteStrings: ArrayList<ValuteString> = arrayListOf()
+    var valuteStrings: ArrayList<ValuteString> = arrayListOf(),
 )

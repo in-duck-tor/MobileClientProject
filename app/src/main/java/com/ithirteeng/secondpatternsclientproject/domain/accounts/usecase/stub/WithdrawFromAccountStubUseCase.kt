@@ -4,7 +4,7 @@ import com.ithirteeng.secondpatternsclientproject.common.domain.provideResult
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsStubDatasource
 
 class WithdrawFromAccountStubUseCase(
-    private val stubDatasource: AccountsStubDatasource
+    private val stubDatasource: AccountsStubDatasource,
 ) {
 
     suspend operator fun invoke(

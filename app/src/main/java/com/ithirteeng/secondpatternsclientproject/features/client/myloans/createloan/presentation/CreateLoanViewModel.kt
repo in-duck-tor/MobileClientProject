@@ -126,7 +126,7 @@ class CreateLoanViewModel(
                     0
                 }
                 if (time <= 0 || time > 100) {
-                    addEffect(CreateLoanEffect.ShowError("You can create loan on less then 100 months"))
+                    //addEffect(CreateLoanEffect.ShowError("You can create loan on less then 100 months"))
                 } else {
                     updateState {
                         currentState.copy(
@@ -175,6 +175,7 @@ class CreateLoanViewModel(
     }
 
     private companion object {
+
         private const val TAG = "CreateLoan"
     }
 }

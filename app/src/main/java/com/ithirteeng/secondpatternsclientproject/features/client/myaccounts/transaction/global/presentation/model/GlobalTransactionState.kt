@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tr
 import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.Bank
 
 sealed interface GlobalTransactionState : BaseState {
 
@@ -13,6 +14,7 @@ sealed interface GlobalTransactionState : BaseState {
         val accountNumber: TextFieldValue = TextFieldValue(""),
         val amount: Double = 0.0,
         val amountText: TextFieldValue = TextFieldValue("$amount"),
-        //  val isTransactionInfoDialogOpen: Boolean = false,
+        val banks: List<Bank>,
+        val chosenBank: Bank,
     ) : GlobalTransactionState
 }

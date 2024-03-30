@@ -3,12 +3,12 @@ package com.ithirteeng.secondpatternsclientproject.common.network
 import android.content.Context
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.NetworkConnectionInterceptor
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import java.util.concurrent.TimeUnit
 
 fun provideLoggingInterceptor(): HttpLoggingInterceptor {
     val loggingInterceptor = HttpLoggingInterceptor()

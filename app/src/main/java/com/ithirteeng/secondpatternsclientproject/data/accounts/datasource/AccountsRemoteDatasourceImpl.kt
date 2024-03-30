@@ -6,6 +6,7 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetw
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.Bank
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.CurrencyCode
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.TransactionRequest
@@ -87,6 +88,10 @@ class AccountsRemoteDatasourceImpl(
 
     override suspend fun makeAccountVisible(login: String, accountNumber: String) {
         firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).child(accountNumber).removeValue()
+    }
+
+    override suspend fun getBanksInfo(): List<Bank> {
+        return service.getBankInfo()
     }
 
     private companion object {

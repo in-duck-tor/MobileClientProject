@@ -11,7 +11,7 @@ sealed interface LoanInfoEvent : BaseEvent {
 
     data class DataLoaded(
         val loanInfo: LoanInfoResponse,
-        val accounts: List<Account>
+        val accounts: List<Account>,
     ) : LoanInfoEvent
 
     sealed interface Ui : BaseEvent.Ui, LoanInfoEvent {

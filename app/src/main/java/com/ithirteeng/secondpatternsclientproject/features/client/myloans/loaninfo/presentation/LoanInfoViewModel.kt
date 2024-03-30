@@ -139,6 +139,7 @@ class LoanInfoViewModel(
     }
 
     private companion object {
+
         private const val TAG = "LoanInfo"
     }
 

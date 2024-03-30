@@ -12,7 +12,7 @@ sealed interface SelfTransactionEvent : BaseEvent {
     data class DataLoaded(
         val depositAccount: Account,
         val accounts: List<Account>,
-        val rates: List<Currency>
+        val rates: List<Currency>,
     ) : SelfTransactionEvent
 
     sealed interface Ui : SelfTransactionEvent, BaseEvent.Ui {

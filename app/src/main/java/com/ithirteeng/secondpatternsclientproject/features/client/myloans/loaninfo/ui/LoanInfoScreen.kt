@@ -2,7 +2,6 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.loani
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,7 +12,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +24,7 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loanin
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.presentation.model.LoanInfoEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.presentation.model.LoanInfoState
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.ui.component.LoanInfoDropdownMenu
+import java.math.BigDecimal
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -59,12 +58,10 @@ private fun Content(
             .fillMaxSize()
             .padding(horizontal = 8.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
     ) {
         item {
             Text(
-                text = "BorrowedAmount: ${state.loanInfo.borrowedAmount}",
+                text = "BorrowedAmount: ${BigDecimal(state.loanInfo.borrowedAmount).toPlainString()}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
         }
@@ -94,7 +91,7 @@ private fun Content(
         }
         item {
             Text(
-                text = "Остаток: ${state.loanInfo.loanBody}",
+                text = "Остаток: ${BigDecimal(state.loanInfo.loanBody).toPlainString()}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
         }
@@ -138,7 +135,7 @@ private fun Content(
 
 private suspend fun observeEffects(
     viewModel: LoanInfoViewModel,
-    context: Context
+    context: Context,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {

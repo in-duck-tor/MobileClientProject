@@ -2,6 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tr
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEvent
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.bank.Bank
 
 sealed interface GlobalTransactionEvent : BaseEvent {
 
@@ -14,5 +15,7 @@ sealed interface GlobalTransactionEvent : BaseEvent {
         data class AccountNumberChange(val value: TextFieldValue) : Ui
 
         data class AmountValueChange(val value: TextFieldValue) : Ui
+
+        data class BankChoice(val bank: Bank) : Ui
     }
 }

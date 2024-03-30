@@ -79,6 +79,7 @@ class MyLoansMainViewModel(
     }
 
     private companion object {
+
         private const val TAG = "MyLoansMainViewModel"
     }
 }

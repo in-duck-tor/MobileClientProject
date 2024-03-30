@@ -62,19 +62,6 @@ private fun Content(
         contentPadding = PaddingValues(top = 16.dp),
     ) {
         item {
-            Text(text = "MyLoans: ", style = MaterialTheme.typography.headlineMedium)
-        }
-        items(state.loans) { loan ->
-            LoanCard(
-                loan = loan,
-                onCardClick = {
-                    eventListener(MyLoansMainEvent.Ui.LoanClick(loan.id))
-                },
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-        }
-
-        item {
             Text(text = "Loan Programs: ", style = MaterialTheme.typography.headlineMedium)
         }
         items(state.programs) { program ->
@@ -82,6 +69,19 @@ private fun Content(
                 program = program,
                 onCardClick = {
                     eventListener(MyLoansMainEvent.Ui.LoanProgramClick(programId = program.id))
+                },
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
+
+        item {
+            Text(text = "MyLoans: ", style = MaterialTheme.typography.headlineMedium)
+        }
+        items(state.loans) { loan ->
+            LoanCard(
+                loan = loan,
+                onCardClick = {
+                    eventListener(MyLoansMainEvent.Ui.LoanClick(loan.id))
                 },
                 modifier = Modifier.padding(vertical = 4.dp)
             )

@@ -29,7 +29,7 @@ fun ProgramCard(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                text = "InterestRate: ${program.interestRate}",
+                text = "Годовые проценты: ${program.interestRate}",
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(

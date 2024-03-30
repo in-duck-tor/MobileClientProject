@@ -26,14 +26,14 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tra
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.presentation.model.GlobalTransactionState
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.presentation.model.SelfTransactionEvent
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.ui.component.BankDropdownMenu
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AccountsGlobalTransactionScreen(
     accountId: String,
     closeSelf: () -> Unit,
-    viewModel: GlobalTransactionViewModel = koinViewModel()
+    viewModel: GlobalTransactionViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
 
@@ -55,7 +55,7 @@ fun AccountsGlobalTransactionScreen(
 @Composable
 private fun Content(
     eventListener: (GlobalTransactionEvent) -> Unit,
-    state: GlobalTransactionState.Content
+    state: GlobalTransactionState.Content,
 ) {
     Box {
         LazyColumn(
@@ -82,13 +82,17 @@ private fun Content(
             item {
                 TextField(
                     modifier = Modifier.padding(vertical = 16.dp),
-                    value = state.amountText,
+                    value = state.accountNumber,
                     onValueChange = {
                         eventListener(GlobalTransactionEvent.Ui.AccountNumberChange(it))
                     },
                     label = { Text(text = "account number") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
+            }
+
+            item {
+                BankDropdownMenu(state = state, eventListener = eventListener)
             }
         }
 

@@ -48,6 +48,7 @@ class TokenStorage(context: Context) {
     }
 
     private companion object {
+
         const val USER_ID_KEY = "user id key"
         const val LOGIN_KEY = "login key"
         const val ACCESS_TOKEN_KEY = "access token key"

@@ -14,6 +14,6 @@ sealed interface LoanInfoState : BaseState {
         val chosenAccount: Account,
         val accounts: List<Account>,
         val amount: Double = 0.0,
-        val amountText: TextFieldValue = TextFieldValue(amount.toString())
+        val amountText: TextFieldValue = TextFieldValue(amount.toString()),
     ) : LoanInfoState
 }

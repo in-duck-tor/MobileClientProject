@@ -16,6 +16,6 @@ sealed interface CreateLoanState : BaseState {
         val accounts: List<Account>,
         val chosenAccount: Account,
         val timeInMonths: Int = 0,
-        val timeText: TextFieldValue = TextFieldValue(timeInMonths.toString())
+        val timeText: TextFieldValue = TextFieldValue(timeInMonths.toString()),
     ) : CreateLoanState
 }

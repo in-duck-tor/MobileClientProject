@@ -59,6 +59,7 @@ class ProgramInfoViewModel(
     }
 
     private companion object {
+
         private const val TAG = "ProgramInfo"
     }
 }
