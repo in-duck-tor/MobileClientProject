@@ -104,6 +104,7 @@ class LoanInfoViewModel(
                                 payment = currentState.amount
                             )
                         )
+                        addEffect(LoanInfoEffect.CloseSelf)
                     }
                 }
             }

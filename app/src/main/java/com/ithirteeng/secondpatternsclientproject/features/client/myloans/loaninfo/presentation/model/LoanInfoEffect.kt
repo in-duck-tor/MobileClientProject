@@ -5,4 +5,6 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseEffect
 sealed interface LoanInfoEffect : BaseEffect {
 
     data class ShowError(val message: String) : LoanInfoEffect
+
+    data object CloseSelf : LoanInfoEffect
 }

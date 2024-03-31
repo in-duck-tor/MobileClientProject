@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import java.math.BigDecimal
 
 @Composable
 fun FinishTransactionDialog(
@@ -35,7 +36,7 @@ fun FinishTransactionDialog(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "$amount $currencyCode will transferred")
+            Text(text = "${BigDecimal(amount).toPlainString()} $currencyCode will transferred")
             Button(onClick = onButtonClick) {
                 Text(text = "OK")
             }

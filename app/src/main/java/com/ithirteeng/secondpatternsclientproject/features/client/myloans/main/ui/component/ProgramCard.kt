@@ -41,7 +41,7 @@ fun ProgramCard(
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "Период: ${program.periodInterval}",
+                text = "Период: ${program.periodInterval} sec",
                 modifier = Modifier.padding(vertical = 4.dp),
                 textDecoration = TextDecoration.Underline
             )

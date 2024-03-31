@@ -27,7 +27,7 @@ fun NavGraphBuilder.myLoansGraph(
         main(navController)
         createLoan(navController)
         programInfo(navController)
-        loanInfo()
+        loanInfo(navController)
     }
 }
 
@@ -71,7 +71,9 @@ private fun NavGraphBuilder.createLoan(
     }
 }
 
-private fun NavGraphBuilder.loanInfo() {
+private fun NavGraphBuilder.loanInfo(
+    navController: NavHostController
+) {
     composable(
         route = LoanInfoDestination.route,
         arguments = listOf(navArgument(LoanInfoDestination.LOAN_ID) { NavType.StringType })
@@ -82,6 +84,9 @@ private fun NavGraphBuilder.loanInfo() {
             }.toLong()
         LoanInfoScreen(
             loanId = loanId,
+            closeSelf = {
+                navController.navigateUp()
+            }
         )
     }
 }

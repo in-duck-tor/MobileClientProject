@@ -31,12 +31,13 @@ import org.koin.androidx.compose.koinViewModel
 fun LoanInfoScreen(
     loanId: Long,
     viewModel: LoanInfoViewModel = koinViewModel(),
+    closeSelf: () -> Unit,
 ) {
     val context = LocalContext.current
 
     LaunchedEffect(null) {
         viewModel.processEvent(LoanInfoEvent.Init(loanId = loanId))
-        observeEffects(viewModel, context)
+        observeEffects(viewModel, context, closeSelf)
     }
 
     when (val state = viewModel.state.collectAsState().value) {
@@ -136,6 +137,7 @@ private fun Content(
 private suspend fun observeEffects(
     viewModel: LoanInfoViewModel,
     context: Context,
+    closeSelf: () -> Unit
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
@@ -144,6 +146,8 @@ private suspend fun observeEffects(
                 effect.message,
                 Toast.LENGTH_SHORT
             ).show()
+
+            is LoanInfoEffect.CloseSelf -> closeSelf()
         }
     }
 }
