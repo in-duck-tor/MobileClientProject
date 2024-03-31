@@ -32,6 +32,13 @@ val networkModule = module {
         )
     }
 
+    single(named(ConnectionType.AUTHORIZED_V2.name)) {
+        provideRetrofit(
+            okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
+            url = "http://89.19.214.8/api/v2/"
+        )
+    }
+
     single(named(ConnectionType.AUTHORIZED.name)) {
         provideAuthorizedOkHttpClient(
             loggingInterceptor = get(),
