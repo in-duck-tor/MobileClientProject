@@ -2,6 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.data.accounts.datasource
 
 import android.util.Log
 import com.google.firebase.database.DatabaseReference
+import com.ithirteeng.secondpatternsclientproject.common.mapper.toFirebaseLogin
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
@@ -69,11 +70,11 @@ class AccountsRemoteDatasourceImpl(
 
 
     override suspend fun addHiddenAccount(login: String, accountNumber: String) {
-        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).child(accountNumber).setValue(true)
+        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login.toFirebaseLogin()).child(accountNumber).setValue(true)
     }
 
     override suspend fun getHiddenAccountNumbers(login: String): List<String>? {
-        val accounts = firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).get().await()
+        val accounts = firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login.toFirebaseLogin()).get().await()
         return try {
             (accounts.value as HashMap<String, Boolean>).toHiddenAccountsList()
         } catch (e: Exception) {
@@ -87,7 +88,7 @@ class AccountsRemoteDatasourceImpl(
     }
 
     override suspend fun makeAccountVisible(login: String, accountNumber: String) {
-        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login).child(accountNumber).removeValue()
+        firebaseDatabase.child(HIDDEN_ACCOUNTS).child(login.toFirebaseLogin()).child(accountNumber).removeValue()
     }
 
     override suspend fun getBanksInfo(): List<Bank> {

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import com.google.firebase.database.DatabaseReference
+import com.ithirteeng.secondpatternsclientproject.common.mapper.toFirebaseLogin
 import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 import kotlinx.coroutines.tasks.await
@@ -17,7 +18,7 @@ class ThemeRemoteDatasourceImpl(
     override suspend fun getTheme(login: String): Theme? {
         return if (isNetworkAvailable()) {
             try {
-                val theme = firebaseDatabase.child(APP_THEME).child(USERS).child(login).get()
+                val theme = firebaseDatabase.child(APP_THEME).child(USERS).child(login.toFirebaseLogin()).get()
                 theme.await().value?.let { Theme.valueOf(it.toString()) }
             } catch (e: Exception) {
                 Log.e("FIREBASE", e.message.toString())
@@ -29,7 +30,7 @@ class ThemeRemoteDatasourceImpl(
     }
 
     override fun updateTheme(login: String, newTheme: Theme) {
-        firebaseDatabase.child(APP_THEME).child(USERS).child(login)
+        firebaseDatabase.child(APP_THEME).child(USERS).child(login.toFirebaseLogin())
             .setValue(newTheme.name)
     }
 
