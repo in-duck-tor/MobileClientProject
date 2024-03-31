@@ -2,7 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.domain.user.repository
 
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
 
-interface UserRepository {
+interface UserLocalDatasource {
 
     fun saveToken(token: Token)
 

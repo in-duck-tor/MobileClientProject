@@ -1,10 +1,10 @@
 package com.ithirteeng.secondpatternsclientproject.domain.user.usecase
 
-import com.ithirteeng.secondpatternsclientproject.domain.user.repository.UserRepository
+import com.ithirteeng.secondpatternsclientproject.domain.user.repository.UserLocalDatasource
 
 class GetUserIdUseCase(
-    private val userRepository: UserRepository,
+    private val userLocalDatasource: UserLocalDatasource,
 ) {
 
-    operator fun invoke() = userRepository.getUserId()
+    operator fun invoke() = userLocalDatasource.getUserId()
 }

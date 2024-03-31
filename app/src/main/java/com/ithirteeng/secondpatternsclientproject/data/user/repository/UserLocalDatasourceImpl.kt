@@ -2,11 +2,11 @@ package com.ithirteeng.secondpatternsclientproject.data.user.repository
 
 import com.ithirteeng.secondpatternsclientproject.data.user.storage.TokenStorage
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
-import com.ithirteeng.secondpatternsclientproject.domain.user.repository.UserRepository
+import com.ithirteeng.secondpatternsclientproject.domain.user.repository.UserLocalDatasource
 
-class UserRepositoryImpl(
+class UserLocalDatasourceImpl(
     private val tokenStorage: TokenStorage,
-) : UserRepository {
+) : UserLocalDatasource {
 
     override fun saveToken(token: Token) {
         tokenStorage.saveToken(token)
