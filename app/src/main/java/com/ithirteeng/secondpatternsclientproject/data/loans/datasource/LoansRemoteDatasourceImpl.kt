@@ -35,4 +35,8 @@ class LoansRemoteDatasourceImpl(
     override suspend fun getLoanPrograms(): List<LoanProgramResponse> {
         return networkServiceV1.getLoanPrograms()
     }
+
+    override suspend fun getCreditScore(): Int {
+        return networkServiceV1.getUserCreditScore().creditScore
+    }
 }

@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetCreditScoreUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetLoanProgramsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetUserLoansUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserIdUseCase
@@ -18,6 +19,7 @@ class MyLoansMainViewModel(
     getUserIdUseCase: GetUserIdUseCase,
     private val getUserLoansUseCase: GetUserLoansUseCase,
     private val getLoanProgramsUseCase: GetLoanProgramsUseCase,
+    private val getCreditScoreUseCase: GetCreditScoreUseCase,
 ) : BaseViewModel<MyLoansMainState, MyLoansMainEvent, MyLoansMainEffect>() {
 
     private val userId = getUserIdUseCase()
@@ -42,11 +44,13 @@ class MyLoansMainViewModel(
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
             val loansDeferred = async { getUserLoansUseCase(userId) }
             val programsDeferred = async { getLoanProgramsUseCase() }
+            val creditScore = async { getCreditScoreUseCase() }
 
             processEvent(
                 MyLoansMainEvent.DataLoaded(
                     loans = loansDeferred.await(),
-                    programs = programsDeferred.await()
+                    programs = programsDeferred.await(),
+                    creditScore = creditScore.await(),
                 )
             )
         }
@@ -58,13 +62,15 @@ class MyLoansMainViewModel(
                 currentState.copy(
                     programs = event.programs,
                     loans = event.loans,
+                    creditScore = event.creditScore
                 )
             }
 
             is MyLoansMainState.Loading -> updateState {
                 MyLoansMainState.Content(
                     programs = event.programs,
-                    loans = event.loans
+                    loans = event.loans,
+                    creditScore = event.creditScore
                 )
             }
         }

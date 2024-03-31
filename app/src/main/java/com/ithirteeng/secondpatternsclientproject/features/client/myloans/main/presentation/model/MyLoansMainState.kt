@@ -11,5 +11,6 @@ sealed interface MyLoansMainState : BaseState {
     data class Content(
         val programs: List<LoanProgramResponse>,
         val loans: List<LoanInfoShort>,
+        val creditScore: Int,
     ) : MyLoansMainState
 }

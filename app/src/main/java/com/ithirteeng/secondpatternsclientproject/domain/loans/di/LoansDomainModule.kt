@@ -1,5 +1,6 @@
 package com.ithirteeng.secondpatternsclientproject.domain.loans.di
 
+import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetCreditScoreUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetLoanInfoUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetLoanProgramsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.loans.usecase.GetUserLoansUseCase
@@ -15,4 +16,5 @@ val loansDomainModule = module {
     factoryOf(::GetLoanProgramsUseCase)
     factoryOf(::MakePaymentToLoanUseCase)
     factoryOf(::SubmitLoanApplicationUseCase)
+    factoryOf(::GetCreditScoreUseCase)
 }

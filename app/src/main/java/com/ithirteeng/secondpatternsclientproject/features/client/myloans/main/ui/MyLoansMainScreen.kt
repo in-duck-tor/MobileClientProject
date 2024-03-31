@@ -62,6 +62,9 @@ private fun Content(
         contentPadding = PaddingValues(top = 16.dp),
     ) {
         item {
+            Text(text = "CreditScore: ${state.creditScore}", style = MaterialTheme.typography.headlineMedium)
+        }
+        item {
             Text(text = "Loan Programs: ", style = MaterialTheme.typography.headlineMedium)
         }
         items(state.programs) { program ->

@@ -18,4 +18,6 @@ interface LoansRemoteDatasource {
     suspend fun submitLoanApplication(applicationInfo: ApplicationInfo): LoanApplicationResponse
 
     suspend fun getLoanPrograms(): List<LoanProgramResponse>
+
+    suspend fun getCreditScore(): Int
 }
