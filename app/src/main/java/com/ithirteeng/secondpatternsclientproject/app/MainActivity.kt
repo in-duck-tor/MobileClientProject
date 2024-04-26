@@ -1,6 +1,8 @@
 package com.ithirteeng.secondpatternsclientproject.app
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +22,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        val uri: Uri? = intent.data
+//        Log.d("BULLSHIT", uri?.getQueryParameter("code").toString())
+
         setContent {
             val theme = viewModel.themeState.collectAsState().value
             AppTheme(theme) {

@@ -1,7 +1,13 @@
 package com.ithirteeng.secondpatternsclientproject.features.common.login.ui
 
+import android.app.PendingIntent
 import android.content.Context
+import android.content.IntentSender
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,10 +33,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
+import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
+import com.ithirteeng.secondpatternsclientproject.features.common.login.auth.AuthManager
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.LoginViewModel
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -38,8 +51,22 @@ fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
     navigateToRegistrationScreen: () -> Unit,
     navigateToMainScreen: (isClient: Boolean) -> Unit,
+    authManager: AuthManager = get(),
+    saveTokenLocallyUseCase: SaveTokenLocallyUseCase = get(),
+    fetchApplicationThemeUseCase: FetchApplicationThemeUseCase = get(),
+
 ) {
     val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartIntentSenderForResult()) {
+        it.data?.let {intent ->
+            GlobalScope.launch {
+                val data = authManager.getTokenFromAuthorizationResponseIntent(intent)
+              //  saveTokenLocallyUseCase(Token(data, data))
+               // fetchApplicationThemeUseCase(login)
+            }
+        }
+
+    }
     LaunchedEffect(null) {
         observeEffects(
             viewModel = viewModel,
@@ -88,7 +115,20 @@ fun LoginScreen(
 
                 Row {
                     Button(
-                        onClick = { viewModel.processEvent(LoginEvent.Ui.RegistrationButtonClick) }
+                        onClick = {
+                            val intent = authManager.getRequestIntent()
+                            val pendIntent = PendingIntent.getActivity(
+                                context,
+                                1001001,
+                                intent,
+                                PendingIntent.FLAG_IMMUTABLE
+                            )
+                            launcher.launch(
+                                IntentSenderRequest.Builder(pendIntent)
+                                    .build()
+                            )
+                          //  context.startActivity(intent)
+                        }
                     ) {
                         Text(text = stringResource(id = (R.string.registration)))
                     }

@@ -10,7 +10,6 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.acc
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.stub.AccountInfoStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.ui.AccountInfoScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.navigation.MyAccountsCreateAccountDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.stub.CreateAccountStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.ui.CreateAccountScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsMainDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.stub.AccountsMainStubScreen
@@ -222,12 +221,7 @@ private fun NavGraphBuilder.createAccountStub(
             navArgument(MyAccountsCreateAccountDestination.CLIENT_ID) { type = NavType.StringType }
         )
     ) {
-        CreateAccountStubScreen(
-            clientId = clientId,
-            navigateUp = {
-                navController.navigateUp()
-            }
-        )
+
     }
 }
 

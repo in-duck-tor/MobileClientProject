@@ -54,6 +54,13 @@ val networkModule = module {
         )
     }
 
+    single(named(ConnectionType.AUTHORIZED_USER.name)) {
+        provideRetrofit(
+            okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
+            url = "http://89.19.214.8:8180/connect/"
+        )
+    }
+
     single(named(ConnectionType.UNAUTHORIZED_XML.name)) {
         provideXmlRetrofit(
             okHttpClient = get(named(ConnectionType.UNAUTHORIZED.name)),

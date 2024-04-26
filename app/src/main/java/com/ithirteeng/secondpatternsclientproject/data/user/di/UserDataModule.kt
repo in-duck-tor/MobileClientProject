@@ -3,6 +3,8 @@ package com.ithirteeng.secondpatternsclientproject.data.user.di
 import com.ithirteeng.secondpatternsclientproject.common.network.createRetrofitService
 import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.data.user.repository.UserLocalDatasourceImpl
+import com.ithirteeng.secondpatternsclientproject.data.user.repository.UserRemoteDatasourceImpl
+import com.ithirteeng.secondpatternsclientproject.data.user.service.UserInfoService
 import com.ithirteeng.secondpatternsclientproject.data.user.service.UserNetworkService
 import com.ithirteeng.secondpatternsclientproject.data.user.storage.TokenStorage
 import com.ithirteeng.secondpatternsclientproject.data.user.stub.StubUserDatasource
@@ -22,9 +24,15 @@ val userDataModule = module {
         )
     }
 
+    single {
+        createRetrofitService<UserInfoService>(
+            retrofit = get(named(ConnectionType.AUTHORIZED_USER.name))
+        )
+    }
+
     single<UserLocalDatasource> {
         UserLocalDatasourceImpl(tokenStorage = get())
     }
 
-    singleOf(::StubUserDatasource) bind UserRemoteDatasource::class
+    singleOf(::UserRemoteDatasourceImpl) bind UserRemoteDatasource::class
 }

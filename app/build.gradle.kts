@@ -20,6 +20,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        addManifestPlaceholders(
+            mapOf(
+                "appAuthRedirectScheme" to "com.ithirteeng.secondpatternsclientproject.app",
+            )
+        )
     }
 
     buildTypes {
@@ -107,4 +113,6 @@ dependencies {
         exclude(module = "stax-api")
         exclude(module = "xpp3")
     }
+
+    implementation ("net.openid:appauth:0.11.1")
 }

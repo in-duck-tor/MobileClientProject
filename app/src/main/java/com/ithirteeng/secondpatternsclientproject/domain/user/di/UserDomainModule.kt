@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.domain.user.di
 
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserIdUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.LoginUseCase
@@ -21,4 +22,5 @@ val userDomainModule = module {
     factoryOf(::GetUserIdUseCase)
     factoryOf(::SaveUserIdUseCase)
     factoryOf(::LoginUseCase)
+    factoryOf(::GetUserAccountUseCase)
 }

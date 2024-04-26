@@ -2,6 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.data.user.stub
 
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.AuthTokenResponse
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Role
+import com.ithirteeng.secondpatternsclientproject.domain.user.model.UserAccount
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.UserAuthData
 import com.ithirteeng.secondpatternsclientproject.domain.user.repository.UserRemoteDatasource
 
@@ -12,6 +13,10 @@ class StubUserDatasource : UserRemoteDatasource {
         if (data.login == alena.login && data.password == password) return alena
         if (data.login == newUser.login && data.password == password) return newUser
         throw Exception("User not found")
+    }
+
+    override suspend fun getUserData(): UserAccount {
+        TODO("Not yet implemented")
     }
 
     private companion object {

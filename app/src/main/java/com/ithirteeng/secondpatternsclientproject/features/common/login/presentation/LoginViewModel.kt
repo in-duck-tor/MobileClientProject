@@ -1,14 +1,17 @@
 package com.ithirteeng.secondpatternsclientproject.features.common.login.presentation
 
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.UserAuthData
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.LoginUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLoginUseCase
+import com.ithirteeng.secondpatternsclientproject.features.common.login.auth.AuthManager
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginState
@@ -21,6 +24,8 @@ class LoginViewModel(
     private val saveTokenLocallyUseCase: SaveTokenLocallyUseCase,
     private val fetchApplicationThemeUseCase: FetchApplicationThemeUseCase,
     private val loginUseCase: LoginUseCase,
+    private val getUserAccountUseCase: GetUserAccountUseCase,
+    private val authManager: AuthManager,
 ) : BaseViewModel<LoginState, LoginEvent, LoginEffect>() {
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -98,6 +103,8 @@ class LoginViewModel(
             is LoginState.Init -> Unit
         }
     }
+
+    fun getIntent(): Intent = authManager.getRequestIntent()
 
     private companion object {
 
