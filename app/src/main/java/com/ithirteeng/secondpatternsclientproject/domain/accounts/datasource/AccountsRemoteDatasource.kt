@@ -9,6 +9,8 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transact
 
 interface AccountsRemoteDatasource {
 
+    suspend fun createAccountV2(data: CreateAccount): Unit
+
     suspend fun createAccount(data: CreateAccount): Account
 
     suspend fun getAccountsList(): List<Account>

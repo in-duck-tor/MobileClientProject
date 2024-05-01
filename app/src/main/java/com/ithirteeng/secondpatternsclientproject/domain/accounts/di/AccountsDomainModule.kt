@@ -10,6 +10,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetBan
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetCurrencyCodesUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountV2UseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountHiddenUseCase
@@ -29,7 +30,8 @@ val accountsDomainModule = module {
     single<AccountsRemoteDatasource> {
         AccountsRemoteDatasourceImpl(
             service = get(),
-            firebaseDatabase = get()
+            firebaseDatabase = get(),
+            serviceV2 = get()
         )
     }
 
@@ -50,6 +52,7 @@ val accountsDomainModule = module {
     factoryOf(::FetchAccountsUseCase)
     factoryOf(::ObserveAccountsUseCase)
     factoryOf(::CreateAccountUseCase)
+    factoryOf(::CreateAccountV2UseCase)
     factoryOf(::GetAccountUseCase)
     factoryOf(::ChangeAccountStateUseCase)
 

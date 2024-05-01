@@ -94,11 +94,13 @@ private suspend fun observeEffectsFlow(
                 Toast.LENGTH_SHORT
             ).show()
 
-            is CreateAccountEffect.ShowError -> Toast.makeText(
-                context,
-                effect.message,
-                Toast.LENGTH_SHORT
-            ).show()
+            is CreateAccountEffect.ShowError -> {
+                Toast.makeText(
+                    context,
+                    effect.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
