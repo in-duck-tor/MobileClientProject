@@ -107,6 +107,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     implementation("com.squareup.retrofit2:converter-simplexml:2.9.0") {
         exclude(module = "stax")

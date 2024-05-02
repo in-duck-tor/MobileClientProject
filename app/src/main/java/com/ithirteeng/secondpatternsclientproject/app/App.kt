@@ -3,6 +3,7 @@ package com.ithirteeng.secondpatternsclientproject.app
 import android.app.Application
 import com.ithirteeng.secondpatternsclientproject.app.di.appModule
 import com.ithirteeng.secondpatternsclientproject.common.network.di.networkModule
+import com.ithirteeng.secondpatternsclientproject.common.notifications.commonNotificationsModule
 import com.ithirteeng.secondpatternsclientproject.common.storage.di.databaseModule
 import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.exchange.di.exchangeDataModule
@@ -42,6 +43,8 @@ class App : Application() {
             androidLogger(Level.ERROR)
             modules(
                 appModule,
+
+                commonNotificationsModule,
 
                 networkModule,
                 databaseModule,
