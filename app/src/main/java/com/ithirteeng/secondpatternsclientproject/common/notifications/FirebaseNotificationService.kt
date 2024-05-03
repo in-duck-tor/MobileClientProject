@@ -4,6 +4,11 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ithirteeng.secondpatternsclientproject.data.notifications.model.AppRegistrationModel
+import com.ithirteeng.secondpatternsclientproject.data.notifications.service.NotificationService
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
@@ -11,9 +16,18 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
     private val notificationManager: AppNotificationManager by inject()
 
+    //private val notificationService: NotificationService by inject()
+
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d("Bullshit", token)
+//        Log.d("Bullshit", token)
+//        GlobalScope.launch {
+//            notificationService.registerAppForNotifications(AppRegistrationModel(
+//                registrationToken = token,
+//                applicationId = "com.ithirteeng.secondpatternsclientproject"
+//            ))
+//        }
         //todo sendToServer
     }
 

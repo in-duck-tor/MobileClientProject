@@ -2,8 +2,12 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.ma
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.data.notifications.model.AppRegistrationModel
+import com.ithirteeng.secondpatternsclientproject.data.notifications.service.NotificationService
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
@@ -25,6 +29,7 @@ class MyAccountsMainViewModel(
     private val observeAccountsUseCase: ObserveAccountsUseCase,
     private val makeAccountHiddenUseCase: MakeAccountHiddenUseCase,
     private val makeAccountVisibleUseCase: MakeAccountVisibleUseCase,
+    private val notificationService: NotificationService,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
 
     override fun initState(): MyAccountsMainState = MyAccountsMainState.Loading
@@ -53,6 +58,22 @@ class MyAccountsMainViewModel(
 
     private fun handleInit() {
         viewModelScope.launch(Dispatchers.IO) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                launch(Dispatchers.IO) {
+                    notificationService.registerAppForNotifications(
+                        AppRegistrationModel(
+                            registrationToken = token,
+                            applicationId = "inductorbank"
+                        )
+                    )
+                    Log.d("Bullshit", "token: $token sent")
+                }
+            })
             fetchAccountsUseCase(login)
                 .onFailure {
                     Log.e(TAG, it.message.toString())

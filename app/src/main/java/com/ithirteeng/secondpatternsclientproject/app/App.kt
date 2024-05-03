@@ -8,6 +8,7 @@ import com.ithirteeng.secondpatternsclientproject.common.storage.di.databaseModu
 import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.exchange.di.exchangeDataModule
 import com.ithirteeng.secondpatternsclientproject.data.loans.di.loansDataModule
+import com.ithirteeng.secondpatternsclientproject.data.notifications.di.notificationsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.theme.di.themeDataModule
 import com.ithirteeng.secondpatternsclientproject.data.user.di.userDataModule
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDomainModule
@@ -45,6 +46,7 @@ class App : Application() {
                 appModule,
 
                 commonNotificationsModule,
+                notificationsDataModule,
 
                 networkModule,
                 databaseModule,
