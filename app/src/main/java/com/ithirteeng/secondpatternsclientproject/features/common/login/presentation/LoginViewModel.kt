@@ -11,7 +11,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserAcc
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.LoginUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLoginUseCase
-import com.ithirteeng.secondpatternsclientproject.features.common.login.auth.AuthManager
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.auth.AuthManager
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginState

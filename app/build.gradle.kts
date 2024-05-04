@@ -115,5 +115,7 @@ dependencies {
         exclude(module = "xpp3")
     }
 
-    implementation ("net.openid:appauth:0.11.1")
+    implementation("net.openid:appauth:0.11.1")
+
+    implementation("com.microsoft.signalr:signalr:7.0.0")
 }

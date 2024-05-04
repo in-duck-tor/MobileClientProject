@@ -13,17 +13,23 @@ import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.accoun
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.ObserveTransactionsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountAction
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoState
+import com.microsoft.signalr.HubConnectionBuilder
+import com.microsoft.signalr.TransportEnum
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class AccountInfoViewModel(
     getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
+    private val getLocalTokenUseCase: GetLocalTokenUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val fetchTransactionsUseCase: FetchTransactionsUseCase,
     private val changeAccountStateUseCase: ChangeAccountStateUseCase,
@@ -32,6 +38,46 @@ class AccountInfoViewModel(
     override fun initState(): AccountInfoState = AccountInfoState.Loading
 
     private val token = getUserLoginUseCase()
+
+    //http://89.19.214.8/api/v1/ws/vestnik/hueta
+    fun connectToWebSocket() {
+        val hubConnection = HubConnectionBuilder
+            .create("http://89.19.214.8/api/v1/ws/vestnik/account-events")
+            .withAccessTokenProvider(Single.defer {
+                Single.just(
+                    getLocalTokenUseCase()?.accessToken.toString()
+                )
+            })
+            .withTransport(TransportEnum.LONG_POLLING)
+            .build()
+        hubConnection.on(
+            "AccountCreated",
+            { message: String -> Log.d("GOVNA_POEL-AccountCreated", "New Message: $message") },
+            String::class.java
+        )
+        hubConnection.on(
+            "AccountUpdated",
+            { message: String -> Log.d("GOVNA_POEL-AccountUpdated", "New Message: $message") },
+            String::class.java
+        )
+        hubConnection.on(
+            "TransactionCreated",
+            { message: String -> Log.d("GOVNA_POEL-TransactionCreated", "New Message: $message") },
+            String::class.java
+        )
+        hubConnection.on(
+            "TransactionUpdated",
+            { message: String -> Log.d("GOVNA_POEL-TransactionUpdated", "New Message: $message") },
+            String::class.java
+        )
+
+        hubConnection.on(
+            "Hueta",
+            { message -> Log.d("GOVNA_POEL-Hueta", "New Message: $message") },
+            Object::class.java
+        )
+        hubConnection.start()
+    }
 
     @SuppressLint("NewApi")
     override fun processEvent(event: AccountInfoEvent) {

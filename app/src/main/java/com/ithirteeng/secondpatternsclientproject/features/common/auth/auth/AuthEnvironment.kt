@@ -1,4 +1,4 @@
-package com.ithirteeng.secondpatternsclientproject.features.common.login.auth
+package com.ithirteeng.secondpatternsclientproject.features.common.auth.auth
 
 sealed class AuthEnvironment(
     val clientId: String,

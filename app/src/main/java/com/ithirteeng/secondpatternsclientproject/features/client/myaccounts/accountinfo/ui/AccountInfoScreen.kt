@@ -38,6 +38,7 @@ fun AccountInfoScreen(
     val context = LocalContext.current
     LaunchedEffect(null) {
         viewModel.processEvent(AccountInfoEvent.Init(accountNumber))
+        viewModel.connectToWebSocket()
         observeEffects(
             viewModel = viewModel,
             context = context,

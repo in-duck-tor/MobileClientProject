@@ -11,7 +11,7 @@ import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLo
 import com.ithirteeng.secondpatternsclientproject.features.common.auth.presentation.model.AuthEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.auth.presentation.model.AuthEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.auth.presentation.model.AuthState
-import com.ithirteeng.secondpatternsclientproject.features.common.login.auth.AuthManager
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.auth.AuthManager
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

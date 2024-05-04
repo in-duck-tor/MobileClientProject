@@ -1,9 +1,8 @@
-package com.ithirteeng.secondpatternsclientproject.features.common.login.auth
+package com.ithirteeng.secondpatternsclientproject.features.common.auth.auth
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.r3d1r4ph.gevorkyanoffbank.managers.auth.model.AppAuthHttpConnectionBuilder
 import kotlinx.coroutines.Dispatchers

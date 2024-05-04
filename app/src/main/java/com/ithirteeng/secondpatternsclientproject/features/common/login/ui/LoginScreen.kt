@@ -2,8 +2,6 @@ package com.ithirteeng.secondpatternsclientproject.features.common.login.ui
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.IntentSender
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -34,9 +32,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
-import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
-import com.ithirteeng.secondpatternsclientproject.features.common.login.auth.AuthManager
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.auth.AuthManager
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.LoginViewModel
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEvent
