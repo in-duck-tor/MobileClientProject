@@ -7,8 +7,10 @@ import androidx.annotation.RequiresExtension
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.SocketsDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.toTransaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
@@ -19,9 +21,6 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.acc
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEvent
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoState
-import com.microsoft.signalr.HubConnectionBuilder
-import com.microsoft.signalr.TransportEnum
-import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -29,7 +28,7 @@ import kotlinx.coroutines.launch
 class AccountInfoViewModel(
     getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
-    private val getLocalTokenUseCase: GetLocalTokenUseCase,
+    getLocalTokenUseCase: GetLocalTokenUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val fetchTransactionsUseCase: FetchTransactionsUseCase,
     private val changeAccountStateUseCase: ChangeAccountStateUseCase,
@@ -39,44 +38,31 @@ class AccountInfoViewModel(
 
     private val token = getUserLoginUseCase()
 
-    //http://89.19.214.8/api/v1/ws/vestnik/hueta
-    fun connectToWebSocket() {
-        val hubConnection = HubConnectionBuilder
-            .create("http://89.19.214.8/api/v1/ws/vestnik/account-events")
-            .withAccessTokenProvider(Single.defer {
-                Single.just(
-                    getLocalTokenUseCase()?.accessToken.toString()
-                )
-            })
-            .withTransport(TransportEnum.LONG_POLLING)
-            .build()
-        hubConnection.on(
-            "AccountCreated",
-            { message: String -> Log.d("GOVNA_POEL-AccountCreated", "New Message: $message") },
-            String::class.java
-        )
-        hubConnection.on(
-            "AccountUpdated",
-            { message: String -> Log.d("GOVNA_POEL-AccountUpdated", "New Message: $message") },
-            String::class.java
-        )
-        hubConnection.on(
-            "TransactionCreated",
-            { message: String -> Log.d("GOVNA_POEL-TransactionCreated", "New Message: $message") },
-            String::class.java
-        )
-        hubConnection.on(
-            "TransactionUpdated",
-            { message: String -> Log.d("GOVNA_POEL-TransactionUpdated", "New Message: $message") },
-            String::class.java
-        )
+    private val socketsDatasource = SocketsDatasource(
+        getLocalTokenUseCase = getLocalTokenUseCase,
+        onTransactionCreated = { event ->
+            viewModelScope.launch {
+                when (val currentState = state.value) {
+                    is AccountInfoState.Loading -> Unit
+                    is AccountInfoState.Content -> {
+                        if (currentState.account.number == event.depositOn?.accountNumber || currentState.account.number == event.withdrawFrom?.accountNumber) {
+                            updateState {
+                                currentState.copy(
+                                    transactions = currentState.transactions + event.toTransaction()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        onTransactionUpdated = {
 
-        hubConnection.on(
-            "Hueta",
-            { message -> Log.d("GOVNA_POEL-Hueta", "New Message: $message") },
-            Object::class.java
-        )
-        hubConnection.start()
+        }
+    )
+
+    fun connectToWebSocket() {
+        socketsDatasource.connectToWebSocket()
     }
 
     @SuppressLint("NewApi")

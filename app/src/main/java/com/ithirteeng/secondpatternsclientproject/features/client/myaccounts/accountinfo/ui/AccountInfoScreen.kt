@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.ui
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -2,6 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.common.network
 
 import android.content.Context
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.IdempotencyInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.NetworkConnectionInterceptor
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
@@ -51,10 +52,12 @@ fun provideAuthorizedOkHttpClient(
     loggingInterceptor: HttpLoggingInterceptor,
     networkConnectionInterceptor: NetworkConnectionInterceptor,
     authInterceptor: AuthInterceptor,
+    idempotencyInterceptor: IdempotencyInterceptor,
 ): OkHttpClient =
     OkHttpClient.Builder()
         .addInterceptor(networkConnectionInterceptor)
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(idempotencyInterceptor)
         .addInterceptor(authInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)

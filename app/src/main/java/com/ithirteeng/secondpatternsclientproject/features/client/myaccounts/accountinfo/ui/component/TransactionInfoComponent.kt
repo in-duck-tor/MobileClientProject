@@ -18,10 +18,8 @@ fun TransactionInfoComponent(
     Column(modifier = modifier) {
         Text(text = transaction.id)
         Text(text = "NAME: ${transaction.type.name}")
-        Text(text = "STARTED AT: ${transaction.startedAt}")
-        transaction.finishedAt?.let {
-            Text(text = "FINISHED AT: $it")
-        }
+        Text(text = "AMOUNT: ${transaction.depositOn?.amount ?: transaction.withdrawFrom?.amount}")
+        Text(text = "CODE: ${transaction.depositOn?.currencyCode ?: transaction.withdrawFrom?.currencyCode}")
         Text(text = "ON: ${transaction.depositOn?.accountNumber}")
         Text(text = "FROM: ${transaction.withdrawFrom?.accountNumber}")
         HorizontalDivider(

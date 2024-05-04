@@ -101,12 +101,13 @@ class AccountsStubDatasourceImpl(
                 bankCode = "00000000",
                 bankName = null
             ),
+            accountNumber = transaction.depositOn.accountNumber,
             withdrawFrom = TransactionTargetEntity(
                 amount = transaction.amount,
-                accountNumber = transaction.withdrawFrom!!.accountNumber,
+                accountNumber = transaction.depositOn.accountNumber,
                 currencyCode = "RUB",
                 bankCode = "00000000",
-                bankName = null
+                bankName = null,
             )
         )
     }
@@ -129,6 +130,7 @@ class AccountsStubDatasourceImpl(
                 bankCode = "00000000",
                 bankName = null
             ),
+            accountNumber = accountNumber,
             withdrawFrom = TransactionTargetEntity(
                 amount = amount,
                 accountNumber = accountNumber,

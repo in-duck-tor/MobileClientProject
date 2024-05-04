@@ -29,6 +29,33 @@ class AccountsRemoteDatasourceImpl(
         }
     }
 
+    override suspend fun freezeAccountV2(accountNumber: String) {
+        val response = serviceV2.freezeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
+    }
+
+    override suspend fun closeAccountV2(accountNumber: String) {
+        val response = serviceV2.closeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
+    }
+
+    override suspend fun unfreezeAccountV2(accountNumber: String) {
+        val response = serviceV2.unfreezeAccount(accountNumber)
+        if (response.isSuccessful) {
+            return
+        } else {
+            throw Exception(response.code().toString())
+        }
+    }
+
     override suspend fun createAccount(data: CreateAccount): Account {
         val number = service.createAccount(data)
         val accounts = service.getAccounts()

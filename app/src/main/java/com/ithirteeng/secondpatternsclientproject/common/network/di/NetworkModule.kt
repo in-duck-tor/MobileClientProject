@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.common.network.di
 
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.IdempotencyInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.provideAuthorizedOkHttpClient
 import com.ithirteeng.secondpatternsclientproject.common.network.provideLoggingInterceptor
@@ -15,7 +16,7 @@ val networkModule = module {
 
     factory { provideLoggingInterceptor() }
     factory { provideNetworkConnectionInterceptor(context = get()) }
-
+    factory { IdempotencyInterceptor() }
     factory { AuthInterceptor(getLocalTokenUseCase = get()) }
 
     single(named(ConnectionType.UNAUTHORIZED.name)) {
@@ -43,7 +44,8 @@ val networkModule = module {
         provideAuthorizedOkHttpClient(
             loggingInterceptor = get(),
             networkConnectionInterceptor = get(),
-            authInterceptor = get()
+            authInterceptor = get(),
+            idempotencyInterceptor = get(),
         )
     }
 

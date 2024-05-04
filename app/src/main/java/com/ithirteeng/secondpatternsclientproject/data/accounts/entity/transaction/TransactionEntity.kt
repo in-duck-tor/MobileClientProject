@@ -14,6 +14,7 @@ data class TransactionEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val type: TransactionType,
+    val accountNumber: String,
     val status: TransactionStatus,
     val startedAt: String,
     val finishedAt: String?,
@@ -33,12 +34,13 @@ fun TransactionEntity.toDomain(): Transaction = Transaction(
     withdrawFrom = withdrawFrom?.toDomain()
 )
 
-fun Transaction.toEntity(): TransactionEntity = TransactionEntity(
+fun Transaction.toEntity(accountNumber: String): TransactionEntity = TransactionEntity(
     id = id,
     type = type,
     status = status,
     startedAt = startedAt,
     finishedAt = finishedAt,
     depositOn = depositOn?.toEntity(),
-    withdrawFrom = withdrawFrom?.toEntity()
+    withdrawFrom = withdrawFrom?.toEntity(),
+    accountNumber = accountNumber
 )

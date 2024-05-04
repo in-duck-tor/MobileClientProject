@@ -17,9 +17,9 @@ class ChangeAccountStateUseCase(
         token: String,
     ) = provideResult {
         when (action) {
-            AccountAction.CLOSE -> remoteDatasource.closeAccount(account.number)
-            AccountAction.FREEZE -> remoteDatasource.freezeAccount(account.number)
-            AccountAction.UNFREEZE -> remoteDatasource.unfreezeAccount(account.number)
+            AccountAction.CLOSE -> remoteDatasource.closeAccountV2(account.number)
+            AccountAction.FREEZE -> remoteDatasource.freezeAccountV2(account.number)
+            AccountAction.UNFREEZE -> remoteDatasource.unfreezeAccountV2(account.number)
         }
         localDatasource.insertAccount(account, token)
     }

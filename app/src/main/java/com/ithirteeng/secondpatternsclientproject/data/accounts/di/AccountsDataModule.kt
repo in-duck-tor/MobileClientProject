@@ -5,6 +5,7 @@ import com.ithirteeng.secondpatternsclientproject.common.network.model.Connectio
 import com.ithirteeng.secondpatternsclientproject.common.storage.BankDatabase
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsNetworkService
 import com.ithirteeng.secondpatternsclientproject.data.accounts.api.AccountsV2NetworkService
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.SocketsDatasource
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
