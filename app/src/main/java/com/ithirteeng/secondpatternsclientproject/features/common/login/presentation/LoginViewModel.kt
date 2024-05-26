@@ -1,14 +1,21 @@
 package com.ithirteeng.secondpatternsclientproject.features.common.login.presentation
 
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
+import com.ithirteeng.secondpatternsclientproject.domain.user.model.UserAuthData
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.LoginUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLoginUseCase
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.auth.AuthManager
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginState
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,7 +23,15 @@ class LoginViewModel(
     private val saveUserLoginUseCase: SaveUserLoginUseCase,
     private val saveTokenLocallyUseCase: SaveTokenLocallyUseCase,
     private val fetchApplicationThemeUseCase: FetchApplicationThemeUseCase,
+    private val loginUseCase: LoginUseCase,
+    private val getUserAccountUseCase: GetUserAccountUseCase,
+    private val authManager: AuthManager,
 ) : BaseViewModel<LoginState, LoginEvent, LoginEffect>() {
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.d(TAG, throwable.message.toString())
+        addEffect(LoginEffect.ShowError(throwable.message ?: "SOME ERROR"))
+    }
 
     override fun initState(): LoginState = LoginState.Init
 
@@ -46,11 +61,16 @@ class LoginViewModel(
                 if (currentState.login.text.isEmpty() || currentState.password.text.isEmpty()) {
                     addEffect(LoginEffect.ShowError("Fields mustn't be empty!"))
                 } else {
-                    //todo implement login logic
-                    viewModelScope.launch(Dispatchers.IO) {
-                        saveTokenLocallyUseCase(Token(TOKEN, TOKEN))
-                        saveUserLoginUseCase(LOGIN)
-                        fetchApplicationThemeUseCase(LOGIN)
+                    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                        val data = loginUseCase(
+                            UserAuthData(
+                                login = currentState.login.text,
+                                password = currentState.password.text
+                            )
+                        )
+                        saveUserLoginUseCase(data.login)
+                        saveTokenLocallyUseCase(Token(data.token, data.token))
+                        fetchApplicationThemeUseCase(data.login)
                         addEffect(LoginEffect.NavigateToMainScreen)
                     }
                 }
@@ -84,10 +104,10 @@ class LoginViewModel(
         }
     }
 
-    companion object {
+    fun getIntent(): Intent = authManager.getRequestIntent()
 
-        const val LOGIN = "user_login_test"
-        const val TOKEN =
-            "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxIiwibG9naW4iOiJ0ZXN0X2JhbmtfY2xpZW50IiwiYWNjb3VudF90eXBlIjoiY2xpZW50IiwiY2xpZW50X2lkIjoiZnJvbnQiLCJuYmYiOjE3MDk5ODMwNjQsImV4cCI6MTcxNzc1OTA2NCwiaWF0IjoxNzA5OTgzMDY0LCJpc3MiOiJpbi1kdWNrLXRvciIsImF1ZCI6ImluLWR1Y2stdG9yIn0."
+    private companion object {
+
+        private const val TAG = "Login"
     }
 }

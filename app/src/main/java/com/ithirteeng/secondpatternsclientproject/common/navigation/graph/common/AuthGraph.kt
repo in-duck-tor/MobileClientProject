@@ -4,6 +4,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.ithirteeng.secondpatternsclientproject.features.client.main.navigation.MainClientDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.navigation.AuthDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.ui.AuthScreen
 import com.ithirteeng.secondpatternsclientproject.features.common.login.navigation.LoginDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.login.ui.LoginScreen
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.navigation.RegistrationDestination
@@ -12,6 +14,21 @@ import com.ithirteeng.secondpatternsclientproject.features.common.registration.u
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     registration(navController)
     login(navController)
+    auth(navController)
+}
+
+fun NavGraphBuilder.auth(navController: NavHostController) {
+    composable(AuthDestination.route) {
+        AuthScreen(navigateToMainScreen = { isClient ->
+            if (isClient) {
+                navController.navigate(MainClientDestination.destinationWithArgs("shits1")) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+            } else {
+                //todo: implement admin
+            }
+        })
+    }
 }
 
 fun NavGraphBuilder.registration(navController: NavHostController) {

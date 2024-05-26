@@ -34,6 +34,7 @@ class AccountsMainStubViewModel(
             is MyAccountsMainEvent.Ui.AccountClick -> handleAccountClick(event)
             is MyAccountsMainEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
             is MyAccountsMainEvent.Ui.AccountsFilterChange -> handleAccountFilterChange(event)
+            else -> {}
         }
     }
 

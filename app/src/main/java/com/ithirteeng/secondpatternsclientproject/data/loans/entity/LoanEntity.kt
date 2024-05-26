@@ -2,7 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.data.loans.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ithirteeng.secondpatternsclientproject.domain.loans.model.Loan
+import com.ithirteeng.secondpatternsclientproject.domain.loans.model.base.Loan
 
 @Entity(tableName = "loans")
 data class LoanEntity(

@@ -2,11 +2,17 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.ma
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.data.notifications.model.AppRegistrationModel
+import com.ithirteeng.secondpatternsclientproject.data.notifications.service.NotificationService
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountHiddenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountVisibleUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.presentation.model.AccountsFilter
@@ -21,6 +27,9 @@ class MyAccountsMainViewModel(
     getUserLoginUseCase: GetUserLoginUseCase,
     private val fetchAccountsUseCase: FetchAccountsUseCase,
     private val observeAccountsUseCase: ObserveAccountsUseCase,
+    private val makeAccountHiddenUseCase: MakeAccountHiddenUseCase,
+    private val makeAccountVisibleUseCase: MakeAccountVisibleUseCase,
+    private val notificationService: NotificationService,
 ) : BaseViewModel<MyAccountsMainState, MyAccountsMainEvent, MyAccountsMainEffect>() {
 
     override fun initState(): MyAccountsMainState = MyAccountsMainState.Loading
@@ -31,17 +40,51 @@ class MyAccountsMainViewModel(
 
     override fun processEvent(event: MyAccountsMainEvent) {
         when (event) {
-            is MyAccountsMainEvent.Init -> handleInit()
+            is MyAccountsMainEvent.Init -> {
+                handleInit()
+            }
+
             is MyAccountsMainEvent.DataLoaded -> handleDataLoaded(event)
             is MyAccountsMainEvent.Ui.AccountClick -> handleAccountClick(event)
             is MyAccountsMainEvent.Ui.CreateAccountButtonClick -> handleCreateAccountButtonClick()
             is MyAccountsMainEvent.Ui.AccountsFilterChange -> handleAccountFilterChange(event)
+            is MyAccountsMainEvent.Ui.HiddenAccountVisibilityChange -> handleHiddenAccountsVisibilityChange(
+                event
+            )
+
+            is MyAccountsMainEvent.Ui.ChangeAccountVisibility -> handleAccountVisibilityChange(event)
         }
     }
 
     private fun handleInit() {
         viewModelScope.launch(Dispatchers.IO) {
-            loadData()
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                launch(Dispatchers.IO) {
+                    notificationService.registerAppForNotifications(
+                        AppRegistrationModel(
+                            registrationToken = token,
+                            applicationId = "inductorbank"
+                        )
+                    )
+                    Log.d("Bullshit", "token: $token sent")
+                }
+            })
+            fetchAccountsUseCase(login)
+                .onFailure {
+                    Log.e(TAG, it.message.toString())
+                    addEffect(
+                        MyAccountsMainEffect.ShowError(
+                            R.string.fetching_error,
+                            it.message.toString()
+                        )
+                    )
+                }
+            observeAccounts()
         }
     }
 
@@ -57,39 +100,51 @@ class MyAccountsMainViewModel(
         }
     }
 
-    private suspend fun loadData() {
-        fetchAccountsUseCase(login)
-            .onSuccess {
-                observeAccounts()
+    private fun handleAccountVisibilityChange(event: MyAccountsMainEvent.Ui.ChangeAccountVisibility) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (event.account.isHidden) {
+                makeAccountVisibleUseCase(login, event.account.copy(isHidden = false))
+            } else {
+                makeAccountHiddenUseCase(login, event.account.copy(isHidden = true))
             }
-            .onFailure {
-                Log.e(TAG, it.message.toString())
-                observeAccounts()
-                addEffect(
-                    MyAccountsMainEffect.ShowError(
-                        R.string.fetching_error,
-                        it.message.toString()
-                    )
+        }
+    }
+
+    private fun handleHiddenAccountsVisibilityChange(
+        event: MyAccountsMainEvent.Ui.HiddenAccountVisibilityChange,
+    ) {
+        when (val currentState = state.value) {
+            is MyAccountsMainState.Content -> updateState {
+                val newState = currentState.copy(
+                    showHidden = event.isVisible,
+                )
+                newState.copy(
+                    accounts = getSortedAccounts(newState)
                 )
             }
 
+            is MyAccountsMainState.Loading -> Unit
+        }
     }
 
     private suspend fun observeAccounts() {
-
         observeAccountsUseCase.invoke(login)
             .onSuccess { flow ->
                 flow.collectLatest { accounts ->
+                    this.accounts = accounts
                     if (accounts.isNotEmpty()) {
                         processEvent(
                             MyAccountsMainEvent.DataLoaded(
                                 clientId = login,
-                                accounts = (state.value as? MyAccountsMainState.Content)?.filterState?.let { filter ->
-                                    accounts.filter { it.state == filter }
-                                } ?: accounts
+                                accounts = when (val currentState = state.value) {
+                                    is MyAccountsMainState.Content -> {
+                                        getSortedAccounts(currentState)
+                                    }
+
+                                    is MyAccountsMainState.Loading -> accounts.filter { !it.isHidden }
+                                }
                             )
                         )
-                        this.accounts = accounts
                     }
                 }
 
@@ -103,6 +158,22 @@ class MyAccountsMainViewModel(
                     )
                 )
             }
+    }
+
+    private fun getSortedAccounts(currentState: MyAccountsMainState.Content): List<Account> {
+        return if (currentState.showHidden) {
+            if (currentState.filterState == null) {
+                accounts
+            } else {
+                accounts.filter { it.state == currentState.filterState }
+            }
+        } else {
+            if (currentState.filterState == null) {
+                accounts.filter { !it.isHidden }
+            } else {
+                accounts.filter { it.state == currentState.filterState && !it.isHidden }
+            }
+        }.sortedBy { it.number }
     }
 
     private fun handleCreateAccountButtonClick() {
@@ -135,15 +206,15 @@ class MyAccountsMainViewModel(
             AccountsFilter.CLOSED -> AccountState.closed
             AccountsFilter.FROZEN -> AccountState.frozen
         }
-        when (state.value) {
+        when (val currentState = state.value) {
             is MyAccountsMainState.Content -> {
                 updateState {
-                    (state.value as MyAccountsMainState.Content).copy(
+                    val newState = currentState.copy(
                         filter = event.filter,
                         filterState = accountState,
-                        accounts = accountState?.let {
-                            accounts.filter { it.state == accountState }
-                        } ?: accounts
+                    )
+                    newState.copy(
+                        accounts = getSortedAccounts(newState)
                     )
                 }
             }

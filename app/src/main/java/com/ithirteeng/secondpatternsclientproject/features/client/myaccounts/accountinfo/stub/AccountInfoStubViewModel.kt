@@ -34,10 +34,12 @@ class AccountInfoStubViewModel(
         when (event) {
             is AccountInfoEvent.Init -> handleInit(event)
             is AccountInfoEvent.DataLoaded -> handleDataLoaded(event)
-            is AccountInfoEvent.Ui.MakeTransactionButtonClick -> handleMakeTransactionButtonClick()
+            is AccountInfoEvent.Ui.MakeTransactionSelfButtonClick -> handleMakeTransactionButtonClick()
             is AccountInfoEvent.Ui.ChangeAccountState -> handleChangeAccountStateButtonClick(
                 action = event.action
             )
+
+            else -> {}
         }
     }
 
@@ -159,7 +161,7 @@ class AccountInfoStubViewModel(
                     )
                 } else {
                     addEffect(
-                        AccountInfoEffect.NavigateToTransactionScreen(currentState.account.number)
+                        AccountInfoEffect.NavigateToSelfTransactionScreen(currentState.account.number)
                     )
                 }
             }

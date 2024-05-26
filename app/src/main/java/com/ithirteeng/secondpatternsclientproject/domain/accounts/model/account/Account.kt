@@ -6,4 +6,5 @@ data class Account(
     val amount: Double,
     val state: AccountState,
     val customComment: String?,
+    val isHidden: Boolean = false,
 )

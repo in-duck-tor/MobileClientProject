@@ -61,7 +61,10 @@ private fun MainContent(
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
-            AccountCard(account = state.account, onCardClick = {})
+            AccountCard(
+                account = state.account,
+                onCardClick = {},
+                onVisibilityChangeButtonClick = {})
         }
         item {
             ActionButtonsRow(state = state, eventListener = eventListener)
@@ -69,7 +72,7 @@ private fun MainContent(
         item {
             WideButton(
                 text = "Make transaction",
-                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionButtonClick) },
+                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionSelfButtonClick) },
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -110,12 +113,14 @@ private suspend fun observeEffects(
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is AccountInfoEffect.NavigateToTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToSelfTransactionScreen -> navigateToTransactionScreen()
             is AccountInfoEffect.ShowError -> Toast.makeText(
                 context,
                 context.getString(effect.stringResource) + ": " + effect.message,
                 Toast.LENGTH_SHORT
             ).show()
+
+            AccountInfoEffect.NavigateToGlobalTransactionScreen -> Unit
         }
 
     }

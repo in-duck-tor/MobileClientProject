@@ -1,7 +1,8 @@
 package com.ithirteeng.secondpatternsclientproject.common.network.di
 
-import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.AuthInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.interceptor.IdempotencyInterceptor
+import com.ithirteeng.secondpatternsclientproject.common.network.model.ConnectionType
 import com.ithirteeng.secondpatternsclientproject.common.network.provideAuthorizedOkHttpClient
 import com.ithirteeng.secondpatternsclientproject.common.network.provideLoggingInterceptor
 import com.ithirteeng.secondpatternsclientproject.common.network.provideNetworkConnectionInterceptor
@@ -15,7 +16,7 @@ val networkModule = module {
 
     factory { provideLoggingInterceptor() }
     factory { provideNetworkConnectionInterceptor(context = get()) }
-
+    factory { IdempotencyInterceptor() }
     factory { AuthInterceptor(getLocalTokenUseCase = get()) }
 
     single(named(ConnectionType.UNAUTHORIZED.name)) {
@@ -28,7 +29,14 @@ val networkModule = module {
     single(named(ConnectionType.UNAUTHORIZED.name)) {
         provideRetrofit(
             okHttpClient = get(named(ConnectionType.UNAUTHORIZED.name)),
-            url = "http://89.19.214.8:8000/api/v1/"
+            url = "http://89.19.214.8/api/v1/"
+        )
+    }
+
+    single(named(ConnectionType.AUTHORIZED_V2.name)) {
+        provideRetrofit(
+            okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
+            url = "http://89.19.214.8/api/v2/"
         )
     }
 
@@ -36,14 +44,22 @@ val networkModule = module {
         provideAuthorizedOkHttpClient(
             loggingInterceptor = get(),
             networkConnectionInterceptor = get(),
-            authInterceptor = get()
+            authInterceptor = get(),
+            idempotencyInterceptor = get(),
         )
     }
 
     single(named(ConnectionType.AUTHORIZED.name)) {
         provideRetrofit(
             okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
-            url = "http://89.19.214.8:8000/api/v1/"
+            url = "http://89.19.214.8/api/v1/"
+        )
+    }
+
+    single(named(ConnectionType.AUTHORIZED_USER.name)) {
+        provideRetrofit(
+            okHttpClient = get(named(ConnectionType.AUTHORIZED.name)),
+            url = "http://89.19.214.8:8180/connect/"
         )
     }
 

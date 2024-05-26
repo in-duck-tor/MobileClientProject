@@ -17,6 +17,8 @@ sealed interface AccountInfoEvent : BaseEvent {
 
         data class ChangeAccountState(val action: AccountAction) : Ui
 
-        data object MakeTransactionButtonClick : Ui
+        data object MakeTransactionSelfButtonClick : Ui
+
+        data object MakeTransactionGlobalButtonClick : Ui
     }
 }

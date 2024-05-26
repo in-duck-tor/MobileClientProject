@@ -13,5 +13,6 @@ sealed interface MyAccountsMainState : BaseState {
         val accounts: List<Account>,
         val filter: AccountsFilter = AccountsFilter.ALL,
         val filterState: AccountState? = null,
+        val showHidden: Boolean = false,
     ) : MyAccountsMainState
 }

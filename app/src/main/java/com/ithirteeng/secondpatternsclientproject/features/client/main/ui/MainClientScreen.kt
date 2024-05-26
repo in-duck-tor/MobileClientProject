@@ -28,7 +28,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MainClientScreen(
     clientId: String,
     viewModel: MainClientViewModel = koinViewModel(),
-    bigNavHostController: NavHostController
+    bigNavHostController: NavHostController,
 ) {
     val context = LocalContext.current
     val navHostController = rememberNavController()

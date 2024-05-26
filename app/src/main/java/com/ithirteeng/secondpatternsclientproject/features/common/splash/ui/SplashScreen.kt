@@ -24,14 +24,14 @@ fun SplashScreen(
     navigateToAuthorizationScreen: () -> Unit,
 ) {
     LaunchedEffect(null) {
+        viewModel.processEvent(SplashEvent.Init)
+
         observeEffects(
             viewModel = viewModel,
             navigateToMainScreen = navigateToMainScreen,
             navigateToAuthorizationScreen = navigateToAuthorizationScreen,
         )
     }
-
-    viewModel.processEvent(SplashEvent.Init)
 
     Box(contentAlignment = Alignment.Center) {
         Image(

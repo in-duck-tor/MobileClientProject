@@ -15,15 +15,12 @@ class LoansMainStubViewModel(
 ) : ViewModel() {
 
     private val token = getUserLoginUseCase()
-    val state = MutableStateFlow(MyLoansMainState(listOf(), true))
+    val state = MutableStateFlow(MyLoansMainState.Loading)
 
     fun observeLoans() {
         viewModelScope.launch(Dispatchers.IO) {
             loansStubDatasource.observeLoans(token).collect {
-                state.value = state.value.copy(
-                    loans = it,
-                    isLoading = false
-                )
+
             }
         }
     }

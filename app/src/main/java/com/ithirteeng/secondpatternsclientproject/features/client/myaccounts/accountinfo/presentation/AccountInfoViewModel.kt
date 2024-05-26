@@ -7,12 +7,15 @@ import androidx.annotation.RequiresExtension
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.R
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
+import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.SocketsDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.toTransaction
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.FetchTransactionsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.transaction.ObserveTransactionsUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetLocalTokenUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountAction
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
@@ -21,9 +24,11 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.acc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 class AccountInfoViewModel(
     getUserLoginUseCase: GetUserLoginUseCase,
     private val getAccountUseCase: GetAccountUseCase,
+    getLocalTokenUseCase: GetLocalTokenUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val fetchTransactionsUseCase: FetchTransactionsUseCase,
     private val changeAccountStateUseCase: ChangeAccountStateUseCase,
@@ -33,16 +38,48 @@ class AccountInfoViewModel(
 
     private val token = getUserLoginUseCase()
 
+    private val socketsDatasource = SocketsDatasource(
+        getLocalTokenUseCase = getLocalTokenUseCase,
+        onTransactionCreated = { event ->
+            viewModelScope.launch {
+                when (val currentState = state.value) {
+                    is AccountInfoState.Loading -> Unit
+                    is AccountInfoState.Content -> {
+                        if (currentState.account.number == event.depositOn?.accountNumber || currentState.account.number == event.withdrawFrom?.accountNumber) {
+                            updateState {
+                                currentState.copy(
+                                    transactions = currentState.transactions + event.toTransaction()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        onTransactionUpdated = {
+
+        }
+    )
+
+    fun connectToWebSocket() {
+        socketsDatasource.connectToWebSocket()
+    }
+
     @SuppressLint("NewApi")
     override fun processEvent(event: AccountInfoEvent) {
         when (event) {
             is AccountInfoEvent.Init -> handleInit(event)
             is AccountInfoEvent.DataLoaded -> handleDataLoaded(event)
-            is AccountInfoEvent.Ui.MakeTransactionButtonClick -> handleMakeTransactionButtonClick()
+            is AccountInfoEvent.Ui.MakeTransactionSelfButtonClick -> handleMakeTransactionButtonClick()
+            is AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick -> handleMakeGlobalTransactionButtonClick()
             is AccountInfoEvent.Ui.ChangeAccountState -> handleChangeAccountStateButtonClick(
                 action = event.action
             )
         }
+    }
+
+    private fun handleMakeGlobalTransactionButtonClick() {
+        addEffect(AccountInfoEffect.NavigateToGlobalTransactionScreen)
     }
 
     private fun handleInit(event: AccountInfoEvent.Init) {
@@ -166,7 +203,7 @@ class AccountInfoViewModel(
     private fun handleMakeTransactionButtonClick() {
         when (val currentState = state.value) {
             is AccountInfoState.Content -> addEffect(
-                AccountInfoEffect.NavigateToTransactionScreen(currentState.account.number)
+                AccountInfoEffect.NavigateToSelfTransactionScreen(currentState.account.number)
             )
 
             else -> Unit

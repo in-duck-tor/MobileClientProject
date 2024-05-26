@@ -10,5 +10,5 @@ sealed interface LoginState : BaseState {
     data class Content(
         val login: TextFieldValue = TextFieldValue(""),
         val password: TextFieldValue = TextFieldValue(""),
-    ): LoginState
+    ) : LoginState
 }

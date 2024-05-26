@@ -1,6 +1,7 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.ui
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.LoadingComponent
 import com.ithirteeng.secondpatternsclientproject.common.uikit.components.WideButton
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.AccountState
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.AccountInfoViewModel
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.presentation.model.AccountInfoEvent
@@ -29,20 +31,24 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AccountInfoScreen(
-    clientId: String,
     accountNumber: String,
-    navigateToTransactionScreen: (accountNumber: String) -> Unit,
+    navigateToSelfTransactionScreen: (accountNumber: String) -> Unit,
+    navigateToSelfGlobalScreen: (accountNumber: String) -> Unit,
     viewModel: AccountInfoViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     LaunchedEffect(null) {
         viewModel.processEvent(AccountInfoEvent.Init(accountNumber))
+        viewModel.connectToWebSocket()
         observeEffects(
             viewModel = viewModel,
             context = context,
             navigateToTransactionScreen = {
-                navigateToTransactionScreen(accountNumber)
-            }
+                navigateToSelfTransactionScreen(accountNumber)
+            },
+            navigateToGlobalTransactionScreen = {
+                navigateToSelfGlobalScreen(accountNumber)
+            },
         )
     }
 
@@ -67,12 +73,19 @@ private fun MainContent(
         item {
             ActionButtonsRow(state = state, eventListener = eventListener)
         }
-        item {
-            WideButton(
-                text = "Make transaction",
-                onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionButtonClick) },
-                modifier = Modifier.padding(16.dp)
-            )
+        if (state.account.state == AccountState.active) {
+            item {
+                WideButton(
+                    text = "Make transaction (SELF)",
+                    onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionSelfButtonClick) },
+                    modifier = Modifier.padding(16.dp)
+                )
+                WideButton(
+                    text = "Make transaction (GLOBAL)",
+                    onClick = { eventListener(AccountInfoEvent.Ui.MakeTransactionGlobalButtonClick) },
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
         items(state.transactions) { transaction ->
             TransactionInfoComponent(
@@ -107,16 +120,19 @@ private fun ActionButtonsRow(
 private suspend fun observeEffects(
     viewModel: AccountInfoViewModel,
     navigateToTransactionScreen: () -> Unit,
+    navigateToGlobalTransactionScreen: () -> Unit,
     context: Context,
 ) {
     viewModel.effectsFlow.collect { effect ->
         when (effect) {
-            is AccountInfoEffect.NavigateToTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToSelfTransactionScreen -> navigateToTransactionScreen()
+            is AccountInfoEffect.NavigateToGlobalTransactionScreen -> navigateToGlobalTransactionScreen()
             is AccountInfoEffect.ShowError -> Toast.makeText(
                 context,
                 context.getString(effect.stringResource) + ": " + effect.message,
                 Toast.LENGTH_SHORT
             ).show()
+
         }
 
     }

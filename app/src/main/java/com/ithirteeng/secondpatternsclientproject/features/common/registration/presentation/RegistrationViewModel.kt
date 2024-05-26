@@ -3,13 +3,13 @@ package com.ithirteeng.secondpatternsclientproject.features.common.registration.
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewModel
-import com.ithirteeng.secondpatternsclientproject.domain.theme.model.Theme
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.FetchApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.theme.usecase.SetApplicationThemeUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.model.Token
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveTokenLocallyUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.SaveUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.LoginViewModel
+import com.ithirteeng.secondpatternsclientproject.features.common.login.presentation.model.LoginEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.presentation.model.RegistrationEffect
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.presentation.model.RegistrationEvent
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.presentation.model.RegistrationState
@@ -95,13 +95,7 @@ class RegistrationViewModel(
                     } else {
                         //todo implement registration logic
                         viewModelScope.launch(Dispatchers.IO) {
-                            saveTokenLocallyUseCase(
-                                Token(LoginViewModel.TOKEN, LoginViewModel.TOKEN)
-                            )
-                            saveUserLoginUseCase(LoginViewModel.LOGIN)
-                            setApplicationThemeUseCase(Theme.AUTO)
-                            //TODO: with new login fetchApplicationThemeUseCase()
-                            addEffect(RegistrationEffect.NavigateToMainScreen)
+                            addEffect(RegistrationEffect.ShowError("not implemented"))
                         }
                     }
                 }

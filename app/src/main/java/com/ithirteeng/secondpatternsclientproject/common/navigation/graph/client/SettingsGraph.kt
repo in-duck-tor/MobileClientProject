@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.navigation.AuthDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.login.navigation.LoginDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.settings.navigation.SettingsDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.settings.ui.SettingsScreen
@@ -21,7 +22,7 @@ fun NavGraphBuilder.settingsGraph(
     ) {
         SettingsScreen(
             navigateToLoginScreen = {
-                bigNavController.navigate(LoginDestination.destination) {
+                bigNavController.navigate(AuthDestination.destination) {
                     popUpTo(bigNavController.graph.id) {
                         inclusive = true
                     }

@@ -20,6 +20,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        addManifestPlaceholders(
+            mapOf(
+                "appAuthRedirectScheme" to "com.ithirteeng.secondpatternsclientproject.app",
+            )
+        )
     }
 
     buildTypes {
@@ -101,10 +107,15 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     implementation("com.squareup.retrofit2:converter-simplexml:2.9.0") {
         exclude(module = "stax")
         exclude(module = "stax-api")
         exclude(module = "xpp3")
     }
+
+    implementation("net.openid:appauth:0.11.1")
+
+    implementation("com.microsoft.signalr:signalr:7.0.0")
 }

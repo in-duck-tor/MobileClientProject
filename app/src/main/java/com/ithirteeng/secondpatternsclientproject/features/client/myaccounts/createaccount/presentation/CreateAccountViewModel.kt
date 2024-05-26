@@ -7,6 +7,7 @@ import com.ithirteeng.secondpatternsclientproject.common.architecture.BaseViewMo
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.CreateAccount
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetCurrencyCodesUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountV2UseCase
 import com.ithirteeng.secondpatternsclientproject.domain.user.usecase.GetUserLoginUseCase
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEffect
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.presentation.model.CreateAccountEvent
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class CreateAccountViewModel(
     private val getUserLoginUseCase: GetUserLoginUseCase,
     private val createAccountUseCase: CreateAccountUseCase,
+    private val createAccountV2UseCase: CreateAccountV2UseCase,
     private val getCurrencyCodesUseCase: GetCurrencyCodesUseCase,
 ) : BaseViewModel<CreateAccountState, CreateAccountEvent, CreateAccountEffect>() {
 
@@ -75,9 +77,9 @@ class CreateAccountViewModel(
                     currencyCode = currentState.chosenCurrencyCode,
                     customComment = currentState.customComment.text
                 )
-                createAccountUseCase(data, login)
+                createAccountV2UseCase(data)
                     .onSuccess {
-                        addEffect(CreateAccountEffect.ShowCreationToast("AccountCreated"))
+                        addEffect(CreateAccountEffect.ShowCreationToast("Request sent successfully"))
                         addEffect(CreateAccountEffect.CloseSelf)
                     }
                     .onFailure {

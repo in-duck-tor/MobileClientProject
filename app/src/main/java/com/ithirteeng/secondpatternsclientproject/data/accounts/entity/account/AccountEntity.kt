@@ -16,6 +16,7 @@ data class AccountEntity(
     val amount: Double,
     val state: AccountState,
     val customComment: String?,
+    val isHidden: Boolean = false,
 )
 
 fun AccountEntity.toDomain(): Account = Account(
@@ -23,7 +24,8 @@ fun AccountEntity.toDomain(): Account = Account(
     currencyCode = currencyCode ?: "RUB",
     amount = amount,
     state = state,
-    customComment = customComment
+    customComment = customComment,
+    isHidden = isHidden,
 )
 
 fun Account.toEntity(clientId: String): AccountEntity = AccountEntity(
@@ -33,4 +35,5 @@ fun Account.toEntity(clientId: String): AccountEntity = AccountEntity(
     state = state,
     customComment = customComment,
     clientId = clientId,
+    isHidden = isHidden,
 )

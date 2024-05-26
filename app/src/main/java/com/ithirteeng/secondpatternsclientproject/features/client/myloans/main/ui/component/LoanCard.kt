@@ -1,58 +1,59 @@
 package com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.ithirteeng.secondpatternsclientproject.domain.loans.model.Loan
+import com.ithirteeng.secondpatternsclientproject.domain.loans.model.loan.LoanInfoShort
+import java.math.BigDecimal
 
 @Composable
 fun LoanCard(
-    loan: Loan,
     onCardClick: () -> Unit,
+    loan: LoanInfoShort,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
+        onClick = onCardClick,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
-        onClick = onCardClick
     ) {
         Column(
-            modifier = Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                modifier = Modifier
-                    .padding(),
-                text = "Amount: ${loan.amount}",
-                style = MaterialTheme.typography.titleMedium
+                text = "BorrowedAmount: ${BigDecimal(loan.borrowedAmount).toPlainString()}",
+                modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = "PAYMENT: ${loan.amount}",
-                style = MaterialTheme.typography.bodyLarge
+                text = "InterestRate: ${loan.interestRate}",
+                modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
-                text = loan.id,
-                style = MaterialTheme.typography.bodyMedium
+                text = "Planned Payment Number: ${loan.plannedPaymentsNumber}",
+                modifier = Modifier.padding(vertical = 4.dp)
             )
-
-
+            Text(
+                text = "Остаток: ${BigDecimal(loan.loanBody).toPlainString()}",
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+            Text(
+                text = "Задолженность по кредиту: ${BigDecimal(loan.loanDebt).toPlainString()}",
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+            Text(
+                text = "Штраф по задолженности: ${loan.penalty}",
+                modifier = Modifier.padding(vertical = 4.dp),
+                color = Color.Red
+            )
         }
     }
 }
-

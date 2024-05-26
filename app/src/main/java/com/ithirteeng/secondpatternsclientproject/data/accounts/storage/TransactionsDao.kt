@@ -19,6 +19,9 @@ interface TransactionsDao {
     @Query("SELECT * FROM transactions WHERE deposit_on_accountNumber = :number")
     fun observeTransactionsByDepositAccountNumber(number: String): Flow<List<TransactionEntity>>
 
+    @Query("SELECT * FROM transactions WHERE accountNumber = :number")
+    fun observeTransactionsByAccountNumber(number: String): Flow<List<TransactionEntity>>
+
     @Query("DELETE FROM transactions WHERE deposit_on_accountNumber = :number")
     fun deleteTransactionsByDepositAccountNumber(number: String)
 }

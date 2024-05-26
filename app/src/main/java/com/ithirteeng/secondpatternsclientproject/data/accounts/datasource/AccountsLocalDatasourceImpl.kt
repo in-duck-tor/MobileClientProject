@@ -6,9 +6,9 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.transacti
 import com.ithirteeng.secondpatternsclientproject.data.accounts.entity.transaction.toEntity
 import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.AccountsDao
 import com.ithirteeng.secondpatternsclientproject.data.accounts.storage.TransactionsDao
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.account.Account
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.model.transaction.Transaction
-import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -35,16 +35,19 @@ class AccountsLocalDatasourceImpl(
         return accountsDao.getAccount(number).toDomain()
     }
 
-    override suspend fun insertTransactions(transactions: List<Transaction>) {
-        transactionsDao.insertTransactions(transactions.map { it.toEntity() })
+    override suspend fun insertTransactions(
+        transactions: List<Transaction>,
+        accountNumber: String
+    ) {
+        transactionsDao.insertTransactions(transactions.map { it.toEntity(accountNumber) })
     }
 
-    override suspend fun insertTransaction(transaction: Transaction) {
-        transactionsDao.insertTransaction(transaction.toEntity())
+    override suspend fun insertTransaction(transaction: Transaction, accountNumber: String) {
+        transactionsDao.insertTransaction(transaction.toEntity(accountNumber))
     }
 
     override suspend fun observeTransactionsByAccountNumber(accountNumber: String): Flow<List<Transaction>> {
-        return transactionsDao.observeTransactionsByDepositAccountNumber(accountNumber)
+        return transactionsDao.observeTransactionsByAccountNumber(accountNumber)
             .map { list ->
                 list.map { it.toDomain() }
             }

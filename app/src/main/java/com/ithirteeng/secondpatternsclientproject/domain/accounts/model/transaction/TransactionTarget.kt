@@ -5,5 +5,5 @@ data class TransactionTarget(
     val currencyCode: String? = "RUS",
     val accountNumber: String,
     val bankCode: String,
-    val bankName: String?,
+    val bankName: String? = null,
 )

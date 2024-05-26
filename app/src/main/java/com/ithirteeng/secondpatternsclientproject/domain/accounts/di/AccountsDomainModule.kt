@@ -6,11 +6,15 @@ import com.ithirteeng.secondpatternsclientproject.data.accounts.datasource.Accou
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsLocalDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsRemoteDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.datasource.AccountsStubDatasource
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetBanksInfoUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.GetCurrencyCodesUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ChangeAccountStateUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.CreateAccountV2UseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.FetchAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.GetAccountUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountHiddenUseCase
+import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.MakeAccountVisibleUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.account.ObserveAccountsUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.CreateAccountStubUseCase
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.usecase.stub.MakeTransactionBetweenAccountsStubUseCase
@@ -24,7 +28,11 @@ import org.koin.dsl.module
 
 val accountsDomainModule = module {
     single<AccountsRemoteDatasource> {
-        AccountsRemoteDatasourceImpl(service = get())
+        AccountsRemoteDatasourceImpl(
+            service = get(),
+            firebaseDatabase = get(),
+            serviceV2 = get()
+        )
     }
 
     single<AccountsLocalDatasource> {
@@ -44,6 +52,7 @@ val accountsDomainModule = module {
     factoryOf(::FetchAccountsUseCase)
     factoryOf(::ObserveAccountsUseCase)
     factoryOf(::CreateAccountUseCase)
+    factoryOf(::CreateAccountV2UseCase)
     factoryOf(::GetAccountUseCase)
     factoryOf(::ChangeAccountStateUseCase)
 
@@ -57,4 +66,9 @@ val accountsDomainModule = module {
     factoryOf(::WithdrawFromAccountStubUseCase)
 
     factoryOf(::GetCurrencyCodesUseCase)
+
+    factoryOf(::MakeAccountVisibleUseCase)
+    factoryOf(::MakeAccountHiddenUseCase)
+
+    factoryOf(::GetBanksInfoUseCase)
 }

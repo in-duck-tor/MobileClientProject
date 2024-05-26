@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ithirteeng.secondpatternsclientproject.features.client.main.navigation.MainClientDestination
+import com.ithirteeng.secondpatternsclientproject.features.common.auth.navigation.AuthDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.navigation.RegistrationDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.navigation.SplashDestination
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.ui.SplashScreen
@@ -22,7 +23,7 @@ fun AppNavHost(navController: NavHostController) {
                     }
                 },
                 navigateToAuthorizationScreen = {
-                    navController.navigate(RegistrationDestination.destination) {
+                    navController.navigate(AuthDestination.destination) {
                         popUpTo(SplashDestination.destination) { inclusive = true }
                     }
                 }

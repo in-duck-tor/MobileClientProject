@@ -11,6 +11,6 @@ class FetchTransactionsUseCase(
 
     suspend operator fun invoke(accountNumber: String) = provideResult {
         val transactions = remoteDatasource.getAccountTransactions(accountNumber)
-        localDatasource.insertTransactions(transactions)
+        localDatasource.insertTransactions(transactions, accountNumber)
     }
 }

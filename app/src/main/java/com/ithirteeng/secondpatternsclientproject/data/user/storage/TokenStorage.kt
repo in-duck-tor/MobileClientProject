@@ -17,7 +17,10 @@ class TokenStorage(context: Context) {
     fun getToken(): Token? {
         val authToken = sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
         val refreshToken = sharedPreferences.getString(REFRESH_TOKEN_KEY, null)
-        return if (authToken != null && refreshToken != null) Token(authToken, refreshToken) else null
+        return if (authToken != null && refreshToken != null) Token(
+            authToken,
+            refreshToken
+        ) else null
     }
 
     fun saveLogin(login: String) {
@@ -34,7 +37,19 @@ class TokenStorage(context: Context) {
         sharedPreferences.edit().clear().apply()
     }
 
+    fun saveUserId(userId: String) {
+        sharedPreferences.edit()
+            .putString(USER_ID_KEY, userId)
+            .apply()
+    }
+
+    fun getUserId(): String {
+        return sharedPreferences.getString(USER_ID_KEY, "0").toString()
+    }
+
     private companion object {
+
+        const val USER_ID_KEY = "user id key"
         const val LOGIN_KEY = "login key"
         const val ACCESS_TOKEN_KEY = "access token key"
         const val REFRESH_TOKEN_KEY = "refresh token key"

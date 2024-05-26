@@ -10,15 +10,16 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.acc
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.stub.AccountInfoStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.accountinfo.ui.AccountInfoScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.navigation.MyAccountsCreateAccountDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.stub.CreateAccountStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.createaccount.ui.CreateAccountScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.navigation.MyAccountsMainDestination
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.stub.AccountsMainStubScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.main.ui.MyAccountsMainScreen
 import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.navigation.MyAccountsDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.navigation.MyAccountsTransactionDestination
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.stub.AccountsTransactionStubScreen
-import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.ui.AccountsTransactionScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.navigation.MyAccountsGlobalTransactionDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.global.ui.AccountsGlobalTransactionScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.navigation.MyAccountsSelfTransactionDestination
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.stub.AccountsTransactionStubScreen
+import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.transaction.self.ui.AccountsSelfTransactionScreen
 
 fun NavGraphBuilder.myAccountsGraph(
     navController: NavHostController,
@@ -36,9 +37,8 @@ fun NavGraphBuilder.myAccountsGraph(
         main(navController, clientId)
         accountInfo(navController, clientId)
         createAccount(navController)
-        transaction(navController, clientId)
-
-
+        selfTransaction(navController, clientId)
+        globalTransaction(navController)
     }
 }
 
@@ -101,13 +101,19 @@ private fun NavGraphBuilder.accountInfo(
                 "Client Id is required!"
             }
         AccountInfoScreen(
-            clientId = clientId,
             accountNumber = accountId,
-            navigateToTransactionScreen = {
+            navigateToSelfTransactionScreen = {
                 navController.navigate(
-                    MyAccountsTransactionDestination.destinationWithArgs(
+                    MyAccountsSelfTransactionDestination.destinationWithArgs(
                         clientId,
                         accountId,
+                    )
+                )
+            },
+            navigateToSelfGlobalScreen = {
+                navController.navigate(
+                    MyAccountsGlobalTransactionDestination.destinationWithArgs(
+                        it
                     )
                 )
             }
@@ -115,25 +121,65 @@ private fun NavGraphBuilder.accountInfo(
     }
 }
 
-private fun NavGraphBuilder.transaction(
+private fun NavGraphBuilder.selfTransaction(
     navController: NavHostController,
     clientId: String,
 ) {
     composable(
-        route = MyAccountsTransactionDestination.route,
+        route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) {
+                type = NavType.StringType
+            },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsSelfTransactionDestination.ACCOUNT_ID
+                )
+            ) {
                 "Client Id is required!"
             }
-        AccountsTransactionScreen(
+        AccountsSelfTransactionScreen(
             accountId = accountId,
             navigateUp = {
-                navController.navigateUp()
+                navController.navigate(MyAccountsMainDestination.destinationWithArgs(clientId)) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+            }
+        )
+    }
+}
+
+private fun NavGraphBuilder.globalTransaction(
+    navController: NavHostController,
+) {
+    composable(
+        route = MyAccountsGlobalTransactionDestination.route,
+        arguments = listOf(
+            navArgument(MyAccountsGlobalTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
+        )
+    ) { navBackStackEntry ->
+        val accountId =
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsGlobalTransactionDestination.ACCOUNT_ID
+                )
+            ) {
+                "Client Id is required!"
+            }
+        AccountsGlobalTransactionScreen(
+            accountId = accountId,
+            closeSelf = {
+                navController.navigate(MyAccountsMainDestination.destinationWithArgs(accountId)) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
             }
         )
     }
@@ -175,12 +221,7 @@ private fun NavGraphBuilder.createAccountStub(
             navArgument(MyAccountsCreateAccountDestination.CLIENT_ID) { type = NavType.StringType }
         )
     ) {
-        CreateAccountStubScreen(
-            clientId = clientId,
-            navigateUp = {
-                navController.navigateUp()
-            }
-        )
+
     }
 }
 
@@ -204,7 +245,7 @@ private fun NavGraphBuilder.accountInfoStub(
             accountNumber = accountId,
             navigateToTransactionScreen = {
                 navController.navigate(
-                    MyAccountsTransactionDestination.destinationWithArgs(
+                    MyAccountsSelfTransactionDestination.destinationWithArgs(
                         clientId,
                         accountId,
                     )
@@ -219,14 +260,22 @@ private fun NavGraphBuilder.transactionStub(
     clientId: String,
 ) {
     composable(
-        route = MyAccountsTransactionDestination.route,
+        route = MyAccountsSelfTransactionDestination.route,
         arguments = listOf(
-            navArgument(MyAccountsTransactionDestination.CLIENT_ID) { type = NavType.StringType },
-            navArgument(MyAccountsTransactionDestination.ACCOUNT_ID) { type = NavType.StringType },
+            navArgument(MyAccountsSelfTransactionDestination.CLIENT_ID) {
+                type = NavType.StringType
+            },
+            navArgument(MyAccountsSelfTransactionDestination.ACCOUNT_ID) {
+                type = NavType.StringType
+            },
         )
     ) { navBackStackEntry ->
         val accountId =
-            requireNotNull(navBackStackEntry.arguments?.getString(MyAccountsTransactionDestination.ACCOUNT_ID)) {
+            requireNotNull(
+                navBackStackEntry.arguments?.getString(
+                    MyAccountsSelfTransactionDestination.ACCOUNT_ID
+                )
+            ) {
                 "Client Id is required!"
             }
         AccountsTransactionStubScreen(

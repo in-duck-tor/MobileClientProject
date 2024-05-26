@@ -2,7 +2,7 @@ package com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.
 
 import com.ithirteeng.secondpatternsclientproject.common.navigation.Destination
 
-object MyLoansMainDestination: Destination() {
+object MyLoansMainDestination : Destination() {
 
     const val CLIENT_ID = "clientId"
 

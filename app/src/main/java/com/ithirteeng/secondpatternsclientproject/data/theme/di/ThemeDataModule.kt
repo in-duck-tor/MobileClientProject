@@ -7,6 +7,7 @@ import com.ithirteeng.secondpatternsclientproject.data.theme.storage.Application
 import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeLocalDatasource
 import com.ithirteeng.secondpatternsclientproject.domain.theme.datasource.ThemeRemoteDatasource
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val themeDataModule = module {
@@ -14,6 +15,6 @@ val themeDataModule = module {
     singleOf(::provideFirebaseDatabase)
     singleOf(::ApplicationThemeStorage)
 
-    single<ThemeLocalDatasource> { ThemeLocalDatasourceImpl(get()) }
-    single<ThemeRemoteDatasource> { ThemeRemoteDatasourceImpl(get()) }
+    singleOf(::ThemeRemoteDatasourceImpl) bind (ThemeRemoteDatasource::class)
+    singleOf(::ThemeLocalDatasourceImpl) bind (ThemeLocalDatasource::class)
 }

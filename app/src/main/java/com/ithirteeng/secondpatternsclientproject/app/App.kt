@@ -3,10 +3,12 @@ package com.ithirteeng.secondpatternsclientproject.app
 import android.app.Application
 import com.ithirteeng.secondpatternsclientproject.app.di.appModule
 import com.ithirteeng.secondpatternsclientproject.common.network.di.networkModule
+import com.ithirteeng.secondpatternsclientproject.common.notifications.commonNotificationsModule
 import com.ithirteeng.secondpatternsclientproject.common.storage.di.databaseModule
 import com.ithirteeng.secondpatternsclientproject.data.accounts.di.accountsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.exchange.di.exchangeDataModule
 import com.ithirteeng.secondpatternsclientproject.data.loans.di.loansDataModule
+import com.ithirteeng.secondpatternsclientproject.data.notifications.di.notificationsDataModule
 import com.ithirteeng.secondpatternsclientproject.data.theme.di.themeDataModule
 import com.ithirteeng.secondpatternsclientproject.data.user.di.userDataModule
 import com.ithirteeng.secondpatternsclientproject.domain.accounts.di.accountsDomainModule
@@ -22,15 +24,16 @@ import com.ithirteeng.secondpatternsclientproject.features.client.myaccounts.tra
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.createloan.di.createLoanModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.loaninfo.di.loanInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.client.myloans.main.di.myLoansMainModule
-import com.ithirteeng.secondpatternsclientproject.features.common.settings.di.settingsModule
+import com.ithirteeng.secondpatternsclientproject.features.client.myloans.programinfo.di.programInfoModule
 import com.ithirteeng.secondpatternsclientproject.features.common.login.di.loginModule
 import com.ithirteeng.secondpatternsclientproject.features.common.registration.di.registrationModule
+import com.ithirteeng.secondpatternsclientproject.features.common.settings.di.settingsModule
 import com.ithirteeng.secondpatternsclientproject.features.common.splash.di.splashModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-
+// com.ithirteeng.secondpatternsclientproject.app:/oauth2redirect/inductor
 class App : Application() {
 
     override fun onCreate() {
@@ -41,6 +44,9 @@ class App : Application() {
             androidLogger(Level.ERROR)
             modules(
                 appModule,
+
+                commonNotificationsModule,
+                notificationsDataModule,
 
                 networkModule,
                 databaseModule,
@@ -72,6 +78,7 @@ class App : Application() {
                 myLoansMainModule,
                 createLoanModule,
                 loanInfoModule,
+                programInfoModule,
 
                 settingsModule,
             )
